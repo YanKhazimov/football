@@ -1,0 +1,35 @@
+<RCC>
+    <qresource prefix="/">
+        <file>MainForm.ui.qml</file>
+        <file>qml/FeaturedStats/SlideContent.qml</file>
+        <file>qml/FeaturedStats/SlideshowWing.qml</file>
+        <file>qml/Players/CustomTableView.qml</file>
+        <file>qml/Players/PlayerPage.qml</file>
+        <file>img/ball.png</file>
+        <file>img/l.svg</file>
+        <file>img/pause.png</file>
+        <file>img/pause2.png</file>
+        <file>img/play.png</file>
+        <file>img/r.svg</file>
+        <file>qml/visualStyles/qmldir</file>
+        <file>qml/visualStyles/Sizes.qml</file>
+        <file>qml/visualStyles/Themes.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/ContentTab.qml</file>
+        <file>qml/CustomTabView.qml</file>
+        <file>qml/Slideshow.qml</file>
+        <file>img/playerImages/5984.png</file>
+        <file>img/playerImages/6235.png</file>
+        <file>img/playerImages/13128.png</file>
+        <file>img/playerImages/238395.png</file>
+        <file>img/playerImages/238427.png</file>
+        <file>img/playerImages/238430.png</file>
+        <file>img/playerImages/242510.png</file>
+        <file>img/playerImages/default.png</file>
+        <file>img/ball2.png</file>
+        <file>img/ball2.svg</file>
+        <file>img/bg2.png</file>
+        <file>img/bg3.png</file>
+        <file>img/bg4.png</file>
+    </qresource>
+</RCC>
