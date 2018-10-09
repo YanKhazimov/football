@@ -31,5 +31,7 @@
         <file>img/bg2.png</file>
         <file>img/bg3.png</file>
         <file>img/bg4.png</file>
+        <file>qml/TiledBackground.qml</file>
+        <file>qml/Players/StatsTable.qml</file>
     </qresource>
 </RCC>

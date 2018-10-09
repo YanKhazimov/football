@@ -107,7 +107,7 @@ Rectangle {
         ColorOverlay {
             anchors.fill: playPause
             source: playPause
-            color: mouseArea.containsMouse ? theme.highlightColor : theme.secondaryFillColor
+            color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.highlightColor
         }
 
         ListView {

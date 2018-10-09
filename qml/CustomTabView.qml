@@ -10,28 +10,9 @@ Rectangle {
     id: root
     property QtObject theme: null
     color: root.theme.primaryFillColor
-    Flow {
-        id: flow
-        clip: true
-        anchors {
-            left: parent.left
-            top: parent.top
-            bottom: parent.bottom
-            right: parent.right
-        }
-        //width: menusArea.width
 
-        Repeater {
-            model: 5000
-            Row {
-                Image {
-                    id: a2
-                    source: "qrc:/img/ball.png"
-                    width: 32
-                    height: width
-                }
-            }
-        }
+    TiledBackground {
+        sourceImg: "qrc:/img/ball.png"
     }
 
     RowLayout {

@@ -7,7 +7,9 @@ TableView {
     id: root
     property QtObject theme: null
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-    //backgroundVisible: false
+
+    sortIndicatorVisible: true
+    sortIndicatorColumn: 1
 
     itemDelegate: Item {
         Text {
@@ -25,6 +27,8 @@ TableView {
             color: styleData.selected ? root.theme.secondaryFillColor : "white"
             radius: height
         }
+
+        backgroundColor: root.theme.primaryFillColor
 
         headerDelegate: Rectangle {
             height: textItem.implicitHeight * 1.2

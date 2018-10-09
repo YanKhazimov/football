@@ -26,8 +26,14 @@ int main(int argc, char *argv[])
     fm << new PlayerbaseQuery (pb, 1, "TOP GRINDER", "Most progress");
     fm << new PlayerbaseQuery (pb, 2, "RIVALRIES TO WATCH", "Closest-rated players");
 
-    QStringList stats;
-    stats << "Current Rating: 500" << "Wins/Losses: 5-3 (62.5%)" << "Reliability: 50%";
+//    QList<QStringList> stats;
+//    stats << QStringList({ "Current Rating", "500" })
+//          << QStringList({ "Wins/Losses", "5-3 (62.5%)" })
+//          << QStringList({ "Reliability", "50%" });
+    QList<QString> stats;
+    stats << "Current Rating"
+          << "Wins/Losses"
+          << "Reliability";
 
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();

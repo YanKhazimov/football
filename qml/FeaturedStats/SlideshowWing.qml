@@ -30,7 +30,7 @@ Item {
         id: overlay
         anchors.fill: img
         source: img
-        color: mouseArea.containsMouse ? theme.highlightColor : theme.secondaryFillColor
+        color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.highlightColor
     }
 
     MouseArea {
