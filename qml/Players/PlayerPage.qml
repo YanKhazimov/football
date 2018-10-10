@@ -18,7 +18,11 @@ Rectangle {
     ColumnLayout {
         id: column
         spacing: 5
-        anchors.centerIn: parent
+        anchors {
+            left: parent.left
+            right: parent.right
+            verticalCenter: parent.verticalCenter
+        }
 
         Text {
             id: name
@@ -46,38 +50,38 @@ Rectangle {
 //            }
 //        }
 
-        TableView {
+        StatsTable {
+            id: statsTable
+            model: player ? statsExample : 0
 
-            ListModel {
-                id: libraryModel
-                ListElement {
-                    rank: 1
-                    title: "Current Rating"
-                    author: "500"
-                }
-                ListElement {
-                    rank: 2
-                    title: "Brilliance"
-                    author: "400"
-                }
-                ListElement {
-                    rank: 3
-                    title: "Outstanding"
-                    author: "300"
-                }
-            }
-            model: libraryModel
+            Layout.fillWidth: true
+            Layout.maximumHeight: Sizes.fontPixelSize * model.length
 
             TableViewColumn {
                 delegate: Text {
-                    text: styleData.value
+                    text: model.StatCategory + ":"
+                    horizontalAlignment: Text.AlignHCenter
                 }
-                role: "title"
-                //title: "Title"
-                //width: ratingsTable.width * 6/10
-                //resizable: false
+                role: "StatCategory"
+                width: statsTable.width * 2/5
             }
 
+            TableViewColumn {
+                delegate: Text {
+                    text: model.StatValue
+                    horizontalAlignment: Text.AlignHCenter
+                }
+                role: "StatValue"
+                width: statsTable.width * 2/5
+            }
+
+            TableViewColumn {
+                delegate: Text {
+                    text: "sort"
+                    horizontalAlignment: Text.AlignHCenter
+                }
+                width: statsTable.width / 5
+            }
         }
     }
 }

@@ -1,59 +1,38 @@
-#include "query.h"
+#include "playersmodel.h"
 
-Player::Player(const QString &name, const QUrl photoUrl)
-    : m_name(name), m_photo(photoUrl)
+PlayersModel::PlayersModel()
 {
 }
 
-QString Player::getName() const
-{
-    return m_name;
-}
-
-Playerbase::Playerbase()
-{
-    m_players << new Player("r", QUrl("qrc:/img/playerImages/13128.png"))
-              << new Player("yellow")//, QUrl("qrc:/img/playerImages/238395.png"))
-              << new Player("g")
-              << new Player("g")//, QUrl("qrc:/img/playerImages/238430.png"))
-              << new Player("g")//, QUrl("qrc:/img/playerImages/242510.png"))
-              << new Player("g")//, QUrl("qrc:/img/playerImages/5984.png"))
-              << new Player("g");//, QUrl("qrc:/img/playerImages/6235.png"));
-}
-
-Playerbase::Playerbase(const Playerbase &pb)
+PlayersModel::PlayersModel(const PlayersModel &pb)
 {
     m_players = pb.m_players;
 }
 
-Playerbase::~Playerbase()
+PlayersModel::PlayersModel(const GamesModel &gamesModel)
 {
-    for (auto p: m_players)
-        delete p;
+    for (auto game: gamesModel.getGames())
+        for (auto player: game->getAllPlayers())
+            m_players.insert(player);
 }
 
-int Playerbase::rowCount(const QModelIndex &parent) const
+int PlayersModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
     return m_players.size();
 }
 
-QVariant Playerbase::data(const QModelIndex &index, int role) const
+QVariant PlayersModel::data(const QModelIndex &index, int role) const
 {
     return QVariant();
 }
 
-QList<QObject *> Playerbase::getPlayers() const
+QSet<PlayerRef> PlayersModel::getPlayers() const
 {
     return m_players;
 }
 
-int Playerbase::getPlayersCount() const
+int PlayersModel::getPlayersCount() const
 {
     return m_players.size();
-}
-
-QObject* Playerbase::getPlayer(int index)
-{
-    return m_players[index];
 }

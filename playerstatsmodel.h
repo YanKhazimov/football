@@ -3,13 +3,24 @@
 
 #include <QStandardItemModel>
 
-class PlayerStatsModel: QStandardItemModel
+class PlayerStatsModel: public QStandardItemModel
 {
+    Q_OBJECT
+    Q_PROPERTY(int length READ rowCount CONSTANT)
+
 public:
     PlayerStatsModel();
+    PlayerStatsModel(const PlayerStatsModel& model);
+    using QStandardItemModel::QStandardItemModel;
 
     using Stat = QPair<QString, QString>;
 
+    enum Roles {
+        StatCategory = Qt::UserRole + 1,
+        StatValue
+    };
+
+    virtual QHash<int, QByteArray> roleNames() const override;
 private:
     QVector<Stat> m_stats;
 };

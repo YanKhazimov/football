@@ -3,8 +3,18 @@
 
 #include <QAbstractListModel>
 #include <QUrl>
-
+#include <QMap>
 #include "playersmodel.h"
+
+class Playerbase
+{
+    QMap<PlayerRef, Player*> m_base;
+
+public:
+    Playerbase();
+    ~Playerbase();
+    QObject *getPlayer(PlayerRef id) const;
+};
 
 class PlayerbaseQuery : public QObject
 {
@@ -19,7 +29,8 @@ class PlayerbaseQuery : public QObject
     using Query = int;
 
 public:
-    PlayerbaseQuery(const Playerbase& base, Query rule, QString title = "1", QString description = "11");
+    PlayerbaseQuery(const PlayersModel& model, Playerbase& base,
+                    Query rule, QString title = "1", QString description = "11");
     ~PlayerbaseQuery();
 
     Q_INVOKABLE QList<QObject*> getQueryResult();
