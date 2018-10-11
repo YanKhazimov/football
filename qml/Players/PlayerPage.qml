@@ -19,6 +19,8 @@ Rectangle {
         player = newPlayer
     }
 
+    signal selectedStatChanged(string statCategory)
+
     ColumnLayout {
         id: column
         spacing: 5
@@ -49,6 +51,14 @@ Rectangle {
 
             Layout.fillWidth: true
             Layout.maximumHeight: Sizes.fontPixelSize * model.length
+
+            Connections {
+                target: statsTable.selection
+                onSelectionChanged: {
+                    var category = statsTable.model.getStatCategory(statsTable.currentRow)
+                    root.selectedStatChanged(category)
+                }
+            }
         }
     }
 }

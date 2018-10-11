@@ -13,18 +13,19 @@ TableView {
     TableViewColumn {
         id: headColumn
         delegate: Image {
+            id: img
             source: "qrc:/img/menuarrow.png"
             visible: root.currentRow === model.index
             horizontalAlignment: Image.AlignRight
             fillMode: Image.PreserveAspectFit
 
             ColorOverlay {
-                source: parent
-                anchors.fill: parent
+                source: img
+                anchors.fill: img
                 color: theme.secondaryFillColor
             }
         }
-        width: root.width / 8
+        width: root.width / 10
     }
 
     TableViewColumn {
@@ -33,6 +34,7 @@ TableView {
             horizontalAlignment: Text.AlignRight
             color: theme.textColor
             font.bold: root.currentRow === model.index
+            font.pixelSize: 16
         }
         width: (root.width - headColumn.width) * 1/2
     }
@@ -43,6 +45,7 @@ TableView {
             horizontalAlignment: Text.AlignHCenter
             color: theme.textColor
             font.bold: root.currentRow === model.index
+            font.pixelSize: 16
         }
         width: (root.width - headColumn.width) * 1/2
     }
@@ -50,6 +53,7 @@ TableView {
     style: TableViewStyle {
         rowDelegate: Rectangle {
             color: root.theme.primaryFillColor
+            height: Sizes.fontPixelSize
         }
 
         backgroundColor: root.theme.primaryFillColor

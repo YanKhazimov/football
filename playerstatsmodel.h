@@ -11,7 +11,7 @@ class PlayerStatsModel: public QStandardItemModel
 public:
     PlayerStatsModel();
     PlayerStatsModel(const PlayerStatsModel& model);
-    using QStandardItemModel::QStandardItemModel;
+    //using QStandardItemModel::QStandardItemModel;
 
     using Stat = QPair<QString, QString>;
 
@@ -19,6 +19,7 @@ public:
         StatCategory = Qt::UserRole + 1,
         StatValue
     };
+    Q_INVOKABLE QString getStatCategory(int idx);
 
     virtual QHash<int, QByteArray> roleNames() const override;
 private:

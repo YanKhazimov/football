@@ -28,6 +28,11 @@ PlayerStatsModel::PlayerStatsModel(const PlayerStatsModel &model)
     }
 }
 
+QString PlayerStatsModel::getStatCategory(int idx)
+{
+    return (idx >= rowCount()) ? "" : index(idx, 0).data(StatCategory).toString();
+}
+
 QHash<int, QByteArray> PlayerStatsModel::roleNames() const
 {
     QHash<int, QByteArray> result;

@@ -15,6 +15,10 @@ TableView {
         selection.select(0)
     }
 
+    function replaceColumn(statCategory) {
+        console.log(statCategory)
+    }
+
     itemDelegate: Item {
         Text {
             anchors.verticalCenter: parent.verticalCenter

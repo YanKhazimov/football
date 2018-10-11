@@ -24,6 +24,8 @@ bool GamesModel::init()
 {
     m_games << new Game(QDate::currentDate(), {"p1", "p2"}, {"p3", "p4"})
             << new Game(QDate(2018, 12, 31), {"p1", "p2"}, {"p4", "p5"});
+
+    return true;
 }
 
 QList<Game*> GamesModel::getGames() const

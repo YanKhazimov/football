@@ -15,4 +15,3 @@ QtObject {
         readonly property int iconHeight: 64
     }
 }
-

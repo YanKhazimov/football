@@ -142,13 +142,18 @@ Rectangle {
                                 playerPage.reset(player)
                             })
                         }
+
+                        Connections {
+                            target: playerPage
+                            onSelectedStatChanged: ratingsTable.replaceColumn(statCategory)
+                        }
                     }
                 }
                 Tab {
-                    Rectangle { color: "Blue" }
+                    Rectangle { color: "blue" }
                 }
                 Tab {
-                    Rectangle { color: "Blue" }
+                    Rectangle { color: "white" }
                 }
             }
         }
