@@ -36,10 +36,10 @@ Playerbase::Playerbase()
     m_base = {
         {"p1", new Player("p", QUrl("qrc:/img/playerImages/13128.png"))},
         {"p2", new Player("p2")},
-        {"p3", new Player("p3")},//, QUrl("qrc:/img/playerImages/238430.png"))
-        {"p4", new Player("p4")},//, QUrl("qrc:/img/playerImages/242510.png"))
+        {"p3", new Player("p3", QUrl("qrc:/img/playerImages/238430.png"))},
+        {"p4", new Player("p4", QUrl("qrc:/img/playerImages/242510.png"))},
         {"p5", new Player("p5", QUrl("qrc:/img/playerImages/5984.png"))},
-        {"p6", new Player("p6")},//, QUrl("qrc:/img/playerImages/242510.png"))
+        {"p6", new Player("p6", QUrl("qrc:/img/playerImages/242510.png"))}
     };
 }
 

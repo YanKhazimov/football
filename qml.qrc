@@ -33,5 +33,6 @@
         <file>img/bg4.png</file>
         <file>qml/TiledBackground.qml</file>
         <file>qml/Players/StatsTable.qml</file>
+        <file>img/menuarrow.png</file>
     </qresource>
 </RCC>

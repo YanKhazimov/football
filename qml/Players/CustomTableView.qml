@@ -11,6 +11,10 @@ TableView {
     sortIndicatorVisible: true
     sortIndicatorColumn: 1
 
+    Component.onCompleted: {
+        selection.select(0)
+    }
+
     itemDelegate: Item {
         Text {
             anchors.verticalCenter: parent.verticalCenter
@@ -40,7 +44,7 @@ TableView {
                 id: textItem
                 anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter//styleData.textAlignment
+                horizontalAlignment: Text.AlignHCenter
                 text: styleData.value
                 font.family: Themes.fontFamily
                 font.pixelSize: 16

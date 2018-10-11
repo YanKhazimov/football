@@ -3,9 +3,6 @@ import QtGraphicalEffects 1.0
 import "qrc:/qml/visualStyles"
 import "FeaturedStats"
 
-//https://www.futhead.com/icons/?page=1
-//https://www.iconfinder.com/icons/2203522/arrow_botton_next_right_icon
-
 Rectangle {
     id: root
     property string title: ""

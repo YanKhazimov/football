@@ -28,18 +28,19 @@ int main(int argc, char *argv[])
     gm.init();
 
     PlayersModel pm(gm);
-    QList<QObject*> fm;
-    fm << new PlayerbaseQuery (pm, playerbase, 2, "ON FIRE", "Longest win streak");
-    fm << new PlayerbaseQuery (pm, playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
-    fm << new PlayerbaseQuery (pm, playerbase, 1, "TOP GRINDER", "Most progress");
-    fm << new PlayerbaseQuery (pm, playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
 
-    PlayerStatsModel statsModel;
+    QList<QObject*> featuredStatsModel;
+    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "ON FIRE", "Longest win streak");
+    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
+    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 1, "TOP GRINDER", "Most progress");
+    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
+
+    PlayerStatsModel playerStatsModel;
 
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();
-    ctxt->setContextProperty("fm", QVariant::fromValue(fm));
-    ctxt->setContextProperty("statsExample", &statsModel);
+    ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(featuredStatsModel));
+    ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

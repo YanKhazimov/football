@@ -6,6 +6,9 @@ import QtQuick.Layouts 1.3
 import "qrc:/qml/visualStyles"
 import "."
 
+//https://www.futhead.com/icons/?page=1
+//https://www.iconfinder.com/icons/2203522/arrow_botton_next_right_icon
+
 QQC2.ApplicationWindow {
     id: window
 
@@ -29,7 +32,7 @@ QQC2.ApplicationWindow {
 
         title: "FEATURED STATS"
         theme: Themes.theme1
-        model: fm
+        model: featuredStatsModel
     }
 
     CustomTabView {

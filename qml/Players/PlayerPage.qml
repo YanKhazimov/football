@@ -15,6 +15,10 @@ Rectangle {
         sourceImg: "qrc:/img/ball2.png"
     }
 
+    function reset(newPlayer) {
+        player = newPlayer
+    }
+
     ColumnLayout {
         id: column
         spacing: 5
@@ -38,50 +42,13 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter
         }
 
-//        Repeater {
-//            id: textStats
-//            model: statsExample
-//            delegate: Text {
-//                text: player ? modelData : ""
-//                font.family: Themes.fontFamily
-//                font.pixelSize: Sizes.fontPixelSize
-//                color: root.theme.textColor
-//                Layout.alignment: Qt.AlignHCenter
-//            }
-//        }
-
         StatsTable {
             id: statsTable
-            model: player ? statsExample : 0
+            model: player ? playerStatsModel : 0
+            theme: root.theme
 
             Layout.fillWidth: true
             Layout.maximumHeight: Sizes.fontPixelSize * model.length
-
-            TableViewColumn {
-                delegate: Text {
-                    text: model.StatCategory + ":"
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                role: "StatCategory"
-                width: statsTable.width * 2/5
-            }
-
-            TableViewColumn {
-                delegate: Text {
-                    text: model.StatValue
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                role: "StatValue"
-                width: statsTable.width * 2/5
-            }
-
-            TableViewColumn {
-                delegate: Text {
-                    text: "sort"
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                width: statsTable.width / 5
-            }
         }
     }
 }

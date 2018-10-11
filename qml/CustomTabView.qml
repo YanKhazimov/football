@@ -39,7 +39,7 @@ Rectangle {
                     }
                 }
 
-                model: ["Players", "Calendar", "New Game"]
+                model: ["Players", "Calendar", "Next Game"]
                 ContentTab {
                     name: modelData
                     Layout.topMargin: index === 0 ? height : 0
@@ -63,17 +63,17 @@ Rectangle {
             id: libraryModel
             ListElement {
                 rank: 1
-                title: "A Masterpiece"
+                title: "p3"
                 author: "500"
             }
             ListElement {
                 rank: 2
-                title: "Brilliance"
+                title: "p1"
                 author: "400"
             }
             ListElement {
                 rank: 3
-                title: "Outstanding"
+                title: "p2"
                 author: "300"
             }
         }
@@ -100,21 +100,12 @@ Rectangle {
 
                         CustomTableView {
                             id: ratingsTable
-
-                            function updatePlayer(rowIndex) {
-                                playerPage.player = fm[1].getQueryResult()[rowIndex].player
-                            }
-
-                            Connections {
-                                target: ratingsTable.selection
-                                onSelectionChanged: ratingsTable.selection.forEach(ratingsTable.updatePlayer)
-                            }
+                            model: libraryModel
+                            theme: root.theme
 
                             Layout.preferredWidth: parent.width / 2
                             Layout.minimumWidth: parent.width / 2
                             Layout.fillHeight: true
-                            model: libraryModel
-                            theme: root.theme
 
                             TableViewColumn {
                                 role: "rank"
@@ -125,7 +116,7 @@ Rectangle {
                             }
                             TableViewColumn {
                                 role: "title"
-                                title: "Title"
+                                title: "Player"
                                 width: ratingsTable.width * 6/10
                                 resizable: false
                             }
@@ -142,6 +133,14 @@ Rectangle {
                             Layout.preferredWidth: parent.width - ratingsTable.width
                             Layout.fillHeight: true
                             theme: root.theme
+                        }
+
+                        Connections {
+                            target: ratingsTable.selection
+                            onSelectionChanged: ratingsTable.selection.forEach( function(rowIndex) {
+                                var player = featuredStatsModel[1].getQueryResult()[rowIndex].player
+                                playerPage.reset(player)
+                            })
                         }
                     }
                 }
