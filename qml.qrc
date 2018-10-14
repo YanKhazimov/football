@@ -34,5 +34,10 @@
         <file>qml/TiledBackground.qml</file>
         <file>qml/Players/StatsTable.qml</file>
         <file>img/menuarrow.png</file>
+        <file>qml/Players/Chart.qml</file>
+        <file>img/ball3d.png</file>
+        <file>img/ball3d.ico</file>
+        <file>img/balls.ico</file>
+        <file>img/bench.ico</file>
     </qresource>
 </RCC>

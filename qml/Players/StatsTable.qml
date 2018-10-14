@@ -54,11 +54,11 @@ TableView {
 
     style: TableViewStyle {
         rowDelegate: Rectangle {
-            color: root.theme.primaryFillColor
+            color: "transparent"
             height: Sizes.fontPixelSize
         }
 
-        backgroundColor: root.theme.primaryFillColor
+        backgroundColor: "transparent"
     }
 
     frameVisible: false

@@ -34,7 +34,7 @@ Rectangle {
                 anchors.centerIn: parent
                 Text {
                     id: statTitle
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    Layout.alignment: Qt.AlignHCenter
                     text: contentRoot.title
                     color: theme.textColor
                     font.family: Themes.fontFamily
@@ -43,7 +43,7 @@ Rectangle {
                 }
                 Text {
                     id: statDescr
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    Layout.alignment: Qt.AlignHCenter
                     text: contentRoot.descr
                     font.family: Themes.fontFamily
                     font.pointSize: 14

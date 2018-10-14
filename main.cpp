@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
+    QGuiApplication::setWindowIcon(QIcon(":/img/ball3d.ico"));
 
     qmlRegisterUncreatableType<Player>("com.abc.abclib", 1, 0, "Player", "");
 
