@@ -4,7 +4,7 @@
 PlayerbaseQuery::PlayerbaseQuery(const PlayersModel& model, Playerbase& base, Query rule, QString title, QString description)
     : m_name(title), m_description(description)
 {
-    QSet<PlayerRef> players = model.getPlayers();
+    QList<PlayerRef> players = model.getPlayers();
     int i = 0;
     for (auto p = players.constBegin(); p != players.constEnd() && i < rule; ++i, ++p)
         m_queryResultItems.push_back(new QueryResultItem(QString::number(i), base.getPlayer(*p)));

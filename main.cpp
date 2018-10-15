@@ -8,10 +8,12 @@
 #include "playersmodel.h"
 #include "query.h"
 #include "playerstatsmodel.h"
+#include "globalstatsmodel.h"
 
 Q_DECLARE_METATYPE(Player*)
 Q_DECLARE_METATYPE(PlayersModel)
 Q_DECLARE_METATYPE(PlayerStatsModel)
+Q_DECLARE_METATYPE(GlobalStatsModel)
 Q_DECLARE_METATYPE(PlayerbaseQuery*)
 
 int main(int argc, char *argv[])
@@ -20,7 +22,6 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     qmlRegisterUncreatableType<Player>("com.abc.abclib", 1, 0, "Player", "");
-    qmlRegisterUncreatableType<PlayerbaseQuery>("com.abc.abclib", 1, 0, "Fact", "");
 
     Playerbase playerbase;
 
@@ -32,15 +33,16 @@ int main(int argc, char *argv[])
     QList<QObject*> featuredStatsModel;
     featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "ON FIRE", "Longest win streak");
     featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
-    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 1, "TOP GRINDER", "Most progress");
     featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
 
     PlayerStatsModel playerStatsModel;
+    GlobalStatsModel globalStatsModel(pm, &playerbase);
 
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();
     ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(featuredStatsModel));
     ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
+    ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

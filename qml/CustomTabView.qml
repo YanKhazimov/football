@@ -105,7 +105,7 @@ Rectangle {
 
                         CustomTableView {
                             id: ratingsTable
-                            model: libraryModel
+                            model: globalStatsModel
                             theme: root.theme
 
                             Layout.preferredWidth: parent.width / 2
@@ -123,7 +123,7 @@ Rectangle {
                         Connections {
                             target: ratingsTable.selection
                             onSelectionChanged: ratingsTable.selection.forEach( function(rowIndex) {
-                                var player = featuredStatsModel[1].getQueryResult()[rowIndex].player
+                                var player = globalStatsModel.getPlayer("a")//featuredStatsModel[1].getQueryResult()[rowIndex].player
                                 playerPage.reset(player)
                             })
                         }

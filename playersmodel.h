@@ -2,7 +2,7 @@
 #define PLAYERSMODEL_H
 
 #include <QAbstractListModel>
-#include <QSet>
+#include <QList>
 #include "player.h"
 #include "gamesmodel.h"
 
@@ -17,11 +17,11 @@ public:
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex& index, int role) const override;
 
-    QSet<PlayerRef> getPlayers() const;
+    QList<PlayerRef> getPlayers() const;
     Q_INVOKABLE int getPlayersCount() const;
 
 private:
-    QSet<PlayerRef> m_players;
+    QList<PlayerRef> m_players;
 };
 
 #endif // PLAYERSMODEL_H

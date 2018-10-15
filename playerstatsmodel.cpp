@@ -10,8 +10,13 @@ PlayerStatsModel::PlayerStatsModel()
     this->appendRow(item);
 
     item = new QStandardItem;
-    item->setData(QString("Wins_Losses"), StatCategory);
+    item->setData(QString("WinsLosses"), StatCategory);
     item->setData(QString("5-3 (62.5%)"), StatValue);
+    this->appendRow(item);
+
+    item = new QStandardItem;
+    item->setData(QString("Progress"), StatCategory);
+    item->setData(QString("-20"), StatValue);
     this->appendRow(item);
 
     item = new QStandardItem;

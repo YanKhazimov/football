@@ -13,7 +13,7 @@ PlayersModel::PlayersModel(const GamesModel &gamesModel)
 {
     for (auto game: gamesModel.getGames())
         for (auto player: game->getAllPlayers())
-            m_players.insert(player);
+            m_players.append(player);
 }
 
 int PlayersModel::rowCount(const QModelIndex &parent) const
@@ -27,7 +27,7 @@ QVariant PlayersModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QSet<PlayerRef> PlayersModel::getPlayers() const
+QList<PlayerRef> PlayersModel::getPlayers() const
 {
     return m_players;
 }

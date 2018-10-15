@@ -35,6 +35,7 @@ TableView {
             color: theme.textColor
             font.bold: root.currentRow === model.index
             font.pixelSize: 14
+            font.family: Themes.fontFamily
         }
         width: (root.width - headColumn.width) * 1/2
     }
@@ -46,6 +47,7 @@ TableView {
             color: theme.textColor
             font.bold: root.currentRow === model.index
             font.pixelSize: 14
+            font.family: Themes.fontFamily
         }
         width: (root.width - headColumn.width) * 1/2
     }

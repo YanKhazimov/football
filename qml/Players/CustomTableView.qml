@@ -8,12 +8,11 @@ TableView {
     property QtObject theme: null
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-    sortIndicatorVisible: true
-    sortIndicatorColumn: 2
-    sortIndicatorOrder: Qt.DescendingOrder
-
     Component.onCompleted: {
         selection.select(0)
+
+        var column = getColumn(2)
+        column.visible = true
     }
 
     function replaceColumn(statCategory) {
@@ -21,45 +20,81 @@ TableView {
         for (var columnIdx = 2; columnIdx < columnCount; ++columnIdx)
         {
             var column = getColumn(columnIdx)
-
             column.visible = (column.role === statCategory)
-//            console.log(column.role)
-//            if (column.role === statCategory)
-//            {
-//                console.log("=")
-//                removedColumn = column
-//                break
-//            }
         }
     }
 
     TableViewColumn {
-        role: "rank"
+        delegate: Text {
+            text: model.index + 1
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+        }
+        //role: "rank"
         title: "#"
         width: root.width / 10
         resizable: false
         movable: false
     }
     TableViewColumn {
-        role: "Name"
+        delegate: Text {
+            text: model.PlayerName
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+        }
+        //role: "Name"
         title: "Player"
         width: root.width * 6/10
         resizable: false
+        movable: false
     }
     TableViewColumn {
+        delegate: Text {
+            text: model.Rating
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+        }
         role: "Rating"
         title: "Rating"
         width: root.width * 3/10
         resizable: false
     }
     TableViewColumn {
-        role: "Wins_Losses"
+        delegate: Text {
+            text: model.WinsLosses
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+        }
+        role: "WinsLosses"
         title: "W/L"
         width: root.width * 3/10
         resizable: false
         visible: false
     }
     TableViewColumn {
+        delegate: Text {
+            text: model.Progress
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+        }
+        role: "Progress"
+        title: "Progress"
+        width: root.width * 3/10
+        resizable: false
+        visible: false
+    }
+    TableViewColumn {
+        delegate: Text {
+            text: model.Reliability
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+        }
         role: "Reliability"
         title: "Reliability"
         width: root.width * 3/10
