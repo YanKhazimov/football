@@ -63,24 +63,29 @@ Rectangle {
             id: libraryModel
             ListElement {
                 rank: 1
-                title: "p3"
-                author: "500"
+                Name: "p3"
+                Rating: "500"
+                Wins_Losses: "wl3"
+                Reliability: "r3"
             }
             ListElement {
                 rank: 2
-                title: "p1"
-                author: "400"
+                Name: "p1"
+                Rating: "400"
+                Wins_Losses: "wl1"
+                Reliability: "r1"
             }
             ListElement {
                 rank: 3
-                title: "p2"
-                author: "300"
+                Name: "p2"
+                Rating: "300"
+                Wins_Losses: "wl2"
+                Reliability: "r2"
             }
         }
 
         Rectangle {
             color: root.theme.secondaryFillColor
-//            Layout.minimumWidth: root.width * 3/4
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.topMargin: Sizes.featuredStats.smallMargin
@@ -106,26 +111,6 @@ Rectangle {
                             Layout.preferredWidth: parent.width / 2
                             Layout.minimumWidth: parent.width / 2
                             Layout.fillHeight: true
-
-                            TableViewColumn {
-                                role: "rank"
-                                title: "#"
-                                width: ratingsTable.width / 10
-                                resizable: false
-                                movable: false
-                            }
-                            TableViewColumn {
-                                role: "title"
-                                title: "Player"
-                                width: ratingsTable.width * 6/10
-                                resizable: false
-                            }
-                            TableViewColumn {
-                                role: "author"
-                                title: "Rating"
-                                width: ratingsTable.width * 3/10
-                                resizable: false
-                            }
                         }
 
                         PlayerPage {

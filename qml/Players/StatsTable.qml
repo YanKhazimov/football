@@ -34,7 +34,7 @@ TableView {
             horizontalAlignment: Text.AlignRight
             color: theme.textColor
             font.bold: root.currentRow === model.index
-            font.pixelSize: 16
+            font.pixelSize: 14
         }
         width: (root.width - headColumn.width) * 1/2
     }
@@ -45,7 +45,7 @@ TableView {
             horizontalAlignment: Text.AlignHCenter
             color: theme.textColor
             font.bold: root.currentRow === model.index
-            font.pixelSize: 16
+            font.pixelSize: 14
         }
         width: (root.width - headColumn.width) * 1/2
     }
