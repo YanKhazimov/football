@@ -134,7 +134,7 @@ Rectangle {
                 title: ListView.isCurrentItem ? model.modelData.name : ""
                 descr: ListView.isCurrentItem ? model.modelData.description : ""
                 theme: root.theme
-                imgModel: ListView.isCurrentItem ? model.modelData.getQueryResult() : null
+                statGroupsModel: ListView.isCurrentItem ? model.modelData.queryResult : null
                 width: listView.width
                 height: listView.height
             }

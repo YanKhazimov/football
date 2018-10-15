@@ -7,28 +7,53 @@ PlayerbaseQuery::PlayerbaseQuery(const PlayersModel& model, Playerbase& base, Qu
     QList<PlayerRef> players = model.getPlayers();
     int i = 0;
     for (auto p = players.constBegin(); p != players.constEnd() && i < rule; ++i, ++p)
-        m_queryResultItems.push_back(new QueryResultItem(QString::number(i), base.getPlayer(*p)));
+        m_queryResultItems.push_back(new QueryResultItem("g" + QString::number(i),
+        {new PlayerStat(base.getPlayer(*p), QString::number(10 + i)),
+         new PlayerStat(base.getPlayer(*p), QString::number(20 + i))}));
 }
 
 PlayerbaseQuery::~PlayerbaseQuery()
 {
     for (auto q: m_queryResultItems)
+    {
+        for (auto ps: qobject_cast<QueryResultItem*>(q)->getGroup())
+        {
+            delete ps;
+        }
         delete q;
+    }
 }
 
-QList<QObject*> PlayerbaseQuery::getQueryResult()
-{
-    return m_queryResultItems;
-}
+//QObjectList PlayerbaseQuery::getQueryResult()
+//{
+//    return m_queryResultItems;
+//}
 
 QueryResultItem::QueryResultItem()
-    : m_player(nullptr)
 {
 }
 
-QueryResultItem::QueryResultItem(QString statValue, QObject *player)
-    : m_player(player), m_statValue(statValue)
+QueryResultItem::QueryResultItem(QString groupStatValue, QObjectList playersGroup)
+    : m_playersGroup(playersGroup), m_groupStatValue(groupStatValue)
 {
+}
+
+QList<QObject *> QueryResultItem::getGroup()
+{
+    return m_playersGroup;
+}
+
+QueryResultItem &QueryResultItem::operator=(const QueryResultItem &other)
+{
+    m_groupStatValue = other.m_groupStatValue;
+
+    for (auto ps: m_playersGroup)
+        delete ps;
+
+    for (auto ps: other.m_playersGroup)
+        m_playersGroup << new PlayerStat(*qobject_cast<PlayerStat*>(ps));
+
+    return *this;
 }
 
 Playerbase::Playerbase()
@@ -49,7 +74,17 @@ Playerbase::~Playerbase()
         delete m_base.value(p);
 }
 
-QObject *Playerbase::getPlayer(PlayerRef id) const
+Player *Playerbase::getPlayer(PlayerRef id) const
 {
     return m_base.value(id);
+}
+
+PlayerStat::PlayerStat(Player *player, QString statValue)
+    : m_player(player), m_statValue(statValue)
+{
+}
+
+PlayerStat::PlayerStat(const PlayerStat &playerStat)
+    : m_player(playerStat.m_player), m_statValue(playerStat.m_statValue)
+{
 }

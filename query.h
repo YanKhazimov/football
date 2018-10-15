@@ -13,7 +13,38 @@ class Playerbase
 public:
     Playerbase();
     ~Playerbase();
-    QObject *getPlayer(PlayerRef id) const;
+    Player *getPlayer(PlayerRef id) const;
+};
+
+class PlayerStat : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QObject* player MEMBER m_player CONSTANT)
+    Q_PROPERTY(QString statValue MEMBER m_statValue CONSTANT)
+
+    Player* m_player;
+    QString m_statValue;
+
+public:
+    PlayerStat(Player* player, QString statValue);
+    PlayerStat(const PlayerStat& playerStat);
+};
+
+class QueryResultItem : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QList<QObject*> group READ getGroup CONSTANT)
+    Q_PROPERTY(QString groupStatValue MEMBER m_groupStatValue CONSTANT)
+
+public:
+    QueryResultItem ();
+    QueryResultItem (QString groupStatValue, QObjectList playersGroup);
+    QList<QObject*> getGroup();
+    QueryResultItem& operator= (const QueryResultItem& other);
+
+private:
+    QList<QObject*> m_playersGroup;
+    QString m_groupStatValue;
 };
 
 class PlayerbaseQuery : public QObject
@@ -21,10 +52,11 @@ class PlayerbaseQuery : public QObject
     Q_OBJECT
     Q_PROPERTY(QString name MEMBER m_name CONSTANT)
     Q_PROPERTY(QString description MEMBER m_description CONSTANT)
+    Q_PROPERTY(QList<QObject*> queryResult MEMBER m_queryResultItems CONSTANT)
 
     QString m_name;
     QString m_description;
-    QList<QObject*> m_queryResultItems;
+    QObjectList m_queryResultItems;
 
     using Query = int;
 
@@ -33,21 +65,7 @@ public:
                     Query rule, QString title = "1", QString description = "11");
     ~PlayerbaseQuery();
 
-    Q_INVOKABLE QList<QObject*> getQueryResult();
-};
-
-class QueryResultItem : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QString statValue MEMBER m_statValue CONSTANT)
-    Q_PROPERTY(QObject* player MEMBER m_player CONSTANT)
-public:
-    QueryResultItem ();
-    QueryResultItem (QString statValue, QObject* player);
-
-private:
-    QObject* m_player;
-    QString m_statValue;
+    //Q_INVOKABLE QObjectList getQueryResult();
 };
 
 #endif // QUERY_H

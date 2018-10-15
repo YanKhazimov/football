@@ -31,7 +31,7 @@ GlobalStatsModel::GlobalStatsModel(const GlobalStatsModel &model)
 GlobalStatsModel::GlobalStatsModel(const PlayersModel &model, Playerbase* base)
     : m_base(base)
 {
-    float random = 99.9;
+    float random = 99.9f;
     for (auto p: model.getPlayers())
     {
         QStandardItem* item;
@@ -43,7 +43,7 @@ GlobalStatsModel::GlobalStatsModel(const PlayersModel &model, Playerbase* base)
         item->setData(QString("-20"), Progress);
         item->setData(QString("50%"), Reliability);
         this->appendRow(item);
-        random /= 1.1;
+        random /= 1.1f;
     }
 }
 

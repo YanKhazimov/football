@@ -6,7 +6,7 @@ Rectangle {
     id: contentRoot
     property string title: "null"
     property string descr: "null"
-    property var imgModel: null
+    property var statGroupsModel: null
     property QtObject theme: null
 
     color: theme.primaryFillColor
@@ -60,11 +60,11 @@ Rectangle {
                 id: flow
                 anchors.centerIn: flowRect
                 Repeater {
-                    model: contentRoot.imgModel
-                    delegate: Image {
+                    model: contentRoot.statGroupsModel
+                    delegate: Image { // should be image group
                         source: model.modelData.player.photo
                         width: Math.min(Sizes.featuredStats.iconWidth,
-                                        flowRect.width / contentRoot.imgModel.length)
+                                        flowRect.width / contentRoot.statGroupsModel.length)
                         height: width
 
                         MouseArea {

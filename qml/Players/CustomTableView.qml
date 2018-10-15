@@ -125,8 +125,6 @@ TableView {
             height: textItem.implicitHeight * 1.2
             width: textItem.implicitWidth
             color: root.theme.primaryFillColor
-            border.width: 1
-            border.color: root.theme.textColor
             Text {
                 id: textItem
                 anchors.fill: parent
@@ -138,6 +136,12 @@ TableView {
                 font.bold: true
                 color: root.theme.textColor
                 renderType: Text.NativeRendering
+            }
+            Rectangle {
+                height: 1
+                width: parent.width
+                color: root.theme.textColor
+                anchors.bottom: parent.bottom
             }
         }
     }
