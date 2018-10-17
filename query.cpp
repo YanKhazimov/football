@@ -7,9 +7,11 @@ PlayerbaseQuery::PlayerbaseQuery(const PlayersModel& model, Playerbase& base, Qu
     QList<PlayerRef> players = model.getPlayers();
     int i = 0;
     for (auto p = players.constBegin(); p != players.constEnd() && i < rule; ++i, ++p)
+    {
         m_queryResultItems.push_back(new QueryResultItem("g" + QString::number(i),
         {new PlayerStat(base.getPlayer(*p), QString::number(10 + i)),
          new PlayerStat(base.getPlayer(*p), QString::number(20 + i))}));
+    }
 }
 
 PlayerbaseQuery::~PlayerbaseQuery()

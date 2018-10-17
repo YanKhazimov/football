@@ -51,90 +51,11 @@ Rectangle {
                 }
             }
         }
-        Item {
-            id: flowRect
+        GroupedImageRow {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            Flow {
-                id: flow
-                anchors.centerIn: flowRect
-                Repeater {
-                    model: contentRoot.statGroupsModel
-                    delegate: Image { // should be image group
-                        source: model.modelData.player.photo
-                        width: Math.min(Sizes.featuredStats.iconWidth,
-                                        flowRect.width / contentRoot.statGroupsModel.length)
-                        height: width
-
-                        MouseArea {
-                            id: photoMouseArea
-                            anchors.fill: parent
-                            hoverEnabled: true
-                        }
-                        Text {
-                            id: playerTooltip
-                            anchors.bottom: parent.top
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            color: theme.textColor
-                            text: model.modelData.player.name
-                            visible: photoMouseArea.containsMouse
-                            font.family: Themes.fontFamily
-                            font.pixelSize: Sizes.fontPixelSize
-                        }
-                        Text {
-                            id: statValue
-                            anchors.top: parent.bottom
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            color: theme.textColor
-                            text: model.modelData.statValue
-                            font.family: Themes.fontFamily
-                            font.pixelSize: Sizes.fontPixelSize
-                            font.bold: true
-                        }
-                    }
-                }
-            }
+            theme: contentRoot.theme
         }
     }
-
-    Grid
-    {
-        id: debugGrid
-        visible: false//true
-        anchors.fill: parent
-        z: 1
-        readonly property int size: 20
-        columns: Math.ceil(width / debugGrid.size)
-        rows: Math.ceil(height / debugGrid.size)
-        Repeater
-        {
-            model: parent.visible ? parent.rows : 0
-            Repeater
-            {
-                id: columnRepeater
-                property bool evenRowIndex: index % 2 === 0
-                model: debugGrid.visible ? debugGrid.columns : 0
-                Rectangle
-                {
-                    color: "red"
-                    width: debugGrid.size
-                    height: debugGrid.size
-
-                    property bool evenColumnIndex: index % 2 === 0
-
-                    opacity:
-                    {
-                        if (columnRepeater.evenRowIndex)
-                        {
-                            return evenColumnIndex ? 0.4 : 0.2
-                        }
-                        return evenColumnIndex ? 0.2 : 0
-                    }
-                }
-            }
-        }
-    }
-
-
 }

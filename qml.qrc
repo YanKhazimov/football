@@ -39,5 +39,6 @@
         <file>img/ball3d.ico</file>
         <file>img/balls.ico</file>
         <file>img/bench.ico</file>
+        <file>qml/FeaturedStats/GroupedImageRow.qml</file>
     </qresource>
 </RCC>

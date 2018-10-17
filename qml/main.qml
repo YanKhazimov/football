@@ -43,4 +43,42 @@ QQC2.ApplicationWindow {
 
         theme: Themes.theme1
     }
+
+    Grid
+    {
+        id: debugGrid
+        visible: false//true
+        anchors.fill: parent
+        z: 1
+        readonly property int size: 20
+        columns: Math.ceil(width / debugGrid.size)
+        rows: Math.ceil(height / debugGrid.size)
+        Repeater
+        {
+            model: parent.visible ? parent.rows : 0
+            Repeater
+            {
+                id: columnRepeater
+                property bool evenRowIndex: index % 2 === 0
+                model: debugGrid.visible ? debugGrid.columns : 0
+                Rectangle
+                {
+                    color: "red"
+                    width: debugGrid.size
+                    height: debugGrid.size
+
+                    property bool evenColumnIndex: index % 2 === 0
+
+                    opacity:
+                    {
+                        if (columnRepeater.evenRowIndex)
+                        {
+                            return evenColumnIndex ? 0.4 : 0.2
+                        }
+                        return evenColumnIndex ? 0.2 : 0
+                    }
+                }
+            }
+        }
+    }
 }
