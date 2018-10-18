@@ -1,65 +1,148 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-import QtGraphicalEffects 1.0
 import "qrc:/qml/visualStyles"
 
 TableView {
     id: root
     property QtObject theme: null
-    headerVisible: false
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-    TableViewColumn {
-        id: headColumn
-        delegate: Image {
-            id: img
-            source: "qrc:/img/menuarrow.png"
-            visible: root.currentRow === model.index
-            horizontalAlignment: Image.AlignRight
-            fillMode: Image.PreserveAspectFit
+    Component.onCompleted: {
+        selection.select(0)
 
-            ColorOverlay {
-                source: img
-                anchors.fill: img
-                color: theme.secondaryFillColor
-            }
+        var column = getColumn(2)
+        column.visible = true
+    }
+
+    function replaceColumn(statCategory) {
+        var removedColumn
+        for (var columnIdx = 2; columnIdx < columnCount; ++columnIdx)
+        {
+            var column = getColumn(columnIdx)
+            column.visible = (column.role === statCategory)
         }
-        width: root.width / 10
     }
 
     TableViewColumn {
         delegate: Text {
-            text: model.StatCategory + ":"
-            horizontalAlignment: Text.AlignRight
-            color: theme.textColor
-            font.bold: root.currentRow === model.index
-            font.pixelSize: 14
-            font.family: Themes.fontFamily
-        }
-        width: (root.width - headColumn.width) * 1/2
-    }
-
-    TableViewColumn {
-        delegate: Text {
-            text: model.StatValue
+            text: model.index + 1
             horizontalAlignment: Text.AlignHCenter
-            color: theme.textColor
-            font.bold: root.currentRow === model.index
-            font.pixelSize: 14
             font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
-        width: (root.width - headColumn.width) * 1/2
+        //role: "rank"
+        title: "#"
+        width: root.width / 10
+        resizable: false
+        movable: false
+    }
+    TableViewColumn {
+        delegate: Text {
+            text: model.PlayerName
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+        }
+        //role: "Name"
+        title: "Player"
+        width: root.width * 6/10
+        resizable: false
+        movable: false
+    }
+    TableViewColumn {
+        delegate: Text {
+            text: model.Rating
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+        }
+        role: "Rating"
+        title: "Rating"
+        width: root.width * 3/10
+        resizable: false
+    }
+    TableViewColumn {
+        delegate: Text {
+            text: model.WinsLosses
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+        }
+        role: "WinsLosses"
+        title: "W/L"
+        width: root.width * 3/10
+        resizable: false
+        visible: false
+    }
+    TableViewColumn {
+        delegate: Text {
+            text: model.Progress
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+        }
+        role: "Progress"
+        title: "Progress"
+        width: root.width * 3/10
+        resizable: false
+        visible: false
+    }
+    TableViewColumn {
+        delegate: Text {
+            text: model.Reliability
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+        }
+        role: "Reliability"
+        title: "Reliability"
+        width: root.width * 3/10
+        resizable: false
+        visible: false
+    }
+
+    itemDelegate: Item {
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+            text: styleData.value
+            font.family: Themes.fontFamily
+            font.pixelSize: 12
+        }
     }
 
     style: TableViewStyle {
         rowDelegate: Rectangle {
-            color: "transparent"
-            height: Sizes.fontPixelSize
+            color: styleData.selected ? root.theme.secondaryFillColor : "white"
+            radius: height
         }
 
-        backgroundColor: "transparent"
-    }
+        backgroundColor: root.theme.primaryFillColor
 
-    frameVisible: false
+        headerDelegate: Rectangle {
+            height: textItem.implicitHeight * 1.2
+            width: textItem.implicitWidth
+            color: root.theme.primaryFillColor
+            Text {
+                id: textItem
+                anchors.fill: parent
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                text: styleData.value
+                font.family: Themes.fontFamily
+                font.pixelSize: 16
+                font.bold: true
+                color: root.theme.textColor
+                renderType: Text.NativeRendering
+            }
+            Rectangle {
+                height: 1
+                width: parent.width
+                color: root.theme.textColor
+                anchors.bottom: parent.bottom
+            }
+        }
+    }
 }

@@ -13,7 +13,8 @@ PlayersModel::PlayersModel(const GamesModel &gamesModel)
 {
     for (auto game: gamesModel.getGames())
         for (auto player: game->getAllPlayers())
-            m_players.append(player);
+            if (!m_players.contains(player))
+                m_players.append(player);
 }
 
 int PlayersModel::rowCount(const QModelIndex &parent) const

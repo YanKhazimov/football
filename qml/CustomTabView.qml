@@ -3,6 +3,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import "Players"
+import "NewGame"
 import "qrc:/qml/visualStyles"
 import "."
 
@@ -13,6 +14,21 @@ Rectangle {
 
     TiledBackground {
         sourceImg: "qrc:/img/ball.png"
+    }
+
+    Image {
+        id: themeBall
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: Sizes.featuredStats.margin
+            left: parent.left
+            leftMargin: Sizes.featuredStats.margin
+        }
+
+        source: "qrc:/img/colorball.png"
+        width: Sizes.elementButtonSize.width
+        height: Sizes.elementButtonSize.height
+        antialiasing: true
     }
 
     RowLayout {
@@ -59,38 +75,12 @@ Rectangle {
             }
         }
 
-        ListModel {
-            id: libraryModel
-            ListElement {
-                rank: 1
-                Name: "p3"
-                Rating: "500"
-                Wins_Losses: "wl3"
-                Reliability: "r3"
-            }
-            ListElement {
-                rank: 2
-                Name: "p1"
-                Rating: "400"
-                Wins_Losses: "wl1"
-                Reliability: "r1"
-            }
-            ListElement {
-                rank: 3
-                Name: "p2"
-                Rating: "300"
-                Wins_Losses: "wl2"
-                Reliability: "r2"
-            }
-        }
-
         Rectangle {
             color: root.theme.secondaryFillColor
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.topMargin: Sizes.featuredStats.smallMargin
             Layout.bottomMargin: Sizes.featuredStats.smallMargin
-            //Layout.rightMargin: Sizes.featuredStats.smallMargin
 
             TabView {
                 id: content
@@ -103,7 +93,7 @@ Rectangle {
                         spacing: 0
                         anchors.fill: parent
 
-                        CustomTableView {
+                        StatsTable {
                             id: ratingsTable
                             model: globalStatsModel
                             theme: root.theme
@@ -138,7 +128,9 @@ Rectangle {
                     Rectangle { color: "blue" }
                 }
                 Tab {
-                    Rectangle { color: "white" }
+                    GameComposer {
+
+                    }
                 }
             }
         }

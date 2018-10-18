@@ -6,8 +6,23 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set (HEADERS query.h playersmodel.h playerstatsmodel.h gamesmodel.h player.h globalstatsmodel.h)
-set (SRC query.cpp playersmodel.cpp playerstatsmodel.cpp gamesmodel.cpp player.cpp globalstatsmodel.cpp)
+set (HEADERS
+    query.h
+    playersmodel.h
+    playerstatsmodel.h
+    gamesmodel.h
+    player.h
+    globalstatsmodel.h
+    statsmodel.h)
+
+set (SRC
+    query.cpp
+    playersmodel.cpp
+    playerstatsmodel.cpp
+    gamesmodel.cpp
+    player.cpp
+    globalstatsmodel.cpp
+    statsmodel.cpp)
 
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 

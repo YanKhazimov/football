@@ -12,7 +12,7 @@ Rectangle {
     property Player player: null
 
     TiledBackground {
-        sourceImg: "qrc:/img/ball2.png"
+        sourceImg: "qrc:/img/ball.png"
     }
 
     function reset(newPlayer) {
@@ -44,7 +44,7 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter
         }
 
-        StatsTable {
+        PlayerStatsTable {
             id: statsTable
             model: player ? playerStatsModel : 0
             theme: root.theme

@@ -30,7 +30,7 @@ public:
     ~GamesModel();
     bool init();
 
-    QList<Game *> getGames() const;
+    QList<Game*> getGames() const;
 
 private:
     QList<Game*> m_games;

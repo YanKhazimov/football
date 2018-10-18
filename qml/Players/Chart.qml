@@ -67,17 +67,21 @@ Rectangle {
 
       onPaint: {
           var ctx = canvas.getContext('2d');
+
+          ctx.save()
           ctx.lineWidth = 2;
           ctx.beginPath();
 
 //          // frame
-//          ctx.strokeStyle = root.theme.secondaryFillColor;
+//          ctx.strokeStyle = "red";
 //          ctx.moveTo(0, 0)
 //          ctx.lineTo(width, 0)
 //          ctx.lineTo(width, height)
 //          ctx.lineTo(0, height)
 //          ctx.lineTo(0, 0)
 //          ctx.stroke();
+//          ctx.closePath()
+//          ctx.restore()
 
           var maxY = root.max()
           var minY = root.min()

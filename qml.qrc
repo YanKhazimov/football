@@ -3,7 +3,7 @@
         <file>MainForm.ui.qml</file>
         <file>qml/FeaturedStats/SlideContent.qml</file>
         <file>qml/FeaturedStats/SlideshowWing.qml</file>
-        <file>qml/Players/CustomTableView.qml</file>
+        <file>qml/Players/StatsTable.qml</file>
         <file>qml/Players/PlayerPage.qml</file>
         <file>img/ball.png</file>
         <file>img/l.svg</file>
@@ -32,7 +32,7 @@
         <file>img/bg3.png</file>
         <file>img/bg4.png</file>
         <file>qml/TiledBackground.qml</file>
-        <file>qml/Players/StatsTable.qml</file>
+        <file>qml/Players/PlayerStatsTable.qml</file>
         <file>img/menuarrow.png</file>
         <file>qml/Players/Chart.qml</file>
         <file>img/ball3d.png</file>
@@ -40,5 +40,7 @@
         <file>img/balls.ico</file>
         <file>img/bench.ico</file>
         <file>qml/FeaturedStats/GroupedImageRow.qml</file>
+        <file>qml/NewGame/GameComposer.qml</file>
+        <file>img/colorball.png</file>
     </qresource>
 </RCC>
