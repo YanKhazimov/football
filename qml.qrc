@@ -42,5 +42,7 @@
         <file>qml/FeaturedStats/GroupedImageRow.qml</file>
         <file>qml/NewGame/GameComposer.qml</file>
         <file>img/colorball.png</file>
+        <file>img/lang_en.png</file>
+        <file>img/method-draw-image.svg</file>
     </qresource>
 </RCC>

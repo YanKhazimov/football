@@ -16,19 +16,31 @@ Rectangle {
         sourceImg: "qrc:/img/ball.png"
     }
 
-    Image {
-        id: themeBall
+    Column {
         anchors {
             bottom: parent.bottom
             bottomMargin: Sizes.featuredStats.margin
             left: parent.left
             leftMargin: Sizes.featuredStats.margin
         }
+        spacing: 0
 
-        source: "qrc:/img/colorball.png"
-        width: Sizes.elementButtonSize.width
-        height: Sizes.elementButtonSize.height
-        antialiasing: true
+        Image {
+            id: languageSwitcher
+            source: "qrc:/img/lang_en.png"
+            width: Sizes.elementButtonSize.width
+            height: Sizes.elementButtonSize.height
+            antialiasing: true
+        }
+
+        Image {
+            id: themeBall
+
+            source: "qrc:/img/colorball.png"
+            width: Sizes.elementButtonSize.width
+            height: Sizes.elementButtonSize.height
+            antialiasing: true
+        }
     }
 
     RowLayout {
