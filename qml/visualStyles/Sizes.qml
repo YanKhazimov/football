@@ -6,6 +6,7 @@ QtObject {
 
     readonly property int borderWidth: 2
     readonly property int fontPixelSize: 20
+    readonly property int playerHandleSize: 40
 
     property QtObject featuredStats: QtObject {
         readonly property real wingShare: 0.1

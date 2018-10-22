@@ -38,11 +38,12 @@
         <file>img/ball3d.png</file>
         <file>img/ball3d.ico</file>
         <file>img/balls.ico</file>
-        <file>img/bench.ico</file>
         <file>qml/FeaturedStats/GroupedImageRow.qml</file>
         <file>qml/NewGame/GameComposer.qml</file>
         <file>img/colorball.png</file>
         <file>img/lang_en.png</file>
-        <file>img/method-draw-image.svg</file>
+        <file>qml/NewGame/PitchScheme.qml</file>
+        <file>img/bench.png</file>
+        <file>qml/NewGame/PlayerHandle.qml</file>
     </qresource>
 </RCC>

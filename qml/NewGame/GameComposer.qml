@@ -7,80 +7,21 @@ Rectangle {
 
     anchors.fill: parent
 
-    Image {
-        anchors.fill: parent
-        source: "qrc:/img/method-draw-image.svg"
+    PitchScheme {
+        id: scheme
+        benchModel: globalStatsModel
     }
 
-    Image {
-        source: "qrc:/img/bench.ico"
-        width: 100
-        height: 100
-    }
+    Repeater {
+        model: globalStatsModel
 
-    Rectangle {
-        radius: 32
-        width: 64; height: 64
-        y: 100
-        color: "yellow"
+        delegate: PlayerHandle {
+            x: scheme.benchPlayerZone(index).x
+            y: scheme.benchPlayerZone(index).y
 
-        DropArea {
-            id: dragTarget
-//            width: 64; height: 64
-//            y: 100
-            anchors.fill: parent
-            onContainsDragChanged: console.log(containsDrag)
-            onEntered: console.log("entered")
-
-            //keys: [ colorKey ]
-
-//            Rectangle {
-//                id: dropRectangle
-
-//                anchors.fill: parent
-//                color: "yellow"
-
-//                states: [
-//                    State {
-//                        when: dragTarget.containsDrag
-//                        PropertyChanges {
-//                            target: dropRectangle
-//                            color: "green"
-//                        }
-//                    }
-//                ]
-//            }
+            photoSource: globalStatsModel.getPlayer(model.PlayerName).photo
+            topText: model.PlayerName
         }
     }
 
-    Row {
-        Repeater {
-            model: [["p1", 1111], ["p2", 2222], ["p3", 3333], ["p3", 3333], ["p3", 3333],
-                ["p3", 3333], ["p3", 3333], ["p3", 3333], ["p3", 3333], ["p3", 3333]]
-
-            delegate: Item {
-                id: del
-                width: 40
-                height: 40
-                Drag.active: mouseArea.drag.active
-                Rectangle {
-                    color: "lightblue"
-                    anchors.fill: parent
-                }
-                Text {
-                    id: pic
-                    text: modelData[0]
-                }
-                Text {
-                    anchors.top: pic.bottom
-                    text: modelData[1]
-                }
-                MouseArea {
-                    id: mouseArea
-                    anchors.fill: parent
-                    drag.target: parent
-                }
-            }
-        }
-    }
 }

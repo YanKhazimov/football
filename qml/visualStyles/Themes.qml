@@ -3,6 +3,7 @@ import QtQuick 2.0
 
 QtObject {
     readonly property string fontFamily: "URW Bookman L"
+    readonly property color dropHighlightColor: "blue"
 
     property QtObject theme1: QtObject {
         readonly property color primaryFillColor: "#000020"

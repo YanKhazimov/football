@@ -62,5 +62,5 @@ QHash<int, QByteArray> GlobalStatsModel::roleNames() const
 
 Player *GlobalStatsModel::getPlayer(QString name)
 {
-    return qobject_cast<Player *>(m_base->getPlayer("p1"));
+    return m_base->getPlayer(name);
 }

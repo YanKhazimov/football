@@ -125,7 +125,7 @@ Rectangle {
                         Connections {
                             target: ratingsTable.selection
                             onSelectionChanged: ratingsTable.selection.forEach( function(rowIndex) {
-                                var player = globalStatsModel.getPlayer("a")//featuredStatsModel[1].getQueryResult()[rowIndex].player
+                                var player = globalStatsModel.getPlayer("p1")//featuredStatsModel[1].getQueryResult()[rowIndex].player
                                 playerPage.reset(player)
                             })
                         }
