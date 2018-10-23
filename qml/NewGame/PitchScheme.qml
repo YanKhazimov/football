@@ -25,7 +25,12 @@ Rectangle {
                         benchGrid.y + y)
     }
 
-    property QtObject benchModel: null
+    property int benchLength: 0
+
+    signal droppedLeft(var dragSource)
+    signal droppedRight(var dragSource)
+    signal droppedCenter(var dragSource)
+    signal droppedBench(var dragSource)
 
     Rectangle {
         id: bench
@@ -36,6 +41,7 @@ Rectangle {
         DropArea {
             id: benchDropArea
             anchors.fill: parent
+            onDropped: pitchScheme.droppedBench(drag.source)
         }
 
         Image {
@@ -61,7 +67,7 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
 
             Repeater {
-                model: benchModel.length
+                model: benchLength
                 delegate: Rectangle {
                     id: benchSpots
                     height: Sizes.playerHandleSize
@@ -96,6 +102,7 @@ Rectangle {
             DropArea {
                 id: leftDropArea
                 anchors.fill: parent
+                onDropped: pitchScheme.droppedLeft(drag.source)
             }
         }
 
@@ -114,6 +121,7 @@ Rectangle {
             DropArea {
                 id: rightDropArea
                 anchors.fill: parent
+                onDropped: pitchScheme.droppedRight(drag.source)
             }
         }
 
@@ -130,6 +138,7 @@ Rectangle {
             DropArea {
                 id: centerDropArea
                 anchors.fill: parent
+                onDropped: pitchScheme.droppedCenter(drag.source)
             }
         }
     }

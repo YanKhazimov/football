@@ -27,9 +27,9 @@ public:
     virtual QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE Player* getPlayer(QString name);
+    Q_INVOKABLE Player* getPlayer(int idx);
 
 private:
-    QVector<Stat> m_stats;
     Playerbase* m_base;
 };
 

@@ -9,6 +9,7 @@
 class PlayersModel : public QAbstractListModel
 {
     Q_OBJECT
+    Q_PROPERTY(int length READ getPlayersCount CONSTANT)
 
 public:
     PlayersModel ();

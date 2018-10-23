@@ -24,7 +24,7 @@ bool GamesModel::init()
 {
     m_games << new Game(QDate::currentDate(), {"p1", "p2"}, {"p3", "p4"})
             << new Game(QDate(2018, 12, 31), {"p1"}, {"p5"})
-            << new Game(QDate(2019, 1, 1), {"p1", "p2", "p7", "p8", "p9", "p10", "p11", "p12", "p13"}, {"p6"});
+            << new Game(QDate(2019, 1, 1), {"p1", "p2", "p7", "p8", "p9", "p10", "p11", "p12"}, {"p6"});
 
     return true;
 }

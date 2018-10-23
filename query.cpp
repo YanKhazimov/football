@@ -66,7 +66,13 @@ Playerbase::Playerbase()
         {"p3", new Player("p3", QUrl("qrc:/img/playerImages/238430.png"))},
         {"p4", new Player("p4", QUrl("qrc:/img/playerImages/242510.png"))},
         {"p5", new Player("p5", QUrl("qrc:/img/playerImages/5984.png"))},
-        {"p6", new Player("p6", QUrl("qrc:/img/playerImages/242510.png"))}
+        {"p6", new Player("p6", QUrl("qrc:/img/playerImages/242510.png"))},
+        {"p7", new Player("p7")},
+        {"p8", new Player("p8")},
+        {"p9", new Player("p9")},
+        {"p10", new Player("p10")},
+        {"p11", new Player("p11")},
+        {"p12", new Player("p12")}
     };
 }
 

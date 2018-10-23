@@ -141,7 +141,7 @@ Rectangle {
                 }
                 Tab {
                     GameComposer {
-
+                        allPlayersModel: globalStatsModel
                     }
                 }
             }

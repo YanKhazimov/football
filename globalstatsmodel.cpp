@@ -64,3 +64,9 @@ Player *GlobalStatsModel::getPlayer(QString name)
 {
     return m_base->getPlayer(name);
 }
+
+Player *GlobalStatsModel::getPlayer(int idx)
+{
+    QString name = data(index(idx, 0), Roles::PlayerName).toString();
+    return m_base->getPlayer(name);
+}
