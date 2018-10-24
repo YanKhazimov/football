@@ -45,5 +45,7 @@
         <file>qml/NewGame/PitchScheme.qml</file>
         <file>img/bench.png</file>
         <file>qml/NewGame/PlayerHandle.qml</file>
+        <file>qml/NewGame/PitchZones.qml</file>
+        <file>qml/NewGame/qmldir</file>
     </qresource>
 </RCC>

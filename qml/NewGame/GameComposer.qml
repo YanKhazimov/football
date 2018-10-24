@@ -1,63 +1,38 @@
 import QtQuick 2.0
+import "."
 import "qrc:/qml/visualStyles"
 
 Rectangle {
     id: root
-
     anchors.fill: parent
 
     property var allPlayersModel: null
-
-    property var benchModel: []
-    property var homeModel: []
-    property var awayModel: []
-    property var centerModel: []
-
-    onBenchModelChanged: console.log(benchModel)
+    property var zoneModels: []
 
     onAllPlayersModelChanged: {
-        var bm = []
+        var startingModel = []
         for (var i = 0; i < allPlayersModel.length; ++i)
         {
             if (allPlayersModel.getPlayer(i) !== null)
-                bm.push(allPlayersModel.getPlayer(i).name)
+                startingModel.push(allPlayersModel.getPlayer(i).name)
         }
-        benchModel = bm
-        homeModel = []
-        awayModel = []
-        centerModel = []
+        zoneModels = [ startingModel, [], [], [] ]
     }
 
     PitchScheme {
         id: scheme
         benchLength: allPlayersModel.length
 
-        onDroppedBench: {
-            homeModel.push(dragSource.player.name)
-            benchModel.splice(benchModel.indexOf(dragSource.player.name), 1)
-            awayModel.splice(awayModel.indexOf(dragSource.player.name), 1)
-            centerModel.splice(centerModel.indexOf(dragSource.player.name), 1)
+        onDragEnter: {
+            if (dragInfo.sender === -1)
+                dragInfo.sender = zone
+
+            dragInfo.reciever = zone
         }
 
-        onDroppedLeft: {
-            homeModel.push(dragSource.player.name)
-            benchModel.splice(benchModel.indexOf(dragSource.player.name), 1)
-            awayModel.splice(awayModel.indexOf(dragSource.player.name), 1)
-            centerModel.splice(centerModel.indexOf(dragSource.player.name), 1)
-        }
-
-        onDroppedRight: {
-            awayModel.push(dragSource.player.name)
-            benchModel.splice(benchModel.indexOf(dragSource.player.name), 1)
-            homeModel.splice(awayModel.indexOf(dragSource.player.name), 1)
-            centerModel.splice(centerModel.indexOf(dragSource.player.name), 1)
-        }
-
-        onDroppedCenter: {
-            centerModel.push(dragSource.player.name)
-            benchModel.splice(benchModel.indexOf(dragSource.player.name), 1)
-            homeModel.splice(awayModel.indexOf(dragSource.player.name), 1)
-            awayModel.splice(awayModel.indexOf(dragSource.player.name), 1)
+        onDragExit: {
+            if (dragInfo.reciever === zone)
+                dragInfo.reciever = -1
         }
     }
 
@@ -72,46 +47,61 @@ Rectangle {
             id: mouseArea
             anchors.fill: parent
             onClicked: {
-                console.log("benchModel", benchModel)
-                console.log("homeModel", homeModel)
-                console.log("awayModel", awayModel)
-                console.log("centerModel", centerModel)
+                console.log("zoneModels[PitchZones.bench]", zoneModels[PitchZones.bench])
+                console.log("zoneModels[PitchZones.leftHalf]", zoneModels[PitchZones.leftHalf])
+                console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
+                console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
             }
         }
     }
 
+    QtObject {
+        id: dragInfo
+        property string name: ""
+        property int sender: -1
+        property int reciever: -1
+
+        function clear() {
+            name = ""
+            sender = -1
+            reciever = -1
+        }
+    }
+
+    function registerDrop(playerName) {
+        console.log("dropping", dragInfo.name, dragInfo.sender, dragInfo.reciever)
+        if (dragInfo.reciever !== -1 && dragInfo.reciever !== dragInfo.sender)
+        {
+            var index = zoneModels[dragInfo.sender].indexOf(playerName)
+            if (index !== -1)
+                zoneModels[dragInfo.sender].splice(index, 1)
+
+            zoneModels[dragInfo.reciever].push(playerName)
+        }
+
+        dragInfo.clear()
+    }
+
     Repeater {
-        id: benchPlayers
+        id: playerHandles
         model: allPlayersModel
 
         delegate: PlayerHandle {
             x: scheme.benchPlayerZone(index).x
             y: scheme.benchPlayerZone(index).y
             player: allPlayersModel.getPlayer(index)
+
+            onDragActiveChanged: {
+                if (dragActive) {
+                    Drag.start()
+                    dragInfo.name = player.name
+                }
+                else
+                {
+                    Drag.drop()
+                    registerDrop(player.name)
+                }
+            }
         }
     }
-
-    Repeater {
-        id: homePlayers
-        model: null
-
-        delegate: PlayerHandle {
-            x: 0
-            y: scheme.benchHeight + index * Sizes.playerHandleSize
-            player: allPlayersModel.getPlayer(index)
-        }
-    }
-
-    Repeater {
-        id: awayPlayers
-        model: null
-
-        delegate: PlayerHandle {
-            x: scheme.width - Sizes.playerHandleSize
-            y: scheme.benchHeight + index * Sizes.playerHandleSize
-            player: allPlayersModel.getPlayer(index)
-        }
-    }
-
-
 }

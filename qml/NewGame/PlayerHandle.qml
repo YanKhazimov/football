@@ -9,16 +9,6 @@ Rectangle {
     height: Sizes.playerHandleSize
     radius: Sizes.playerHandleSize
 
-    Drag.hotSpot: Qt.point(width/2, height/2)
-    Drag.dragType: Drag.Automatic
-    property bool dragActive: mouseArea.drag.active
-    onDragActiveChanged: {
-        if (dragActive)
-            Drag.start()
-        else
-            Drag.drop()
-    }
-
     color: "transparent"
     border.width: 1
     border.color: "white"
@@ -46,4 +36,8 @@ Rectangle {
         anchors.fill: parent
         drag.target: parent
     }
+
+    Drag.hotSpot: Qt.point(width / 2, height / 2)
+    Drag.dragType: Drag.Automatic
+    property bool dragActive: mouseArea.drag.active
 }

@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import "."
 import "qrc:/qml/visualStyles"
 
 Rectangle {
@@ -27,10 +28,8 @@ Rectangle {
 
     property int benchLength: 0
 
-    signal droppedLeft(var dragSource)
-    signal droppedRight(var dragSource)
-    signal droppedCenter(var dragSource)
-    signal droppedBench(var dragSource)
+    signal dragEnter(int zone)
+    signal dragExit(int zone)
 
     Rectangle {
         id: bench
@@ -41,7 +40,8 @@ Rectangle {
         DropArea {
             id: benchDropArea
             anchors.fill: parent
-            onDropped: pitchScheme.droppedBench(drag.source)
+            onEntered: pitchScheme.dragEnter(PitchZones.bench)
+            onExited: pitchScheme.dragExit(PitchZones.bench)
         }
 
         Image {
@@ -102,7 +102,21 @@ Rectangle {
             DropArea {
                 id: leftDropArea
                 anchors.fill: parent
-                onDropped: pitchScheme.droppedLeft(drag.source)
+                onEntered: pitchScheme.dragEnter(PitchZones.leftHalf)
+                onExited: pitchScheme.dragExit(PitchZones.leftHalf)
+            }
+
+            Text {
+                text: "Home"
+                color: theme.textColor
+                font.family: Themes.fontFamily
+                font.pixelSize: Sizes.fontPixelSize
+                anchors {
+                    top: parent.top
+                    topMargin: Sizes.featuredStats.smallMargin
+                    left: parent.left
+                    leftMargin: Sizes.featuredStats.smallMargin
+                }
             }
         }
 
@@ -121,7 +135,21 @@ Rectangle {
             DropArea {
                 id: rightDropArea
                 anchors.fill: parent
-                onDropped: pitchScheme.droppedRight(drag.source)
+                onEntered: pitchScheme.dragEnter(PitchZones.rightHalf)
+                onExited: pitchScheme.dragExit(PitchZones.rightHalf)
+            }
+
+            Text {
+                text: "Away"
+                color: theme.textColor
+                font.family: Themes.fontFamily
+                font.pixelSize: Sizes.fontPixelSize
+                anchors {
+                    top: parent.top
+                    topMargin: Sizes.featuredStats.smallMargin
+                    right: parent.right
+                    rightMargin: Sizes.featuredStats.smallMargin
+                }
             }
         }
 
@@ -138,7 +166,8 @@ Rectangle {
             DropArea {
                 id: centerDropArea
                 anchors.fill: parent
-                onDropped: pitchScheme.droppedCenter(drag.source)
+                onEntered: pitchScheme.dragEnter(PitchZones.center)
+                onExited: pitchScheme.dragExit(PitchZones.center)
             }
         }
     }
