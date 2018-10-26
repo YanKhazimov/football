@@ -3,7 +3,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import "Players"
-import "NewGame"
+import "NextGame"
 import "qrc:/qml/visualStyles"
 import "."
 

@@ -39,13 +39,13 @@
         <file>img/ball3d.ico</file>
         <file>img/balls.ico</file>
         <file>qml/FeaturedStats/GroupedImageRow.qml</file>
-        <file>qml/NewGame/GameComposer.qml</file>
+        <file>qml/NextGame/GameComposer.qml</file>
         <file>img/colorball.png</file>
         <file>img/lang_en.png</file>
-        <file>qml/NewGame/PitchScheme.qml</file>
+        <file>qml/NextGame/PitchScheme.qml</file>
         <file>img/bench.png</file>
-        <file>qml/NewGame/PlayerHandle.qml</file>
-        <file>qml/NewGame/PitchZones.qml</file>
-        <file>qml/NewGame/qmldir</file>
+        <file>qml/NextGame/PlayerHandle.qml</file>
+        <file>qml/NextGame/PitchZones.qml</file>
+        <file>qml/NextGame/qmldir</file>
     </qresource>
 </RCC>

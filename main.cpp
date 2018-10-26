@@ -6,7 +6,7 @@
 
 #include "gamesmodel.h"
 #include "playersmodel.h"
-#include "query.h"
+#include "playerbase.h"
 #include "playerstatsmodel.h"
 #include "globalstatsmodel.h"
 

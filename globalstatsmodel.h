@@ -3,7 +3,7 @@
 
 #include <QStandardItemModel>
 #include "playersmodel.h"
-#include "query.h"
+#include "playerbase.h"
 
 class GlobalStatsModel: public QStandardItemModel
 {

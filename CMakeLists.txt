@@ -7,7 +7,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 set (HEADERS
-    query.h
+    playerbase.h
     playersmodel.h
     playerstatsmodel.h
     gamesmodel.h
@@ -16,7 +16,7 @@ set (HEADERS
     statsmodel.h)
 
 set (SRC
-    query.cpp
+    playerbase.cpp
     playersmodel.cpp
     playerstatsmodel.cpp
     gamesmodel.cpp

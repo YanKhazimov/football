@@ -1,4 +1,4 @@
-#include "query.h"
+#include "playerbase.h"
 #include <memory>
 
 PlayerbaseQuery::PlayerbaseQuery(const PlayersModel& model, Playerbase& base, Query rule, QString title, QString description)
