@@ -29,12 +29,13 @@ Rectangle {
         width: parent.width - 2
         height: width
         anchors.centerIn: parent
-        visible: hasPhoto() ? player.name : ""
+        visible: hasPhoto()
     }
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         drag.target: parent
+        drag.threshold: 0
     }
 
     Drag.hotSpot: Qt.point(width / 2, height / 2)

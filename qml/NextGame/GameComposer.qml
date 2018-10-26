@@ -37,11 +37,11 @@ Rectangle {
     }
 
     Image {
-        x: scheme.pitchCenterCoords.x
-        y: scheme.pitchCenterCoords.y
         width: Sizes.elementButtonSize.width
         height: Sizes.elementButtonSize.height
-        source: "qrc:/img/play.png"
+        x: scheme.pitchCenterCoords.x - width/2
+        y: scheme.pitchCenterCoords.y - height/2
+        source: "qrc:/img/ball.png"
 
         MouseArea {
             id: mouseArea
@@ -82,14 +82,28 @@ Rectangle {
         dragInfo.clear()
     }
 
+    function getPlayerZone(name) {
+        var zoneIndex
+        zoneModels.forEach(function(element) {
+            if (element.indexOf(name) !== -1)
+            {
+                zoneIndex = zoneModels.indexOf(element)
+            }
+        })
+        return zoneIndex
+    }
+
     Repeater {
         id: playerHandles
         model: allPlayersModel
 
         delegate: PlayerHandle {
-            x: scheme.benchPlayerZone(index).x
-            y: scheme.benchPlayerZone(index).y
             player: allPlayersModel.getPlayer(index)
+            x: {
+                console.log(player.name, getPlayerZone(player.name))
+                scheme.benchPlayerZone(index).x
+            }
+            y: scheme.benchPlayerZone(index).y
 
             onDragActiveChanged: {
                 if (dragActive) {
