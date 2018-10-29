@@ -8,19 +8,13 @@ Rectangle {
 
     property point pitchCenterCoords: Qt.point(pitchCenterArea.x + pitchCenterArea.width/2,
                                                bench.height + pitchCenterArea.y + pitchCenterArea.height/2)
-    property rect centralZone: Qt.rect(pitchCenterArea.x, bench.height + pitchCenterArea.y,
-                                       pitchCenterArea.width, pitchCenterArea.height)
-    property rect leftZone: Qt.rect(pitchLeftHalf.x, bench.height + pitchLeftHalf.y,
-                                    pitchLeftHalf.width, pitchLeftHalf.height)
-    property rect rightZone: Qt.rect(pitchRightHalf.x, bench.height + pitchRightHalf.y,
-                                     pitchRightHalf.width, pitchRightHalf.height)
-    property real benchHeight: height / 4
+
     property int benchSpacing: Sizes.featuredStats.smallMargin / 2
 
     function benchPlayerZone(index) {
 
-        var x = index % benchGrid.columns * (benchSpacing + Sizes.playerHandleSize)
-        var y = Math.floor(index / benchGrid.columns) * (benchSpacing + Sizes.playerHandleSize)
+        var x = index % benchGrid.columns * (benchSpacing + Sizes.playerHandleWidth)
+        var y = Math.floor(index / benchGrid.columns) * (benchSpacing + Sizes.playerHandleWidth)
 
         return Qt.point(benchGrid.x + x,
                         benchGrid.y + y)
@@ -32,6 +26,26 @@ Rectangle {
         if (zone === PitchZones.leftHalf) {
             return pitchLeftHalf.calculatePosition(idx, count)
         }
+        else if (zone === PitchZones.center) {
+            return pitchCenterArea.calculatePosition(idx, count)
+        }
+    }
+
+    function showHint(zone, idx, count) {
+        var position
+        if (zone === PitchZones.leftHalf) {
+            position = pitchLeftHalf.calculatePosition(idx, count)
+        }
+        else if (zone === PitchZones.center) {
+            position = pitchCenterArea.calculatePosition(idx, count)
+        }
+        positionHint.x = position.x - positionHint.width/2
+        positionHint.y = position.y - positionHint.height/2
+        positionHint.visible = true
+    }
+
+    function hideHint() {
+        positionHint.visible = false
     }
 
     signal dragEnter(int zone)
@@ -40,7 +54,7 @@ Rectangle {
     Rectangle {
         id: bench
         width: parent.width
-        height: benchHeight
+        height: Sizes.playerHandleWidth + Sizes.fontPixelSize + 2 * Sizes.featuredStats.smallMargin
         color: benchDropArea.containsDrag ? Themes.dropHighlightColor : "grey"
 
         DropArea {
@@ -53,7 +67,7 @@ Rectangle {
         Image {
             id: benchImg
             source: "qrc:/img/bench.png"
-            height: benchHeight
+            height: parent.height
             width: height
             anchors {
                 left: parent.left
@@ -64,8 +78,8 @@ Rectangle {
 
         Grid {
             id: benchGrid
-            rows: 2
-            columns: (bench.width - benchImg.width - 2*Sizes.featuredStats.margin) / (benchSpacing + Sizes.playerHandleSize)
+            rows: 1//2
+            columns: (bench.width - benchImg.width - 2*Sizes.featuredStats.margin) / (benchSpacing + Sizes.playerHandleWidth)
             spacing: benchSpacing
             anchors.left: benchImg.right
             anchors.leftMargin: Sizes.featuredStats.margin
@@ -76,8 +90,8 @@ Rectangle {
                 model: benchLength
                 delegate: Rectangle {
                     id: benchSpots
-                    height: Sizes.playerHandleSize
-                    width: Sizes.playerHandleSize
+                    height: Sizes.playerHandleWidth
+                    width: Sizes.playerHandleWidth
                     color: "transparent"
                 }
             }
@@ -97,7 +111,7 @@ Rectangle {
             id: pitchLeftHalf
             width: parent.width / 2
             height: parent.height
-            color: /*leftDropArea.containsDrag ? Themes.dropHighlightColor :*/ "green"
+            color: "green"
             border.width: 1
             border.color: "white"
             anchors {
@@ -106,28 +120,14 @@ Rectangle {
             }
             property point pitchCenter: Qt.point(width, height/2)
             property real pitchCenterRadius: pitchCenterArea.width / 2
-            property real preferredSliceAngle: Math.PI / 8 // should depend on handle size
-            property int nextIndex: 0
+            property real preferredSliceAngle: Math.PI / 10 // should depend on handle size
 
             function calculatePosition(idx, count) {
                 var startAngle = Math.PI - (count - 1) / 2 * preferredSliceAngle
                 var angle = startAngle + idx * preferredSliceAngle
                 var x = pitchCenter.x + 1.5 * pitchCenterRadius * Math.cos(angle)
                 var y = pitchCenter.y - 1.5 * pitchCenterRadius * Math.sin(angle)
-                return Qt.point(x, y)
-            }
-
-            Rectangle {
-                id: newSpot
-                width: Sizes.playerHandleSize
-                height: Sizes.playerHandleSize
-                radius: Sizes.playerHandleSize
-                color: leftDropArea.containsDrag ? Themes.dropHighlightColor : "transparent"
-                x: parent.calculatePosition(parent.nextIndex, parent.nextIndex + 1).x - width/2
-                y: parent.calculatePosition(parent.nextIndex, parent.nextIndex + 1).y - height/2
-
-                //Behavior on x { PropertyAnimation { duration: 300 } }
-                //Behavior on y { PropertyAnimation { duration: 300 } }
+                return mapToItem(pitchScheme, x, y)
             }
 
             DropArea {
@@ -186,13 +186,26 @@ Rectangle {
 
         Rectangle {
             id: pitchCenterArea
-            height: parent.height * 3/4
+            height: parent.height - 2 * Sizes.featuredStats.margin
             width: height
             radius: height / 2
             anchors.centerIn: parent
-            color: centerDropArea.containsDrag ? Themes.dropHighlightColor : "green"
+            color: "green"
             border.width: 1
             border.color: "white"
+
+            property point pitchCenter: Qt.point(width/2, height/2)
+            property real pitchCenterRadius: pitchCenterArea.width / 2
+            property real preferredSliceAngle: Math.PI * 2/10
+
+            function calculatePosition(idx, count) {
+                var startAngle = Math.PI / 2
+                var angle = startAngle - idx * preferredSliceAngle
+                var r = pitchCenterRadius - ((Sizes.playerHandleWidth + Sizes.fontPixelSize) / 2 + Sizes.featuredStats.smallMargin)
+                var x = pitchCenter.x + r * Math.cos(angle)
+                var y = pitchCenter.y - r * Math.sin(angle)
+                return mapToItem(pitchScheme, x, y)
+            }
 
             DropArea {
                 id: centerDropArea
@@ -201,5 +214,14 @@ Rectangle {
                 onExited: pitchScheme.dragExit(PitchZones.center)
             }
         }
+    }
+
+    Rectangle {
+        id: positionHint
+        width: Sizes.playerHandleWidth
+        height: Sizes.playerHandleWidth
+        radius: Sizes.playerHandleWidth
+        visible: false
+        color: Themes.dropHighlightColor
     }
 }

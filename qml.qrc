@@ -47,5 +47,6 @@
         <file>qml/NextGame/PlayerHandle.qml</file>
         <file>qml/NextGame/PitchZones.qml</file>
         <file>qml/NextGame/qmldir</file>
+        <file>img/split.png</file>
     </qresource>
 </RCC>
