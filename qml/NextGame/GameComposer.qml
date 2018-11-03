@@ -7,6 +7,7 @@ Rectangle {
     id: root
     anchors.fill: parent
 
+    property QtObject theme: null
     property var allPlayersModel: null
     property var zoneModels: []
 
@@ -38,37 +39,36 @@ Rectangle {
     PitchScheme {
         id: scheme
         benchLength: allPlayersModel.length
+        theme: root.theme
 
         onDragEnter: {
-            if (dragInfo.sender === -1)
+            var sending = dragInfo.sender === -1
+            if (sending)
+            {
                 dragInfo.sender = zone
+            }
 
             dragInfo.reciever = zone
 
-            if (dragInfo.sender !== dragInfo.reciever)
+            if (sending === false)
             {
-                showHint(zone, zoneModels[zone].length, zoneModels[zone].length + 1)
-
-                if (zone === PitchZones.leftHalf)
-                {
-                    adjustFormation(zone, zoneModels[zone].length + 1)
-                }
+                adjustFormation(zone, zoneModels[zone].length + 1)
+                var offset = Qt.point(0, -Sizes.fontPixelSize/2)
+                showHint(zone, zoneModels[zone].length, zoneModels[zone].length + 1, offset)
             }
         }
 
         onDragExit: {
-            if (dragInfo.reciever === zone)
+            var idx = zoneModels[zone].indexOf(dragInfo.name)
+            if (idx > -1)
+                zoneModels[zone].splice(idx, 1)
+
+            if (dragInfo.reciever === zone) //???
                 dragInfo.reciever = -1
 
             hideHint()
 
-            if (zone === PitchZones.leftHalf)
-            {
-                if (dragInfo.sender === zone)
-                    adjustFormation(zone, zoneModels[zone].length - 1)
-                else
-                    adjustFormation(zone, zoneModels[zone].length)
-            }
+            adjustFormation(zone, zoneModels[zone].length)
         }
     }
 
@@ -96,7 +96,7 @@ Rectangle {
     ColorOverlay {
         source: splitButton
         anchors.fill: splitButton
-        color: mouseArea.containsMouse ? "white" : "transparent"
+        color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
         cached: true
     }
 
@@ -115,14 +115,12 @@ Rectangle {
 
     function registerDrop(playerName) {
         console.log("dropping", dragInfo.name, dragInfo.sender, dragInfo.reciever)
-        if (dragInfo.reciever !== -1 && dragInfo.reciever !== dragInfo.sender)
-        {
-            var index = zoneModels[dragInfo.sender].indexOf(playerName)
-            if (index !== -1)
-                zoneModels[dragInfo.sender].splice(index, 1)
 
-            zoneModels[dragInfo.reciever].push(playerName)
-        }
+        var index = zoneModels[dragInfo.sender].indexOf(playerName)
+        if (index !== -1)
+            zoneModels[dragInfo.sender].splice(index, 1)
+
+        zoneModels[dragInfo.reciever].push(playerName)
     }
 
     Repeater {
@@ -133,6 +131,7 @@ Rectangle {
             player: allPlayersModel.getPlayer(index)
             x: scheme.benchPlayerZone(index).x
             y: scheme.benchPlayerZone(index).y
+            theme: root.theme
 
             onDragActiveChanged: {
                 if (dragActive) {
@@ -148,19 +147,11 @@ Rectangle {
 
                     if (zoneModels[PitchZones.leftHalf].indexOf(player.name) !== -1)
                     {
-                        dropPosition = scheme.calculatePosition(PitchZones.leftHalf,
-                                                                zoneModels[dragInfo.reciever].length - 1,
-                                                                zoneModels[dragInfo.reciever].length)
-                        x = dropPosition.x - width/2
-                        y = dropPosition.y - height/2
+                        adjustFormation(PitchZones.leftHalf, zoneModels[PitchZones.leftHalf].length)
                     }
                     if (zoneModels[PitchZones.center].indexOf(player.name) !== -1)
                     {
-                        dropPosition = scheme.calculatePosition(PitchZones.center,
-                                                                zoneModels[dragInfo.reciever].length - 1,
-                                                                zoneModels[dragInfo.reciever].length)
-                        x = dropPosition.x - width/2
-                        y = dropPosition.y - height/2
+                        adjustFormation(PitchZones.center, zoneModels[PitchZones.center].length)
                     }
 
                     scheme.hideHint()

@@ -5,12 +5,11 @@ import "qrc:/qml/visualStyles"
 Rectangle {
     property Player player: null
 
+    property QtObject theme: null
     width: Sizes.playerHandleWidth
     height: Sizes.playerHandleWidth + Sizes.fontPixelSize
 
     color: "transparent"
-    border.width: 1
-    border.color: "white"
 
     function hasPhoto() {
         return (player !== null) && (player.photo != "qrc:/img/playerImages/default.png")
@@ -23,8 +22,6 @@ Rectangle {
         radius: Sizes.playerHandleWidth
         anchors.top: parent.top
         color: "transparent"
-        border.width: 1
-        border.color: "white"
 
         Text {
             id: name
@@ -34,10 +31,19 @@ Rectangle {
         }
         Image {
             source: hasPhoto() ? player.photo : ""
-            width: parent.width - 2
+            width: parent.width
             height: width
             anchors.centerIn: parent
             visible: hasPhoto()
+        }
+        Rectangle {
+            id: frame
+            width: parent.width
+            height: width
+            radius: width
+            color: "transparent"
+            border.width: Sizes.borderWidth
+            border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
         }
     }
     Text {
@@ -46,11 +52,12 @@ Rectangle {
         font.family: Themes.fontFamily
         anchors.top: pic.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        color: "white"
+        color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
     }
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+        hoverEnabled: true
         drag.target: parent
         drag.threshold: 0
     }

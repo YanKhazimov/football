@@ -142,6 +142,7 @@ Rectangle {
                 Tab {
                     GameComposer {
                         allPlayersModel: globalStatsModel
+                        theme: root.theme
                     }
                 }
             }

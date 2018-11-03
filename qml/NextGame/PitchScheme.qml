@@ -6,6 +6,7 @@ Rectangle {
     id: pitchScheme
     anchors.fill: parent
 
+    property QtObject theme: null
     property point pitchCenterCoords: Qt.point(pitchCenterArea.x + pitchCenterArea.width/2,
                                                bench.height + pitchCenterArea.y + pitchCenterArea.height/2)
 
@@ -31,7 +32,7 @@ Rectangle {
         }
     }
 
-    function showHint(zone, idx, count) {
+    function showHint(zone, idx, count, offset) {
         var position
         if (zone === PitchZones.leftHalf) {
             position = pitchLeftHalf.calculatePosition(idx, count)
@@ -39,8 +40,8 @@ Rectangle {
         else if (zone === PitchZones.center) {
             position = pitchCenterArea.calculatePosition(idx, count)
         }
-        positionHint.x = position.x - positionHint.width/2
-        positionHint.y = position.y - positionHint.height/2
+        positionHint.x = position.x - positionHint.width/2 + offset.x
+        positionHint.y = position.y - positionHint.height/2 + offset.y
         positionHint.visible = true
     }
 
@@ -132,7 +133,13 @@ Rectangle {
 
             DropArea {
                 id: leftDropArea
-                anchors.fill: parent
+                anchors {
+                    left: parent.left
+                    bottom: parent.bottom
+                    top: parent.top
+                }
+                width: parent.width - pitchCenterArea.width/2
+
                 onEntered: pitchScheme.dragEnter(PitchZones.leftHalf)
                 onExited: pitchScheme.dragExit(PitchZones.leftHalf)
             }
@@ -165,7 +172,12 @@ Rectangle {
 
             DropArea {
                 id: rightDropArea
-                anchors.fill: parent
+                anchors {
+                    right: parent.right
+                    bottom: parent.bottom
+                    top: parent.top
+                }
+                width: parent.width - pitchCenterArea.width/2
                 onEntered: pitchScheme.dragEnter(PitchZones.rightHalf)
                 onExited: pitchScheme.dragExit(PitchZones.rightHalf)
             }
@@ -222,6 +234,8 @@ Rectangle {
         height: Sizes.playerHandleWidth
         radius: Sizes.playerHandleWidth
         visible: false
-        color: Themes.dropHighlightColor
+        color: "transparent"
+        border.width: Sizes.borderWidth
+        border.color: theme.secondaryFillColor
     }
 }

@@ -14,8 +14,8 @@ QQC2.ApplicationWindow {
 
     visible: true
 
-    width: 800
-    height: 600
+    width: 1280
+    height: 720
     Component.onCompleted: {
         setX(Screen.width / 2 - width / 2);
         setY(Screen.height / 2 - height / 2);
