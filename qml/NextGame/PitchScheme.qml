@@ -12,34 +12,16 @@ Rectangle {
 
     property int benchSpacing: Sizes.featuredStats.smallMargin / 2
 
-    function benchPlayerZone(index) {
-
-        var x = index % benchGrid.columns * (benchSpacing + Sizes.playerHandleWidth)
-        var y = Math.floor(index / benchGrid.columns) * (benchSpacing + Sizes.playerHandleWidth)
-
-        return Qt.point(benchGrid.x + x,
-                        benchGrid.y + y)
-    }
+    property var zoneShapes: [bench, pitchLeftHalf, pitchRightHalf, pitchCenterArea]
 
     property int benchLength: 0
 
     function calculatePosition(zone, idx, count) {
-        if (zone === PitchZones.leftHalf) {
-            return pitchLeftHalf.calculatePosition(idx, count)
-        }
-        else if (zone === PitchZones.center) {
-            return pitchCenterArea.calculatePosition(idx, count)
-        }
+        return zoneShapes[zone].calculatePosition(idx, count)
     }
 
     function showHint(zone, idx, count, offset) {
-        var position
-        if (zone === PitchZones.leftHalf) {
-            position = pitchLeftHalf.calculatePosition(idx, count)
-        }
-        else if (zone === PitchZones.center) {
-            position = pitchCenterArea.calculatePosition(idx, count)
-        }
+        var position = zoneShapes[zone].calculatePosition(idx, count)
         positionHint.x = position.x - positionHint.width/2 + offset.x
         positionHint.y = position.y - positionHint.height/2 + offset.y
         positionHint.visible = true
@@ -56,7 +38,14 @@ Rectangle {
         id: bench
         width: parent.width
         height: Sizes.playerHandleWidth + Sizes.fontPixelSize + 2 * Sizes.featuredStats.smallMargin
-        color: benchDropArea.containsDrag ? Themes.dropHighlightColor : "grey"
+        color: "grey"
+
+        function calculatePosition(idx, count) {
+            var x = benchImg.x + benchImg.width + Sizes.featuredStats.smallMargin
+                    + idx * (benchSpacing + Sizes.playerHandleWidth)
+            var y = height / 2
+            return mapToItem(pitchScheme, x, y)
+        }
 
         DropArea {
             id: benchDropArea
@@ -76,26 +65,12 @@ Rectangle {
                 verticalCenter: parent.verticalCenter
             }
         }
-
-        Grid {
-            id: benchGrid
-            rows: 1//2
-            columns: (bench.width - benchImg.width - 2*Sizes.featuredStats.margin) / (benchSpacing + Sizes.playerHandleWidth)
-            spacing: benchSpacing
-            anchors.left: benchImg.right
-            anchors.leftMargin: Sizes.featuredStats.margin
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-
-            Repeater {
-                model: benchLength
-                delegate: Rectangle {
-                    id: benchSpots
-                    height: Sizes.playerHandleWidth
-                    width: Sizes.playerHandleWidth
-                    color: "transparent"
-                }
-            }
+        Rectangle {
+            anchors.fill: benchImg
+            color: "transparent"
+            z: pitchLeftHalf.z + 1
+            border.color: "red"
+            border.width: 2
         }
     }
 
@@ -103,16 +78,23 @@ Rectangle {
         id: pitch
         width: parent.width
         height: pitchScheme.height - bench.height
-        anchors {
-            top: bench.bottom
-            bottom: parent.bottom
+        anchors.bottom: parent.bottom
+
+        Repeater {
+            delegate: Rectangle {
+                height: parent.height
+                width: parent.width / 10
+                color: index % 2 === 0 ? "lightgreen" : "green"
+                x: width * index
+            }
+            model: 10
         }
 
         Rectangle {
             id: pitchLeftHalf
             width: parent.width / 2
             height: parent.height
-            color: "green"
+            color: "transparent"//"green"
             border.width: 1
             border.color: "white"
             anchors {
@@ -162,12 +144,27 @@ Rectangle {
             id: pitchRightHalf
             width: parent.width / 2
             height: parent.height
-            color: rightDropArea.containsDrag ? Themes.dropHighlightColor : "green"
+            color: "green"
             border.width: 1
             border.color: "white"
             anchors {
                 right: parent.right
                 bottom: parent.bottom
+            }
+
+            property point pitchCenter: Qt.point(0, height/2)
+            property real pitchCenterRadius: pitchCenterArea.width / 2
+
+            //unite
+
+            property real preferredSliceAngle: Math.PI / 10 // should depend on handle size
+
+            function calculatePosition(idx, count) {
+                var startAngle = (count - 1) / 2 * preferredSliceAngle
+                var angle = startAngle - idx * preferredSliceAngle
+                var x = pitchCenter.x + 1.5 * pitchCenterRadius * Math.cos(angle)
+                var y = pitchCenter.y - 1.5 * pitchCenterRadius * Math.sin(angle)
+                return mapToItem(pitchScheme, x, y)
             }
 
             DropArea {
@@ -178,6 +175,7 @@ Rectangle {
                     top: parent.top
                 }
                 width: parent.width - pitchCenterArea.width/2
+
                 onEntered: pitchScheme.dragEnter(PitchZones.rightHalf)
                 onExited: pitchScheme.dragExit(PitchZones.rightHalf)
             }

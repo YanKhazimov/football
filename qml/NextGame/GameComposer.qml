@@ -67,7 +67,6 @@ Rectangle {
                 dragInfo.reciever = -1
 
             hideHint()
-
             adjustFormation(zone, zoneModels[zone].length)
         }
     }
@@ -129,8 +128,8 @@ Rectangle {
 
         delegate: PlayerHandle {
             player: allPlayersModel.getPlayer(index)
-            x: scheme.benchPlayerZone(index).x
-            y: scheme.benchPlayerZone(index).y
+            x: scheme.calculatePosition(PitchZones.bench, index, model.count).x - width/2
+            y: scheme.calculatePosition(PitchZones.bench, index, model.count).y - height/2
             theme: root.theme
 
             onDragActiveChanged: {
@@ -143,17 +142,23 @@ Rectangle {
                     Drag.drop()
                     registerDrop(player.name)
 
-                    var dropPosition
-
+                    // loop
                     if (zoneModels[PitchZones.leftHalf].indexOf(player.name) !== -1)
                     {
                         adjustFormation(PitchZones.leftHalf, zoneModels[PitchZones.leftHalf].length)
+                    }
+                    if (zoneModels[PitchZones.rightHalf].indexOf(player.name) !== -1)
+                    {
+                        adjustFormation(PitchZones.rightHalf, zoneModels[PitchZones.rightHalf].length)
                     }
                     if (zoneModels[PitchZones.center].indexOf(player.name) !== -1)
                     {
                         adjustFormation(PitchZones.center, zoneModels[PitchZones.center].length)
                     }
-
+                    if (zoneModels[PitchZones.bench].indexOf(player.name) !== -1)
+                    {
+                        adjustFormation(PitchZones.bench, zoneModels[PitchZones.bench].length)
+                    }
                     scheme.hideHint()
                     dragInfo.clear()
                 }
