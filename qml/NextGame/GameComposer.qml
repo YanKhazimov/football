@@ -53,7 +53,7 @@ Rectangle {
             if (sending === false)
             {
                 adjustFormation(zone, zoneModels[zone].length + 1)
-                var offset = Qt.point(0, -Sizes.fontPixelSize/2)
+                var offset = Qt.point(0, -Sizes.playerHandleRatingHeight/2)
                 showHint(zone, zoneModels[zone].length, zoneModels[zone].length + 1, offset)
             }
         }
@@ -141,24 +141,7 @@ Rectangle {
                 {
                     Drag.drop()
                     registerDrop(player.name)
-
-                    // loop
-                    if (zoneModels[PitchZones.leftHalf].indexOf(player.name) !== -1)
-                    {
-                        adjustFormation(PitchZones.leftHalf, zoneModels[PitchZones.leftHalf].length)
-                    }
-                    if (zoneModels[PitchZones.rightHalf].indexOf(player.name) !== -1)
-                    {
-                        adjustFormation(PitchZones.rightHalf, zoneModels[PitchZones.rightHalf].length)
-                    }
-                    if (zoneModels[PitchZones.center].indexOf(player.name) !== -1)
-                    {
-                        adjustFormation(PitchZones.center, zoneModels[PitchZones.center].length)
-                    }
-                    if (zoneModels[PitchZones.bench].indexOf(player.name) !== -1)
-                    {
-                        adjustFormation(PitchZones.bench, zoneModels[PitchZones.bench].length)
-                    }
+                    adjustFormation(dragInfo.reciever, zoneModels[dragInfo.reciever].length)
                     scheme.hideHint()
                     dragInfo.clear()
                 }

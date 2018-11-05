@@ -7,7 +7,7 @@ Rectangle {
 
     property QtObject theme: null
     width: Sizes.playerHandleWidth
-    height: Sizes.playerHandleWidth + Sizes.fontPixelSize
+    height: Sizes.playerHandleWidth + Sizes.playerHandleRatingHeight
 
     color: "transparent"
 
@@ -23,11 +23,21 @@ Rectangle {
         anchors.top: parent.top
         color: "transparent"
 
+        Rectangle {
+            width: parent.width
+            height: width
+            radius: width
+            color: "white"
+            border.width: Sizes.borderWidth
+            border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
+        }
         Text {
             id: name
             text: hasPhoto() ? "" : player.name
             font.family: Themes.fontFamily
+            font.pixelSize: Sizes.fontPixelSize
             anchors.centerIn: parent
+            color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.primaryFillColor
         }
         Image {
             source: hasPhoto() ? player.photo : ""
@@ -36,23 +46,22 @@ Rectangle {
             anchors.centerIn: parent
             visible: hasPhoto()
         }
-        Rectangle {
-            id: frame
-            width: parent.width
-            height: width
-            radius: width
-            color: "transparent"
-            border.width: Sizes.borderWidth
-            border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
-        }
     }
-    Text {
+    Rectangle {
         id: rating
-        text: "3210"
-        font.family: Themes.fontFamily
         anchors.top: pic.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
+        width: parent.width
+        height: Sizes.playerHandleRatingHeight
+        radius: height / 4
+        color: "white"
+        Text {
+            text: "3210"
+            font.family: Themes.fontFamily
+            font.bold: true
+            anchors.centerIn: parent
+            color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.primaryFillColor
+        }
     }
     MouseArea {
         id: mouseArea

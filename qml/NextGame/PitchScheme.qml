@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 import "."
 import "qrc:/qml/visualStyles"
 
@@ -37,11 +38,12 @@ Rectangle {
     Rectangle {
         id: bench
         width: parent.width
-        height: Sizes.playerHandleWidth + Sizes.fontPixelSize + 2 * Sizes.featuredStats.smallMargin
+        height: Sizes.playerHandleWidth + Sizes.playerHandleRatingHeight + 2 * Sizes.featuredStats.smallMargin
         color: "grey"
 
         function calculatePosition(idx, count) {
-            var x = benchImg.x + benchImg.width + Sizes.featuredStats.smallMargin
+            var x = benchImg.x + benchImg.width + Sizes.playerHandleWidth/2
+                    + Sizes.featuredStats.smallMargin
                     + idx * (benchSpacing + Sizes.playerHandleWidth)
             var y = height / 2
             return mapToItem(pitchScheme, x, y)
@@ -61,16 +63,9 @@ Rectangle {
             width: height
             anchors {
                 left: parent.left
-                leftMargin: Sizes.featuredStats.margin
+                leftMargin: Sizes.featuredStats.smallMargin
                 verticalCenter: parent.verticalCenter
             }
-        }
-        Rectangle {
-            anchors.fill: benchImg
-            color: "transparent"
-            z: pitchLeftHalf.z + 1
-            border.color: "red"
-            border.width: 2
         }
     }
 
@@ -80,22 +75,25 @@ Rectangle {
         height: pitchScheme.height - bench.height
         anchors.bottom: parent.bottom
 
-        Repeater {
-            delegate: Rectangle {
-                height: parent.height
-                width: parent.width / 10
-                color: index % 2 === 0 ? "lightgreen" : "green"
-                x: width * index
-            }
-            model: 10
+        Image {
+            id: background
+            source: "qrc:/img/bg.jpg"
+            anchors.fill: parent
+            fillMode: Image.TileHorizontally
+        }
+
+        ColorOverlay {
+            source: background
+            anchors.fill: background
+            color: Qt.rgba(0.2, 0.2, 0.2, 0.7)
         }
 
         Rectangle {
             id: pitchLeftHalf
-            width: parent.width / 2
+            width: parent.width / 2 + Sizes.borderWidth / 2
             height: parent.height
-            color: "transparent"//"green"
-            border.width: 1
+            color: "transparent"
+            border.width: Sizes.borderWidth
             border.color: "white"
             anchors {
                 left: parent.left
@@ -142,10 +140,10 @@ Rectangle {
 
         Rectangle {
             id: pitchRightHalf
-            width: parent.width / 2
+            width: parent.width / 2 + Sizes.borderWidth / 2
             height: parent.height
-            color: "green"
-            border.width: 1
+            color: "transparent"
+            border.width: Sizes.borderWidth
             border.color: "white"
             anchors {
                 right: parent.right
@@ -200,8 +198,8 @@ Rectangle {
             width: height
             radius: height / 2
             anchors.centerIn: parent
-            color: "green"
-            border.width: 1
+            color: "transparent"
+            border.width: Sizes.borderWidth
             border.color: "white"
 
             property point pitchCenter: Qt.point(width/2, height/2)
@@ -235,5 +233,17 @@ Rectangle {
         color: "transparent"
         border.width: Sizes.borderWidth
         border.color: theme.secondaryFillColor
+
+        Rectangle {
+            id: rating
+            anchors.top: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
+            height: Sizes.playerHandleRatingHeight
+            radius: height / 4
+            color: "transparent"
+            border.width: Sizes.borderWidth
+            border.color: theme.secondaryFillColor
+        }
     }
 }
