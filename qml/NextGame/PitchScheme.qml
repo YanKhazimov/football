@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import "."
+//import ".."
 import "qrc:/qml/visualStyles"
 
 Rectangle {
@@ -10,10 +11,15 @@ Rectangle {
     property QtObject theme: null
     property point pitchCenterCoords: Qt.point(pitchCenterArea.x + pitchCenterArea.width/2,
                                                bench.height + pitchCenterArea.y + pitchCenterArea.height/2)
+    property real teamAngleDiff: Math.PI / 10 // should depend on handle size
+    property real noTeamAngleDiff: Math.PI * 2/10
+    property real pitchCenterRadius: pitchCenterArea.width / 2
 
     property int benchSpacing: Sizes.featuredStats.smallMargin / 2
 
     property var zoneShapes: [bench, pitchLeftHalf, pitchRightHalf, pitchCenterArea]
+    property int homeTotal: 0
+    property int awayTotal: 0
 
     property int benchLength: 0
 
@@ -88,6 +94,14 @@ Rectangle {
             color: Qt.rgba(0.2, 0.2, 0.2, 0.7)
         }
 
+//        ColoredImage {
+//            id: background
+//            source: "qrc:/img/bg.jpg"
+//            anchors.fill: parent
+//            //fillMode: Image.TileHorizontally
+//            color: Qt.rgba(0.2, 0.2, 0.2, 0.7)
+//        }
+
         Rectangle {
             id: pitchLeftHalf
             width: parent.width / 2 + Sizes.borderWidth / 2
@@ -99,13 +113,11 @@ Rectangle {
                 left: parent.left
                 bottom: parent.bottom
             }
-            property point pitchCenter: Qt.point(width, height/2)
-            property real pitchCenterRadius: pitchCenterArea.width / 2
-            property real preferredSliceAngle: Math.PI / 10 // should depend on handle size
 
             function calculatePosition(idx, count) {
-                var startAngle = Math.PI - (count - 1) / 2 * preferredSliceAngle
-                var angle = startAngle + idx * preferredSliceAngle
+                var startAngle = Math.PI - (count - 1) / 2 * teamAngleDiff
+                var angle = startAngle + idx * teamAngleDiff
+                var pitchCenter = Qt.point(width, height/2)
                 var x = pitchCenter.x + 1.5 * pitchCenterRadius * Math.cos(angle)
                 var y = pitchCenter.y - 1.5 * pitchCenterRadius * Math.sin(angle)
                 return mapToItem(pitchScheme, x, y)
@@ -124,17 +136,40 @@ Rectangle {
                 onExited: pitchScheme.dragExit(PitchZones.leftHalf)
             }
 
-            Text {
-                text: "Home"
-                color: theme.textColor
-                font.family: Themes.fontFamily
-                font.pixelSize: Sizes.fontPixelSize
+            Image {
+                id: homeShirt
+                source: "qrc:/img/shirt.png"
                 anchors {
                     top: parent.top
                     topMargin: Sizes.featuredStats.smallMargin
                     left: parent.left
                     leftMargin: Sizes.featuredStats.smallMargin
                 }
+
+                Text {
+                    text: "Home"
+                    color: theme.textColor
+                    font.family: Themes.fontFamily
+                    anchors.centerIn: parent
+                }
+            }
+
+            ColorOverlay {
+                source: homeShirt
+                anchors.fill: homeShirt
+                color: "white"
+            }
+
+            Text {
+                anchors {
+                    top: homeShirt.bottom
+                    horizontalCenter: homeShirt.horizontalCenter
+                }
+
+                text: homeTotal
+                color: theme.textColor
+                font.family: Themes.fontFamily
+                font.bold: true
             }
         }
 
@@ -150,16 +185,10 @@ Rectangle {
                 bottom: parent.bottom
             }
 
-            property point pitchCenter: Qt.point(0, height/2)
-            property real pitchCenterRadius: pitchCenterArea.width / 2
-
-            //unite
-
-            property real preferredSliceAngle: Math.PI / 10 // should depend on handle size
-
             function calculatePosition(idx, count) {
-                var startAngle = (count - 1) / 2 * preferredSliceAngle
-                var angle = startAngle - idx * preferredSliceAngle
+                var startAngle = (count - 1) / 2 * teamAngleDiff
+                var angle = startAngle - idx * teamAngleDiff
+                var pitchCenter = Qt.point(0, height/2)
                 var x = pitchCenter.x + 1.5 * pitchCenterRadius * Math.cos(angle)
                 var y = pitchCenter.y - 1.5 * pitchCenterRadius * Math.sin(angle)
                 return mapToItem(pitchScheme, x, y)
@@ -178,17 +207,40 @@ Rectangle {
                 onExited: pitchScheme.dragExit(PitchZones.rightHalf)
             }
 
-            Text {
-                text: "Away"
-                color: theme.textColor
-                font.family: Themes.fontFamily
-                font.pixelSize: Sizes.fontPixelSize
+            Image {
+                id: awayShirt
+                source: "qrc:/img/shirt.png"
                 anchors {
                     top: parent.top
                     topMargin: Sizes.featuredStats.smallMargin
                     right: parent.right
                     rightMargin: Sizes.featuredStats.smallMargin
                 }
+
+                Text {
+                    text: "Away"
+                    color: theme.textColor
+                    font.family: Themes.fontFamily
+                    anchors.centerIn: parent
+                }
+            }
+
+            ColorOverlay {
+                source: awayShirt
+                anchors.fill: awayShirt
+                color: "white"
+            }
+
+            Text {
+                anchors {
+                    top: awayShirt.bottom
+                    horizontalCenter: awayShirt.horizontalCenter
+                }
+
+                text: awayTotal
+                color: theme.textColor
+                font.family: Themes.fontFamily
+                font.bold: true
             }
         }
 
@@ -202,13 +254,10 @@ Rectangle {
             border.width: Sizes.borderWidth
             border.color: "white"
 
-            property point pitchCenter: Qt.point(width/2, height/2)
-            property real pitchCenterRadius: pitchCenterArea.width / 2
-            property real preferredSliceAngle: Math.PI * 2/10
-
             function calculatePosition(idx, count) {
                 var startAngle = Math.PI / 2
-                var angle = startAngle - idx * preferredSliceAngle
+                var angle = startAngle - idx * noTeamAngleDiff
+                var pitchCenter = Qt.point(width/2, height/2)
                 var r = pitchCenterRadius - ((Sizes.playerHandleWidth + Sizes.fontPixelSize) / 2 + Sizes.featuredStats.smallMargin)
                 var x = pitchCenter.x + r * Math.cos(angle)
                 var y = pitchCenter.y - r * Math.sin(angle)

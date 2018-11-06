@@ -61,7 +61,7 @@ QueryResultItem &QueryResultItem::operator=(const QueryResultItem &other)
 Playerbase::Playerbase()
 {
     m_base = {
-        {"p1", new Player("p", QUrl("qrc:/img/playerImages/13128.png"))},
+        {"p1", new Player("p1", QUrl("qrc:/img/playerImages/13128.png"))},
         {"p2", new Player("p2")},
         {"p3", new Player("p3", QUrl("qrc:/img/playerImages/238430.png"))},
         {"p4", new Player("p4", QUrl("qrc:/img/playerImages/242510.png"))},

@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import "."
+import ".."
 import "qrc:/qml/visualStyles"
 
 Rectangle {
@@ -55,6 +56,8 @@ Rectangle {
                 adjustFormation(zone, zoneModels[zone].length + 1)
                 var offset = Qt.point(0, -Sizes.playerHandleRatingHeight/2)
                 showHint(zone, zoneModels[zone].length, zoneModels[zone].length + 1, offset)
+
+                updateTotals(zone, allPlayersModel.getPlayer(dragInfo.name).getRating())
             }
         }
 
@@ -63,11 +66,13 @@ Rectangle {
             if (idx > -1)
                 zoneModels[zone].splice(idx, 1)
 
-            if (dragInfo.reciever === zone) //???
-                dragInfo.reciever = -1
+            dragInfo.reciever = -1
 
             hideHint()
             adjustFormation(zone, zoneModels[zone].length)
+
+            var offset = dragInfo.sender === zone ? (-1) * allPlayersModel.getPlayer(dragInfo.name).getRating() : 0
+            updateTotals(zone, 0)
         }
     }
 
@@ -99,6 +104,28 @@ Rectangle {
         cached: true
     }
 
+//    ColoredImage {
+//        id: splitButton
+//        width: 2*Sizes.elementButtonSize.width
+//        height: 2*Sizes.elementButtonSize.height
+//        x: scheme.pitchCenterCoords.x - width/2
+//        y: scheme.pitchCenterCoords.y - height/2
+//        source: "qrc:/img/split.png"
+//        color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
+
+//        MouseArea {
+//            id: mouseArea
+//            anchors.fill: parent
+//            hoverEnabled: true
+//            onClicked: {
+//                console.log("zoneModels[PitchZones.bench]", zoneModels[PitchZones.bench])
+//                console.log("zoneModels[PitchZones.leftHalf]", zoneModels[PitchZones.leftHalf])
+//                console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
+//                console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
+//            }
+//        }
+//    }
+
     QtObject {
         id: dragInfo
         property string name: ""
@@ -113,13 +140,14 @@ Rectangle {
     }
 
     function registerDrop(playerName) {
+        if (dragInfo.reciever === -1)
+            dragInfo.reciever = dragInfo.sender
+
         console.log("dropping", dragInfo.name, dragInfo.sender, dragInfo.reciever)
 
-        var index = zoneModels[dragInfo.sender].indexOf(playerName)
-        if (index !== -1)
-            zoneModels[dragInfo.sender].splice(index, 1)
-
-        zoneModels[dragInfo.reciever].push(playerName)
+        var index = zoneModels[dragInfo.reciever].indexOf(playerName)
+        if (index === -1)
+            zoneModels[dragInfo.reciever].push(playerName)
     }
 
     Repeater {
@@ -140,12 +168,33 @@ Rectangle {
                 else
                 {
                     Drag.drop()
+
+                    updateTotals(dragInfo.reciever, allPlayersModel.getPlayer(dragInfo.name).getRating())
+
                     registerDrop(player.name)
                     adjustFormation(dragInfo.reciever, zoneModels[dragInfo.reciever].length)
                     scheme.hideHint()
+
                     dragInfo.clear()
                 }
             }
+        }
+    }
+
+    function updateTotals(zone, offset) {
+        if (zone === PitchZones.leftHalf)
+        {
+            scheme.homeTotal = offset
+            zoneModels[PitchZones.leftHalf].forEach(function(element){
+                scheme.homeTotal += allPlayersModel.getPlayer(element).getRating()
+            })
+        }
+        else if (zone === PitchZones.leftHalf)
+        {
+            scheme.awayTotal = offset
+            zoneModels[PitchZones.leftHalf].forEach(function(element){
+                scheme.awayTotal += allPlayersModel.getPlayer(element).getRating()
+            })
         }
     }
 }

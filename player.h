@@ -21,6 +21,8 @@ public:
     Player(const QString& name, const QUrl photoUrl = m_defaultPhoto);
     Player(const Player& p);
     Player& operator =(const Player& p);
+
+    Q_INVOKABLE int getRating() const;
 };
 
 using PlayerRef = QString;

@@ -49,5 +49,7 @@
         <file>qml/NextGame/qmldir</file>
         <file>img/split.png</file>
         <file>img/bg.jpg</file>
+        <file>img/shirt.png</file>
+        <file>qml/ColoredImage.qml</file>
     </qresource>
 </RCC>

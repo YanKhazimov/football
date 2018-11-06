@@ -18,4 +18,9 @@ Player &Player::operator =(const Player &p)
     return *this;
 }
 
+int Player::getRating() const
+{
+    return 3211;
+}
+
 const QUrl Player::m_defaultPhoto("qrc:/img/playerImages/default.png");
