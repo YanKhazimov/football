@@ -94,6 +94,7 @@ Rectangle {
                 console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
                 console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
 
+                parent.rotation += 720 - parent.rotation % 720
             }
         }
 
