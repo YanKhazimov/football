@@ -93,14 +93,18 @@ Rectangle {
                 console.log("zoneModels[PitchZones.leftHalf]", zoneModels[PitchZones.leftHalf])
                 console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
                 console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
+
             }
         }
+
+        Behavior on rotation { PropertyAnimation { duration: 500 } }
     }
 
     ColorOverlay {
         source: splitButton
         anchors.fill: splitButton
         color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
+        rotation: splitButton.rotation
         cached: true
     }
 
