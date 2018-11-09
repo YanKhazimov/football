@@ -76,13 +76,15 @@ Rectangle {
         }
     }
 
-    Image {
+    ColoredImage {
         id: splitButton
         width: 2*Sizes.elementButtonSize.width
         height: 2*Sizes.elementButtonSize.height
         x: scheme.pitchCenterCoords.x - width/2
         y: scheme.pitchCenterCoords.y - height/2
         source: "qrc:/img/split.png"
+        color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
+        Behavior on rotation { PropertyAnimation { duration: 500 } }
 
         MouseArea {
             id: mouseArea
@@ -97,39 +99,7 @@ Rectangle {
                 parent.rotation += 720 - parent.rotation % 720
             }
         }
-
-        Behavior on rotation { PropertyAnimation { duration: 500 } }
     }
-
-    ColorOverlay {
-        source: splitButton
-        anchors.fill: splitButton
-        color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
-        rotation: splitButton.rotation
-        cached: true
-    }
-
-//    ColoredImage {
-//        id: splitButton
-//        width: 2*Sizes.elementButtonSize.width
-//        height: 2*Sizes.elementButtonSize.height
-//        x: scheme.pitchCenterCoords.x - width/2
-//        y: scheme.pitchCenterCoords.y - height/2
-//        source: "qrc:/img/split.png"
-//        color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
-
-//        MouseArea {
-//            id: mouseArea
-//            anchors.fill: parent
-//            hoverEnabled: true
-//            onClicked: {
-//                console.log("zoneModels[PitchZones.bench]", zoneModels[PitchZones.bench])
-//                console.log("zoneModels[PitchZones.leftHalf]", zoneModels[PitchZones.leftHalf])
-//                console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
-//                console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
-//            }
-//        }
-//    }
 
     QtObject {
         id: dragInfo
@@ -174,9 +144,8 @@ Rectangle {
                 {
                     Drag.drop()
 
-                    updateTotals(dragInfo.reciever, allPlayersModel.getPlayer(dragInfo.name).getRating())
-
                     registerDrop(player.name)
+                    updateTotals(dragInfo.reciever, 0)
                     adjustFormation(dragInfo.reciever, zoneModels[dragInfo.reciever].length)
                     scheme.hideHint()
 
