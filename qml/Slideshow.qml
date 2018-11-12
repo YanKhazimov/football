@@ -79,7 +79,7 @@ Rectangle {
             theme: root.theme
         }
 
-        Image {
+        ColoredImage {
             id: playPause
             width: Sizes.elementButtonSize.width
             height: Sizes.elementButtonSize.height
@@ -89,6 +89,7 @@ Rectangle {
                 horizontalCenter: parent.horizontalCenter
             }
             source: slideFlickTimer.running ? "qrc:/img/pause.png" : "qrc:/img/play.png"
+            color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.highlightColor
 
             MouseArea {
                 id: mouseArea
@@ -100,35 +101,6 @@ Rectangle {
                 }
             }
         }
-
-        ColorOverlay {
-            anchors.fill: playPause
-            source: playPause
-            color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.highlightColor
-        }
-
-//        ColoredImage {
-//            id: playPause
-//            width: Sizes.elementButtonSize.width
-//            height: Sizes.elementButtonSize.height
-//            anchors {
-//                top: parent.top
-//                topMargin: Sizes.featuredStats.smallMargin
-//                horizontalCenter: parent.horizontalCenter
-//            }
-//            source: slideFlickTimer.running ? "qrc:/img/pause.png" : "qrc:/img/play.png"
-//            color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.highlightColor
-
-//            MouseArea {
-//                id: mouseArea
-//                hoverEnabled: true
-//                anchors.fill: parent
-//                onClicked: {
-//                    slideFlickTimer.running = !slideFlickTimer.running
-//                    slideFlickTimer.triggeredOnStart = true
-//                }
-//            }
-//        }
 
         ListView {
             id: listView

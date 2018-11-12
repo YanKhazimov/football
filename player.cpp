@@ -1,7 +1,7 @@
 #include "player.h"
 
-Player::Player(const QString &name, const QUrl photoUrl)
-    : m_name(name), m_photo(photoUrl)
+Player::Player(const QString &name, QObject* parent, const QUrl photoUrl)
+    : m_name(name), m_photo(photoUrl), QObject(parent)
 {
 }
 

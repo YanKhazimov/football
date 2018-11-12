@@ -13,7 +13,8 @@ set (HEADERS
     gamesmodel.h
     player.h
     globalstatsmodel.h
-    statsmodel.h)
+    statsmodel.h
+    teamsplitter.h)
 
 set (SRC
     playerbase.cpp
@@ -22,13 +23,11 @@ set (SRC
     gamesmodel.cpp
     player.cpp
     globalstatsmodel.cpp
-    statsmodel.cpp)
+    statsmodel.cpp
+    teamsplitter.cpp)
 
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 
 add_executable(${PROJECT_NAME} "main.cpp" "qml.qrc" ${SRC})
-
-#target_include_directories(untitled PUBLIC include)
-
 
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Quick)

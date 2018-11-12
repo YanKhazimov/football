@@ -51,5 +51,6 @@
         <file>img/bg.jpg</file>
         <file>img/shirt.png</file>
         <file>qml/ColoredImage.qml</file>
+        <file>img/balance.png</file>
     </qresource>
 </RCC>

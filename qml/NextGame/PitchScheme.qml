@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import "."
-//import ".."
+import ".."
 import "qrc:/qml/visualStyles"
 
 Rectangle {
@@ -81,26 +81,12 @@ Rectangle {
         height: pitchScheme.height - bench.height
         anchors.bottom: parent.bottom
 
-        Image {
+        ColoredImage {
             id: background
             source: "qrc:/img/bg.jpg"
             anchors.fill: parent
-            fillMode: Image.TileHorizontally
-        }
-
-        ColorOverlay {
-            source: background
-            anchors.fill: background
             color: Qt.rgba(0.2, 0.2, 0.2, 0.7)
         }
-
-//        ColoredImage {
-//            id: background
-//            source: "qrc:/img/bg.jpg"
-//            anchors.fill: parent
-//            //fillMode: Image.TileHorizontally
-//            color: Qt.rgba(0.2, 0.2, 0.2, 0.7)
-//        }
 
         Rectangle {
             id: pitchLeftHalf
@@ -136,9 +122,10 @@ Rectangle {
                 onExited: pitchScheme.dragExit(PitchZones.leftHalf)
             }
 
-            Image {
+            ColoredImage {
                 id: homeShirt
                 source: "qrc:/img/shirt.png"
+                color: "white"
                 anchors {
                     top: parent.top
                     topMargin: Sizes.featuredStats.smallMargin
@@ -152,12 +139,6 @@ Rectangle {
                     font.family: Themes.fontFamily
                     anchors.centerIn: parent
                 }
-            }
-
-            ColorOverlay {
-                source: homeShirt
-                anchors.fill: homeShirt
-                color: "white"
             }
 
             Text {
@@ -207,9 +188,10 @@ Rectangle {
                 onExited: pitchScheme.dragExit(PitchZones.rightHalf)
             }
 
-            Image {
+            ColoredImage {
                 id: awayShirt
                 source: "qrc:/img/shirt.png"
+                color: "white"
                 anchors {
                     top: parent.top
                     topMargin: Sizes.featuredStats.smallMargin
@@ -223,12 +205,6 @@ Rectangle {
                     font.family: Themes.fontFamily
                     anchors.centerIn: parent
                 }
-            }
-
-            ColorOverlay {
-                source: awayShirt
-                anchors.fill: awayShirt
-                color: "white"
             }
 
             Text {

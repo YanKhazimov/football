@@ -6,8 +6,9 @@
 #include <QMap>
 #include "playersmodel.h"
 
-class Playerbase
+class Playerbase: public QObject
 {
+    Q_OBJECT
     QMap<PlayerRef, Player*> m_base;
 
 public:

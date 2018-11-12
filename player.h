@@ -17,8 +17,7 @@ class Player : public QObject
     static const QUrl m_defaultPhoto;
 
 public:
-    Player();
-    Player(const QString& name, const QUrl photoUrl = m_defaultPhoto);
+    Player(const QString& name, QObject* parent = nullptr, const QUrl photoUrl = m_defaultPhoto);
     Player(const Player& p);
     Player& operator =(const Player& p);
 

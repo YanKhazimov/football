@@ -15,33 +15,18 @@ Item {
     function update(show)
     {
         image.source = show ? root.img : ""
-        overlay.visible = show
+        image.visible = show
         mouseArea.enabled = show
     }
 
-    Image {
+    ColoredImage {
         id: image
         anchors.centerIn: parent
-        source: root.img
         width: Sizes.elementButtonSize.width
         height: Sizes.elementButtonSize.height
-    }
-
-    ColorOverlay {
-        id: overlay
-        anchors.fill: image
-        source: image
+        source: root.img
         color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.highlightColor
     }
-
-//    ColoredImage {
-//        id: image
-//        anchors.centerIn: parent
-//        width: Sizes.elementButtonSize.width
-//        height: Sizes.elementButtonSize.height
-//        source: root.img
-//        color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.highlightColor
-//    }
 
     MouseArea {
         id: mouseArea

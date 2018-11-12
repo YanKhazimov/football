@@ -16,8 +16,9 @@ Rectangle {
         var startingModel = []
         for (var i = 0; i < allPlayersModel.length; ++i)
         {
-            if (allPlayersModel.getPlayer(i) !== null)
-                startingModel.push(allPlayersModel.getPlayer(i).name)
+            var player = allPlayersModel.getPlayer(i)
+            if (player !== null)
+                startingModel.push(player.name)
         }
         zoneModels = [ startingModel, [], [], [] ]
     }
@@ -71,18 +72,26 @@ Rectangle {
             hideHint()
             adjustFormation(zone, zoneModels[zone].length)
 
-            var offset = dragInfo.sender === zone ? (-1) * allPlayersModel.getPlayer(dragInfo.name).getRating() : 0
             updateTotals(zone, 0)
         }
     }
 
+    function split() {
+        teamSplitter.split(zoneModels[PitchZones.leftHalf],
+                           zoneModels[PitchZones.rightHalf],
+                           zoneModels[PitchZones.center])
+
+        console.log("teamSplitter.homeRoster", teamSplitter.homeRoster)
+        console.log("teamSplitter.awayRoster", teamSplitter.awayRoster)
+    }
+
     ColoredImage {
         id: splitButton
-        width: 2*Sizes.elementButtonSize.width
-        height: 2*Sizes.elementButtonSize.height
+        width: 4 * Sizes.elementButtonSize.width
+        height: 4 * Sizes.elementButtonSize.height
         x: scheme.pitchCenterCoords.x - width/2
         y: scheme.pitchCenterCoords.y - height/2
-        source: "qrc:/img/split.png"
+        source: "qrc:/img/balance.png"
         color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
         Behavior on rotation { PropertyAnimation { duration: 500 } }
 
@@ -91,12 +100,13 @@ Rectangle {
             anchors.fill: parent
             hoverEnabled: true
             onClicked: {
-                console.log("zoneModels[PitchZones.bench]", zoneModels[PitchZones.bench])
-                console.log("zoneModels[PitchZones.leftHalf]", zoneModels[PitchZones.leftHalf])
-                console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
-                console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
+//                console.log("zoneModels[PitchZones.bench]", zoneModels[PitchZones.bench])
+//                console.log("zoneModels[PitchZones.leftHalf]", zoneModels[PitchZones.leftHalf])
+//                console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
+//                console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
 
                 parent.rotation += 720 - parent.rotation % 720
+                split()
             }
         }
     }
@@ -163,10 +173,10 @@ Rectangle {
                 scheme.homeTotal += allPlayersModel.getPlayer(element).getRating()
             })
         }
-        else if (zone === PitchZones.leftHalf)
+        else if (zone === PitchZones.rightHalf)
         {
             scheme.awayTotal = offset
-            zoneModels[PitchZones.leftHalf].forEach(function(element){
+            zoneModels[PitchZones.rightHalf].forEach(function(element){
                 scheme.awayTotal += allPlayersModel.getPlayer(element).getRating()
             })
         }

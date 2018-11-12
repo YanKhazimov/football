@@ -9,6 +9,7 @@
 #include "playerbase.h"
 #include "playerstatsmodel.h"
 #include "globalstatsmodel.h"
+#include "teamsplitter.h"
 
 Q_DECLARE_METATYPE(Player*)
 Q_DECLARE_METATYPE(PlayersModel)
@@ -41,9 +42,14 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();
+
     ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(featuredStatsModel));
     ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
     ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
+
+    TeamSplitter ts;
+    ctxt->setContextProperty("teamSplitter", &ts);
+
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
