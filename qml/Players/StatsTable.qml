@@ -5,7 +5,7 @@ import "qrc:/qml/visualStyles"
 
 TableView {
     id: root
-    property QtObject theme: null
+    property var theme: null
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
     Component.onCompleted: {

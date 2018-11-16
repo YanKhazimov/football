@@ -20,7 +20,10 @@ Player &Player::operator =(const Player &p)
 
 int Player::getRating() const
 {
-    return 3211;
+    int rating = 0;
+    for(const QChar c: m_name)
+        rating += c.toLatin1();
+    return rating;
 }
 
 const QUrl Player::m_defaultPhoto("qrc:/img/playerImages/default.png");

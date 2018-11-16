@@ -4,7 +4,7 @@ import "qrc:/qml/visualStyles"
 
 Rectangle {
     id: root
-    property QtObject theme: null
+    property var theme: null
     property var points: null
     readonly property int offset: Sizes.featuredStats.margin
     readonly property int __value: 0

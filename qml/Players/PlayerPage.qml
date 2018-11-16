@@ -8,12 +8,8 @@ import ".."
 Rectangle {
     id: root
     color: theme.primaryFillColor
-    property QtObject theme: null
+    property var theme: null
     property Player player: null
-
-    TiledBackground {
-        sourceImg: "qrc:/img/ball.png"
-    }
 
     function reset(newPlayer) {
         player = newPlayer

@@ -8,7 +8,7 @@ Rectangle {
     id: root
     anchors.fill: parent
 
-    property QtObject theme: null
+    property var theme: null
     property var allPlayersModel: null
     property var zoneModels: []
 
@@ -24,6 +24,9 @@ Rectangle {
     }
 
     function adjustFormation(zone, newSize) {
+        if (newSize === undefined)
+            newSize = zoneModels[zone].length
+
         for (var i = 0; i < playerHandles.count; ++i)
         {
             var name = playerHandles.itemAt(i).player.name
@@ -83,6 +86,17 @@ Rectangle {
 
         console.log("teamSplitter.homeRoster", teamSplitter.homeRoster)
         console.log("teamSplitter.awayRoster", teamSplitter.awayRoster)
+
+        zoneModels[PitchZones.leftHalf] = teamSplitter.homeRoster
+        zoneModels[PitchZones.rightHalf] = teamSplitter.awayRoster
+        zoneModels[PitchZones.center] = []
+
+        adjustFormation(PitchZones.leftHalf)
+        adjustFormation(PitchZones.rightHalf)
+        adjustFormation(PitchZones.center)
+
+        updateTotals(PitchZones.leftHalf)
+        updateTotals(PitchZones.rightHalf)
     }
 
     ColoredImage {
@@ -107,6 +121,11 @@ Rectangle {
 
                 parent.rotation += 720 - parent.rotation % 720
                 split()
+
+                console.log("zoneModels[PitchZones.bench]", zoneModels[PitchZones.bench])
+                console.log("zoneModels[PitchZones.leftHalf]", zoneModels[PitchZones.leftHalf])
+                console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
+                console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
             }
         }
     }
@@ -166,6 +185,9 @@ Rectangle {
     }
 
     function updateTotals(zone, offset) {
+        if (offset === undefined)
+            offset = 0
+
         if (zone === PitchZones.leftHalf)
         {
             scheme.homeTotal = offset

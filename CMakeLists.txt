@@ -13,7 +13,6 @@ set (HEADERS
     gamesmodel.h
     player.h
     globalstatsmodel.h
-    statsmodel.h
     teamsplitter.h)
 
 set (SRC
@@ -23,7 +22,6 @@ set (SRC
     gamesmodel.cpp
     player.cpp
     globalstatsmodel.cpp
-    statsmodel.cpp
     teamsplitter.cpp)
 
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)

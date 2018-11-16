@@ -7,7 +7,7 @@ Rectangle {
     property string title: "null"
     property string descr: "null"
     property var statGroupsModel: null
-    property QtObject theme: null
+    property var theme: null
 
     color: theme.primaryFillColor
 

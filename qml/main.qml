@@ -25,13 +25,16 @@ QQC2.ApplicationWindow {
     minimumHeight: featuredStats.height + contents.height
     minimumWidth: 600//featuredStats.minWidth
 
+    property var theme: null
+
     Slideshow {
         id: featuredStats
         anchors { top: window.top; horizontalCenter: parent.horizontalCenter }
         width: window.width
 
         title: "FEATURED STATS"
-        theme: Themes.theme1
+        theme: window.theme
+
         model: featuredStatsModel
     }
 
@@ -41,7 +44,32 @@ QQC2.ApplicationWindow {
         height: window.height - featuredStats.height
         width: window.width
 
-        theme: Themes.theme1
+        theme: window.theme
+    }
+
+    Column {
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: Sizes.featuredStats.margin
+            left: parent.left
+            leftMargin: Sizes.featuredStats.margin
+        }
+        spacing: 0
+
+        Image {
+            id: languageSwitcher
+            source: "qrc:/img/lang_en.png"
+            width: Sizes.elementButtonSize.width
+            height: Sizes.elementButtonSize.height
+            antialiasing: true
+        }
+
+        ThemeSwitcher {
+            id: themeSwitcher
+            width: Sizes.elementButtonSize.width
+            height: Sizes.elementButtonSize.height
+            onThemeChanged: window.theme = theme
+        }
     }
 
     Grid

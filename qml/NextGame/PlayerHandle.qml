@@ -5,7 +5,7 @@ import "qrc:/qml/visualStyles"
 Rectangle {
     property Player player: null
 
-    property QtObject theme: null
+    property var theme: null
     width: Sizes.playerHandleWidth
     height: Sizes.playerHandleWidth + Sizes.playerHandleRatingHeight
 

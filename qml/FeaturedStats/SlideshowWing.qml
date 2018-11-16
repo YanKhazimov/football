@@ -8,7 +8,7 @@ Item {
     height: parent.height
     width: Sizes.featuredStats.wingShare * parent.width
     property string img: ""
-    property QtObject theme: null
+    property var theme: null
 
     signal clicked()
 

@@ -3,7 +3,7 @@ import "qrc:/qml/visualStyles"
 
 Item {
     id: flowRect
-    property QtObject theme: null
+    property var theme: null
     readonly property real groupSpacerMultiplier: 1.0
     readonly property real imgSpacerMultiplier: 0.1
     readonly property real maxFittingImageWidth: width / elemsAsImages()

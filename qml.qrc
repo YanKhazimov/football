@@ -52,5 +52,7 @@
         <file>img/shirt.png</file>
         <file>qml/ColoredImage.qml</file>
         <file>img/balance.png</file>
+        <file>img/lock.png</file>
+        <file>qml/ThemeSwitcher.qml</file>
     </qresource>
 </RCC>

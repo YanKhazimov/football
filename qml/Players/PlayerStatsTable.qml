@@ -7,7 +7,7 @@ import "qrc:/qml/visualStyles"
 
 TableView {
     id: root
-    property QtObject theme: null
+    property var theme: null
     headerVisible: false
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 

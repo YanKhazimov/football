@@ -8,7 +8,7 @@ Rectangle {
     id: pitchScheme
     anchors.fill: parent
 
-    property QtObject theme: null
+    property var theme: null
     property point pitchCenterCoords: Qt.point(pitchCenterArea.x + pitchCenterArea.width/2,
                                                bench.height + pitchCenterArea.y + pitchCenterArea.height/2)
     property real teamAngleDiff: Math.PI / 10 // should depend on handle size

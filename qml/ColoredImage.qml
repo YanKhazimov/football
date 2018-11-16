@@ -7,7 +7,6 @@ Item {
     property color color: "transparent"
     width: img.sourceSize.width
     height: img.sourceSize.height
-    property var image: img
 
     Image {
         id: img

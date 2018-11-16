@@ -4,8 +4,8 @@ import "qrc:/qml/visualStyles"
 Rectangle {
     id: root
     property string name: ""
-    property QtObject theme: null
-    property int defaultWidth: 128
+    property var theme: null
+    property int defaultWidth: 128 + 32
     readonly property real heightMultipilier: 1.5
     property bool selected: false
 
@@ -60,10 +60,24 @@ Rectangle {
     }
 
     Text {
+        id: text
         anchors.centerIn: parent
         text: root.name
         color: theme.textColor
         font.pixelSize: Sizes.fontPixelSize
         font.family: Themes.fontFamily
+    }
+
+    ColoredImage {
+        source: "qrc:/img/lock.png"
+        visible: !root.enabled
+        anchors {
+            left: text.right
+            leftMargin: Sizes.featuredStats.smallMargin
+            verticalCenter: parent.verticalCenter
+        }
+        height: parent.height/2
+        width: height
+        color: "white"
     }
 }

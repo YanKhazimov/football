@@ -6,7 +6,7 @@ import "FeaturedStats"
 Rectangle {
     id: root
     property string title: ""
-    property QtObject theme: null
+    property var theme: null
     property var model: null
     width: parent.width
     height: 2 + headerText.height + separator.height + 10 + playPause.height + getContentHeight() + 10 + 2

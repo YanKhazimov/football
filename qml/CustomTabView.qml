@@ -9,38 +9,12 @@ import "."
 
 Rectangle {
     id: root
-    property QtObject theme: null
+    property var theme: null
     color: root.theme.primaryFillColor
 
     TiledBackground {
         sourceImg: "qrc:/img/ball.png"
-    }
-
-    Column {
-        anchors {
-            bottom: parent.bottom
-            bottomMargin: Sizes.featuredStats.margin
-            left: parent.left
-            leftMargin: Sizes.featuredStats.margin
-        }
-        spacing: 0
-
-        Image {
-            id: languageSwitcher
-            source: "qrc:/img/lang_en.png"
-            width: Sizes.elementButtonSize.width
-            height: Sizes.elementButtonSize.height
-            antialiasing: true
-        }
-
-        Image {
-            id: themeBall
-
-            source: "qrc:/img/colorball.png"
-            width: Sizes.elementButtonSize.width
-            height: Sizes.elementButtonSize.height
-            antialiasing: true
-        }
+        baseColor: theme.primaryFillColor
     }
 
     RowLayout {
@@ -67,7 +41,7 @@ Rectangle {
                     }
                 }
 
-                model: ["Players", "Calendar", "Next Game"]
+                model: ["Players", "Next Game", "Calendar"]
                 ContentTab {
                     name: modelData
                     Layout.topMargin: index === 0 ? height : 0
@@ -81,6 +55,7 @@ Rectangle {
                         menus.select(model.index)
                         content.currentIndex = model.index
                     }
+                    enabled: model.index < 2
                 }
 
                 Component.onCompleted: itemAt(content.currentIndex).extend(false)
@@ -125,7 +100,7 @@ Rectangle {
                         Connections {
                             target: ratingsTable.selection
                             onSelectionChanged: ratingsTable.selection.forEach( function(rowIndex) {
-                                var player = globalStatsModel.getPlayer("p1")//featuredStatsModel[1].getQueryResult()[rowIndex].player
+                                var player = globalStatsModel.getPlayer(rowIndex)
                                 playerPage.reset(player)
                             })
                         }
@@ -137,13 +112,13 @@ Rectangle {
                     }
                 }
                 Tab {
-                    Rectangle { color: "blue" }
-                }
-                Tab {
                     GameComposer {
                         allPlayersModel: globalStatsModel
                         theme: root.theme
                     }
+                }
+                Tab {
+                    Rectangle { color: "blue" }
                 }
             }
         }
