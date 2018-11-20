@@ -28,31 +28,36 @@ int main(int argc, char *argv[])
     Playerbase playerbase;
 
     GamesModel gm;
+    GlobalStatsModel gsm;
+
+    gsm.setSourceModel(&gm);
+
+
     gm.init();
 
-    PlayersModel pm(gm);
+//    PlayersModel pm(gm);
 
-    QList<QObject*> featuredStatsModel;
-    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "ON FIRE", "Longest win streak");
-    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
-    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
+//    QList<QObject*> featuredStatsModel;
+//    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "ON FIRE", "Longest win streak");
+//    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
+//    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
 
-    PlayerStatsModel playerStatsModel;
-    GlobalStatsModel globalStatsModel(pm, &playerbase);
+//    PlayerStatsModel playerStatsModel;
+//    GlobalStatsModel globalStatsModel(pm, &playerbase);
 
-    QQmlApplicationEngine engine;
-    QQmlContext* ctxt = engine.rootContext();
+//    QQmlApplicationEngine engine;
+//    QQmlContext* ctxt = engine.rootContext();
 
-    ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(featuredStatsModel));
-    ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
-    ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
+//    ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(featuredStatsModel));
+//    ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
+//    ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
 
-    TeamSplitter ts;
-    ctxt->setContextProperty("teamSplitter", &ts);
+//    TeamSplitter ts;
+//    ctxt->setContextProperty("teamSplitter", &ts);
 
-    engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-    if (engine.rootObjects().isEmpty())
-        return -1;
+//    engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+//    if (engine.rootObjects().isEmpty())
+//        return -1;
 
     return app.exec();
 }

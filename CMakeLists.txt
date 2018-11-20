@@ -13,7 +13,8 @@ set (HEADERS
     gamesmodel.h
     player.h
     globalstatsmodel.h
-    teamsplitter.h)
+    teamsplitter.h
+    dataroles.h)
 
 set (SRC
     playerbase.cpp
