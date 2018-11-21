@@ -130,24 +130,51 @@ void GlobalStatsModel::resetModel()
     endResetModel();
 }
 
+int getRatingChange(uint scoreDiff, int totalRating1, int totalRating2)
+{
+    return scoreDiff / 3 * (totalRating1 - totalRating2);
+}
+
 void GlobalStatsModel::resetData()
 {
     m_players.clear();
+    QList<PlayerRef> allPlayers = m_base->listAllPlayers();
+    for (PlayerRef p: allPlayers)
+    {
+        m_players.insert(p, {PlayerGameStats(m_base->getPlayer(p)->getInitialRating(), false)});
+    }
 
     for (int i = 0; i < m_sourceModel->rowCount(); ++i)
     {
-        QModelIndex sourceItem = m_sourceModel->index(i, 0);
-        QVector<PlayerRef> players = sourceItem.data(DataRoles::DataRole::Winners).value<QVector<PlayerRef>();
-        qDebug() << "Winners " << players;
-        for (PlayerRef player: players)
+        QModelIndex sourceGameIndex = m_sourceModel->index(i, 0);
+        int scoreDiff = sourceGameIndex.data(DataRoles::DataRole::ScoreDiff).toInt();
+        QVector<PlayerRef> hometeam = sourceGameIndex.data(DataRoles::DataRole::Hometeam).value<QVector<PlayerRef>>();
+        int hometeamTotal = 0;
+        for (PlayerRef playerRef: hometeam)
         {
-            if (!m_players.contains(player))
-            {
-                m_players.insert(player, PlayerGameStats());
-                Player* p = m_base->getPlayer(player);
-                p->getInitialRating();
-                insertRow(rowCount());
-            }
+            hometeamTotal += m_players[playerRef].back().changedRating;
+        }
+        QVector<PlayerRef> awayteam = sourceGameIndex.data(DataRoles::DataRole::Awayteam).value<QVector<PlayerRef>>();
+        int awayteamTotal = 0;
+        for (PlayerRef playerRef: awayteam)
+        {
+            awayteamTotal += m_players[playerRef].back().changedRating;
+        }
+
+        int ratingChange = getRatingChange(scoreDiff, hometeamTotal, awayteamTotal);
+
+        for (PlayerRef playerRef: hometeam)
+        {
+            m_players[playerRef].push_back(PlayerGameStats(ratingChange, true));
+        }
+        for (PlayerRef playerRef: awayteam)
+        {
+            m_players[playerRef].push_back(PlayerGameStats(-ratingChange, true));
         }
     }
+}
+
+GlobalStatsModel::PlayerGameStats::PlayerGameStats(int rating, bool part)
+    : changedRating(rating), participation(part)
+{
 }

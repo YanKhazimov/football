@@ -11,8 +11,9 @@ public:
     enum DataRole
     {
         Id=Qt::UserRole + 1,
-        Winners,
-        RatingChange,
+        Hometeam,
+        Awayteam,
+        ScoreDiff,
         DataRoleEnd = Qt::UserRole + 2000
     };
     Q_ENUM(DataRole)

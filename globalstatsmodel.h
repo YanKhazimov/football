@@ -31,14 +31,14 @@ public:
         WinsLosses,
         Progress,
         Reliability
-    };
+    };/*
     enum Stats {
         PlayerName = 0,
         Rating,
         WinsLosses,
         Progress,
         Reliability
-    };
+    };*/
     virtual QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE Player* getPlayer(QString name);
@@ -51,12 +51,15 @@ private:
     void resetData();
 
     struct PlayerGameStats {
-        int ratingChange = 0;
-        bool participation = false;
+        int changedRating;
+        bool participation;
+
+        PlayerGameStats() = default;
+        PlayerGameStats(int rating, bool part);
     };
 
     Playerbase* m_base;
-    QMap<PlayerRef, PlayerGameStats> m_players;
+    QMap<PlayerRef, QVector<PlayerGameStats>> m_players;
     QAbstractItemModel *m_sourceModel;
 };
 

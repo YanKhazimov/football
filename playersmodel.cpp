@@ -12,7 +12,7 @@ PlayersModel::PlayersModel(const PlayersModel &pb)
 PlayersModel::PlayersModel(const GamesModel &gamesModel)
 {
     for (auto game: gamesModel.getGames())
-        for (auto player: game->getAllPlayers())
+        for (auto player: game->getAllParticipants())
             if (!m_players.contains(player))
                 m_players.append(player);
 }

@@ -1,33 +1,28 @@
 #include "gamesmodel.h"
 
-Game::Game(QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam, QPair<uint, uint> score)
+Game::Game(QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam, QPair<int, int> score)
     : m_date(date), m_hometeam(hometeam), m_awayteam(awayteam), m_score(score)
 {
 }
 
-QVector<PlayerRef> Game::getAllPlayers()
+QVector<PlayerRef> Game::getAllParticipants()
 {
     return m_hometeam + m_awayteam;
 }
 
-const QVector<PlayerRef> &Game::getWinners() const
+QVector<PlayerRef> Game::getHometeam() const
 {
-    if (m_score.first > m_score.second)
-        return m_hometeam;
-    else if (m_score.second > m_score.first)
-        return m_awayteam;
-    else
-        return m_emptyteam;
+    return m_hometeam;
 }
 
-const QVector<PlayerRef> &Game::getLosers() const
+QVector<PlayerRef> Game::getAwayteam() const
 {
-    if (m_score.first > m_score.second)
-        return m_awayteam;
-    else if (m_score.second > m_score.first)
-        return m_hometeam;
-    else
-        return m_emptyteam;
+    return m_awayteam;
+}
+
+QPair<int, int> Game::getScore() const
+{
+    return m_score;
 }
 
 GamesModel::GamesModel()
@@ -64,10 +59,20 @@ QVariant GamesModel::data(const QModelIndex &index, int role) const
     {
         return QVariant::fromValue(m_games[index.row()]);
     }
-    else if (role == DataRoles::DataRole::Winners)
+    else if (role == DataRoles::DataRole::ScoreDiff)
     {
         Game* game = m_games[index.row()];
-        game->getWinners();
+        return QVariant::fromValue(game->getScore());
+    }
+    else if (role == DataRoles::DataRole::Hometeam)
+    {
+        Game* game = m_games[index.row()];
+        return QVariant::fromValue(game->getHometeam());
+    }
+    else if (role == DataRoles::DataRole::Awayteam)
+    {
+        Game* game = m_games[index.row()];
+        return QVariant::fromValue(game->getAwayteam());
     }
 
     return QVariant();

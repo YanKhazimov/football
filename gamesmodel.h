@@ -13,15 +13,15 @@ class Game : public QObject
     QDate m_date;
     QVector<PlayerRef> m_hometeam;
     QVector<PlayerRef> m_awayteam;
-    QVector<PlayerRef> m_emptyteam;
-    QPair<uint, uint> m_score;
+    QPair<int, int> m_score; // home, away
 
 public:
     Game() = delete;
-    Game(QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam, QPair<uint, uint> score);
-    QVector<PlayerRef> getAllPlayers();
-    const QVector<PlayerRef>& getWinners() const;
-    const QVector<PlayerRef>& getLosers() const;
+    Game(QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam, QPair<int, int> score);
+    QVector<PlayerRef> getAllParticipants();
+    QVector<PlayerRef> getHometeam() const;
+    QVector<PlayerRef> getAwayteam() const;
+    QPair<int, int> getScore() const;
 };
 
 class GamesModel : public QAbstractListModel

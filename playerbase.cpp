@@ -87,6 +87,11 @@ Player *Playerbase::getPlayer(PlayerRef id) const
     return m_base.value(id);
 }
 
+QList<PlayerRef> Playerbase::listAllPlayers() const
+{
+    return m_base.keys();
+}
+
 PlayerStat::PlayerStat(Player *player, QString statValue)
     : m_player(player), m_statValue(statValue)
 {
