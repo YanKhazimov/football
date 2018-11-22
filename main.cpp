@@ -25,15 +25,15 @@ int main(int argc, char *argv[])
 
     qmlRegisterUncreatableType<Player>("com.abc.abclib", 1, 0, "Player", "");
 
-    Playerbase playerbase;
-
     GamesModel gm;
-    GlobalStatsModel gsm;
+    gm.init();
+
+    Playerbase playerbase;
+    GlobalStatsModel gsm(&playerbase);
 
     gsm.setSourceModel(&gm);
 
 
-    gm.init();
 
 //    PlayersModel pm(gm);
 

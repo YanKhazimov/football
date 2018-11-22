@@ -25,6 +25,11 @@ QPair<int, int> Game::getScore() const
     return m_score;
 }
 
+QDate Game::getDate() const
+{
+    return m_date;
+}
+
 GamesModel::GamesModel()
 {
 }
@@ -48,21 +53,21 @@ bool GamesModel::init()
 
 int GamesModel::rowCount(const QModelIndex &parent) const
 {
-    Q_ASSERT(parent == QModelIndex());
-    return static_cast<int>(m_games.size());
+    return parent.isValid() ? 0 : static_cast<int>(m_games.size());
 }
 
 QVariant GamesModel::data(const QModelIndex &index, int role) const
 {
     Q_ASSERT(index.parent() == QModelIndex() && index != QModelIndex());
-    if (role == Qt::DisplayRole)
+    if (role == DataRoles::DataRole::GameDate)
     {
-        return QVariant::fromValue(m_games[index.row()]);
+        return QVariant::fromValue(m_games[index.row()]->getDate());
     }
     else if (role == DataRoles::DataRole::ScoreDiff)
     {
         Game* game = m_games[index.row()];
-        return QVariant::fromValue(game->getScore());
+        auto score = game->getScore();
+        return QVariant::fromValue(score.first - score.second);
     }
     else if (role == DataRoles::DataRole::Hometeam)
     {

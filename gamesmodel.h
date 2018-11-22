@@ -22,6 +22,7 @@ public:
     QVector<PlayerRef> getHometeam() const;
     QVector<PlayerRef> getAwayteam() const;
     QPair<int, int> getScore() const;
+    QDate getDate() const;
 };
 
 class GamesModel : public QAbstractListModel
