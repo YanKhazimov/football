@@ -3,6 +3,7 @@
 
 #include <QAbstractProxyModel>
 #include <set>
+#include <map>
 #include "playersmodel.h"
 #include "playerbase.h"
 #include "dataroles.h"
@@ -21,6 +22,8 @@ public:
     Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     Q_INVOKABLE virtual int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     Q_INVOKABLE virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+    Q_INVOKABLE virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
+
 
     virtual void setSourceModel(QAbstractItemModel *sourceModel);// Q_DECL_OVERRIDE;
 //    Q_INVOKABLE virtual QModelIndex mapToSource(const QModelIndex &proxyIndex) const Q_DECL_OVERRIDE;
@@ -31,17 +34,18 @@ public:
 
     using Stat = QPair<QString, QString>;
 
-    enum Roles {
-        PlayerName = Qt::UserRole + 1,
-        Rating,
-        WinsLosses,
-        Progress,
-        Reliability
-    };
+//    enum Roles {
+//        PlayerName = Qt::UserRole + 1, //257
+//        Rating,
+//        WinsLosses,
+//        Progress,
+//        Dedication
+//    };
     virtual QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE Player* getPlayer(QString name);
     Q_INVOKABLE Player* getPlayer(int idx);
+    Q_INVOKABLE bool selectRow(int row);
 
 private slots:
     void resetModel();
@@ -61,7 +65,8 @@ private:
     QAbstractItemModel *m_sourceModel;
 
     QVector<QDate> m_dates;
-    QMap<PlayerRef, QVector<PlayerGameStats>> m_players;
+    std::map<PlayerRef, QVector<PlayerGameStats>> m_players;
+    int m_selectedPlayerIndex = -1;
 };
 
 #endif // GLOBALSTATSMODEL_H

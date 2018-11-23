@@ -6,6 +6,7 @@ import "Players"
 import "NextGame"
 import "qrc:/qml/visualStyles"
 import "."
+import com.abc.abclib 1.0
 
 Rectangle {
     id: root
@@ -82,7 +83,8 @@ Rectangle {
 
                         StatsTable {
                             id: ratingsTable
-                            model: globalStatsModel
+                            property GlobalStatsModel presenter: globalStatsModel
+                            model: presenter
                             theme: root.theme
 
                             Layout.preferredWidth: parent.width / 2
@@ -100,6 +102,7 @@ Rectangle {
                         Connections {
                             target: ratingsTable.selection
                             onSelectionChanged: ratingsTable.selection.forEach( function(rowIndex) {
+                                globalStatsModel.selectRow(rowIndex)
                                 var player = globalStatsModel.getPlayer(rowIndex)
                                 playerPage.reset(player)
                             })

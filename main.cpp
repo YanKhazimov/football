@@ -24,14 +24,15 @@ int main(int argc, char *argv[])
     QGuiApplication::setWindowIcon(QIcon(":/img/ball3d.ico"));
 
     qmlRegisterUncreatableType<Player>("com.abc.abclib", 1, 0, "Player", "");
+    qmlRegisterType<GlobalStatsModel>("com.abc.abclib", 1, 0, "GlobalStatsModel");
 
     GamesModel gm;
     gm.init();
 
     Playerbase playerbase;
-    GlobalStatsModel gsm(&playerbase);
+    GlobalStatsModel globalStatsModel(&playerbase);
 
-    gsm.setSourceModel(&gm);
+    globalStatsModel.setSourceModel(&gm);
 
 
 
@@ -42,22 +43,22 @@ int main(int argc, char *argv[])
 //    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
 //    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
 
-//    PlayerStatsModel playerStatsModel;
+    PlayerStatsModel playerStatsModel;
 //    GlobalStatsModel globalStatsModel(pm, &playerbase);
 
-//    QQmlApplicationEngine engine;
-//    QQmlContext* ctxt = engine.rootContext();
+    QQmlApplicationEngine engine;
+    QQmlContext* ctxt = engine.rootContext();
 
 //    ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(featuredStatsModel));
-//    ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
-//    ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
+    ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
+    ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
 
 //    TeamSplitter ts;
 //    ctxt->setContextProperty("teamSplitter", &ts);
 
-//    engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-//    if (engine.rootObjects().isEmpty())
-//        return -1;
+    engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+    if (engine.rootObjects().isEmpty())
+        return -1;
 
     return app.exec();
 }

@@ -15,10 +15,10 @@ public:
 
     using Stat = QPair<QString, QString>;
 
-    enum Roles {
-        StatCategory = Qt::UserRole + 1,
-        StatValue
-    };
+//    enum Roles {
+//        StatCategory = Qt::UserRole + 1,
+//        StatValue
+//    };
     Q_INVOKABLE QString getStatCategory(int idx);
 
     virtual QHash<int, QByteArray> roleNames() const override;
