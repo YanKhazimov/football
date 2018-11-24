@@ -107,7 +107,14 @@ Rectangle {
         y: scheme.pitchCenterCoords.y - height/2
         source: "qrc:/img/balance.png"
         color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
-        Behavior on rotation { PropertyAnimation { duration: 500 } }
+
+        SequentialAnimation {
+            id: anm
+            running: false
+            NumberAnimation { target: splitButton; property: "rotation"; to: 45; duration: 125 }
+            NumberAnimation { target: splitButton; property: "rotation"; to: -45; duration: 250 }
+            NumberAnimation { target: splitButton; property: "rotation"; to: 0; duration: 125 }
+        }
 
         MouseArea {
             id: mouseArea
@@ -119,7 +126,7 @@ Rectangle {
 //                console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
 //                console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
 
-                parent.rotation += 720 - parent.rotation % 720
+                anm.running = true
                 split()
 
                 console.log("zoneModels[PitchZones.bench]", zoneModels[PitchZones.bench])
