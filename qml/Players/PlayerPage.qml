@@ -9,11 +9,7 @@ Rectangle {
     id: root
     color: theme.primaryFillColor
     property var theme: null
-    property Player player: null
-
-    function reset(newPlayer) {
-        player = newPlayer
-    }
+    property Player player: statsTable.presenter.selectedPlayer
 
     signal selectedStatChanged(string statCategory)
 
@@ -42,7 +38,9 @@ Rectangle {
 
         PlayerStatsTable {
             id: statsTable
-            model: player ? playerStatsModel : 0
+            property PlayerStatsModel presenter: playerStatsModel
+            model: presenter
+
             theme: root.theme
 
             Layout.fillWidth: true
@@ -64,7 +62,11 @@ Rectangle {
             Layout.rightMargin: Sizes.featuredStats.smallMargin
 
             theme: root.theme
-            points: [Qt.point(20, 3021), Qt.point(40, 1004), Qt.point(50, 8024), Qt.point(80, 1011)]
+            points: {
+                print(statsTable.presenter.ratingHistory)
+                return statsTable.presenter.ratingHistory
+            }
+                    //[Qt.point(20, 3021), Qt.point(40, 1004), Qt.point(50, 8024), Qt.point(80, 1011)]
             //points: [Qt.point(20, 4021)]
         }
     }

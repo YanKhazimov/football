@@ -11,7 +11,7 @@
 #include "globalstatsmodel.h"
 #include "teamsplitter.h"
 
-Q_DECLARE_METATYPE(Player*)
+//Q_DECLARE_METATYPE(Player*)
 Q_DECLARE_METATYPE(PlayersModel)
 Q_DECLARE_METATYPE(PlayerStatsModel)
 Q_DECLARE_METATYPE(GlobalStatsModel)
@@ -24,7 +24,8 @@ int main(int argc, char *argv[])
     QGuiApplication::setWindowIcon(QIcon(":/img/ball3d.ico"));
 
     qmlRegisterUncreatableType<Player>("com.abc.abclib", 1, 0, "Player", "");
-    qmlRegisterType<GlobalStatsModel>("com.abc.abclib", 1, 0, "GlobalStatsModel");
+    qmlRegisterUncreatableType<GlobalStatsModel>("com.abc.abclib", 1, 0, "GlobalStatsModel", "");
+    qmlRegisterUncreatableType<PlayerStatsModel>("com.abc.abclib", 1, 0, "PlayerStatsModel", "");
 
     GamesModel gm;
     gm.init();
@@ -44,6 +45,7 @@ int main(int argc, char *argv[])
 //    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
 
     PlayerStatsModel playerStatsModel;
+    playerStatsModel.setSourceModel(&globalStatsModel);
 //    GlobalStatsModel globalStatsModel(pm, &playerbase);
 
     QQmlApplicationEngine engine;

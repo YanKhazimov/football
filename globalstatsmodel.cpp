@@ -4,21 +4,6 @@
 GlobalStatsModel::GlobalStatsModel(const Playerbase* base)
     : m_sourceModel(nullptr), m_base(base)
 {
-//    QStandardItem* item;
-
-//    item = new QStandardItem;
-//    item->setData(QString("500"), Rating);
-//    item->setData(QString("5-3 (62.5%)"), WinsLosses);
-//    item->setData(QString("-20"), Progress);
-//    item->setData(QString("50%"), Dedication);
-//    this->appendRow(item);
-
-//    item = new QStandardItem;
-//    item->setData(QString("4500"), Rating);
-//    item->setData(QString("1-3 (25%)"), WinsLosses);
-//    item->setData(QString("-220"), Progress);
-//    item->setData(QString("30%"), Dedication);
-//    this->appendRow(item);
 }
 
 GlobalStatsModel::GlobalStatsModel(const GlobalStatsModel &model)
@@ -85,30 +70,12 @@ void GlobalStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
 
 //QModelIndex GlobalStatsModel::mapToSource(const QModelIndex &proxyIndex) const
 //{
-//    if (!proxyIndex.isValid() || !m_sourceModel)
-//        return QModelIndex();
-
-//    return m_sourceModel->index(proxyIndex.row() - 1, 0);
+//    return QModelIndex();
 //}
 
 //QModelIndex GlobalStatsModel::mapFromSource(const QModelIndex &sourceIndex) const
 //{
-//    // TODO
-//    if (!sourceIndex.isValid())
-//        return QModelIndex();
-
-//    return index(sourceIndex.row() + 1, 0);
-//}
-
-//QModelIndex GlobalStatsModel::parent(const QModelIndex &child) const
-//{
-//    Q_UNUSED(child);
-//    return QModelIndex;
-//}
-
-//QModelIndex GlobalStatsModel::index(int row, int column, const QModelIndex &parent) const
-//{
-//    return createIndex(row, column, parent);
+//    return QModelIndex();
 //}
 
 int GlobalStatsModel::rowCount(const QModelIndex &parent) const
@@ -138,6 +105,12 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
         auto playerIter = m_players.begin();
         std::advance(playerIter, index.row());
         return QVariant::fromValue(playerIter->first);
+    }
+    else if (role == DataRoles::DataRole::Player)
+    {
+        auto playerIter = m_players.begin();
+        std::advance(playerIter, index.row());
+        return QVariant::fromValue(m_base->getPlayer(playerIter->first));
     }
     else if (role == DataRoles::DataRole::Rating)
     {
@@ -265,6 +238,7 @@ Player *GlobalStatsModel::getPlayer(int idx)
 bool GlobalStatsModel::selectRow(int row)
 {
     qDebug() << "set selection" << row;
+    setData(index(m_selectedPlayerIndex, 0), false, DataRoles::DataRole::PlayerSelection);
     return setData(index(row, 0), true, DataRoles::DataRole::PlayerSelection);
 }
 

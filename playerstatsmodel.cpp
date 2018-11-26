@@ -1,28 +1,30 @@
+#include <QDebug>
 #include "playerstatsmodel.h"
 #include "dataroles.h"
 
 PlayerStatsModel::PlayerStatsModel()
+    : m_sourceModel(nullptr), m_selectedPlayer(nullptr)//, QAbstractProxyModel(parent)
 {
     QStandardItem* item;
 
     item = new QStandardItem;
     item->setData(QString("Rating"), DataRoles::DataRole::StatCategory);
-    item->setData(QString("500"), DataRoles::DataRole::StatValue);
+    item->setData(DataRoles::DataRole::Rating, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
     item = new QStandardItem;
     item->setData(QString("WinsLosses"), DataRoles::DataRole::StatCategory);
-    item->setData(QString("5-3 (62.5%)"), DataRoles::DataRole::StatValue);
+    item->setData(DataRoles::DataRole::WinsLosses, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
     item = new QStandardItem;
     item->setData(QString("Progress"), DataRoles::DataRole::StatCategory);
-    item->setData(QString("-20"), DataRoles::DataRole::StatValue);
+    item->setData(DataRoles::DataRole::Progress, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
     item = new QStandardItem;
     item->setData(QString("Dedication"), DataRoles::DataRole::StatCategory);
-    item->setData(QString("50%"), DataRoles::DataRole::StatValue);
+    item->setData(DataRoles::DataRole::Dedication, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 }
 
@@ -32,6 +34,41 @@ PlayerStatsModel::PlayerStatsModel(const PlayerStatsModel &model)
     {
         this->appendRow(model.item(r));
     }
+}
+
+void PlayerStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
+{
+    beginResetModel();
+
+    if (m_sourceModel)
+    {
+        disconnect(m_sourceModel, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
+                   this, SLOT(onDataChanged(QModelIndex,QModelIndex,QVector<int>)));
+
+//        disconnect(m_sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
+//                   this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
+
+        disconnect(m_sourceModel, SIGNAL(modelReset()), this, SLOT(resetModel()));
+    }
+
+    //QAbstractProxyModel::setSourceModel(sourceModel);
+
+    if (sourceModel)
+    {
+        m_sourceModel = sourceModel;
+
+        connect(m_sourceModel, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
+                      this, SLOT(onDataChanged(QModelIndex,QModelIndex,QVector<int>)));
+
+//        connect(m_sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
+//                      this, SLOT(onRowsInserted(QModelIndex,int,int)));
+
+        connect(m_sourceModel, SIGNAL(modelReset()), this, SLOT(resetModel()));
+    }
+
+    resetData();
+
+    endResetModel();
 }
 
 QString PlayerStatsModel::getStatCategory(int idx)
@@ -45,4 +82,51 @@ QHash<int, QByteArray> PlayerStatsModel::roleNames() const
     result[DataRoles::DataRole::StatCategory] = "StatCategory";
     result[DataRoles::DataRole::StatValue] = "StatValue";
     return result;
+}
+
+void PlayerStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRight, QVector<int> roles)
+{
+    Q_ASSERT(topLeft == bottomRight);
+
+    if (roles.contains(DataRoles::DataRole::PlayerSelection))
+    {
+        bool selected = topLeft.data(DataRoles::DataRole::PlayerSelection).toBool();
+
+        for (int row = 0; row < rowCount(); ++row)
+        {
+            QStandardItem* statItem = item(row, 0);
+            int sourceRole = statItem->data(DataRoles::DataRole::SourceRole).toInt();
+            QVariant statValue = selected ? topLeft.data(sourceRole) : QVariant();
+            statItem->setData(statValue, DataRoles::DataRole::StatValue);
+        }
+
+        m_selectedPlayer = topLeft.data(DataRoles::DataRole::Player).value<Player*>();
+
+        QVector<QPair<QDate, int>> history =
+                topLeft.data(DataRoles::DataRole::RatingHistory).value<QVector<QPair<QDate, int>>>();
+
+
+        for (auto ratingChange: m_ratingHistory)
+        {
+            delete ratingChange;
+        }
+        m_ratingHistory.clear();
+
+        for (auto ratingChange: history)
+        {
+            m_ratingHistory.append(new QValueAtDate(ratingChange.first, ratingChange.second));
+        }
+
+        emit playerChanged();
+    }
+}
+
+void PlayerStatsModel::resetData()
+{
+
+}
+
+QValueAtDate::QValueAtDate(QDate d, int v)
+    : date(d), value(v)
+{
 }

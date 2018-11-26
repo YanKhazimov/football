@@ -26,6 +26,8 @@ public:
     int getInitialRating() const;
 };
 
+Q_DECLARE_METATYPE(Player*)
+
 using PlayerRef = QString;
 
 #endif // PLAYER_H

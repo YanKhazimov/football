@@ -103,8 +103,6 @@ Rectangle {
                             target: ratingsTable.selection
                             onSelectionChanged: ratingsTable.selection.forEach( function(rowIndex) {
                                 globalStatsModel.selectRow(rowIndex)
-                                var player = globalStatsModel.getPlayer(rowIndex)
-                                playerPage.reset(player)
                             })
                         }
 

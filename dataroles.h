@@ -17,13 +17,15 @@ public:
         ScoreDiff,
         RatingHistory,
         PlayerName,             //263
+        Player,
         Rating,
         WinsLosses,
         Progress,
         Dedication,
-        StatCategory,           //268
+        StatCategory,           //269
         StatValue,
-        PlayerSelection,        //270
+        SourceRole,
+        PlayerSelection,        //272
         DataRoleEnd = Qt::UserRole + 2000
     };
     Q_ENUM(DataRole)
