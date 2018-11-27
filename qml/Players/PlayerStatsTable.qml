@@ -52,7 +52,7 @@ TableView {
 
     TableViewColumn {
         delegate: Text {
-            text: model.StatValue
+            text: model.StatValue === undefined ? "" : model.StatValue
             horizontalAlignment: Text.AlignHCenter
             color: theme.textColor
             font.bold: root.currentRow === model.index

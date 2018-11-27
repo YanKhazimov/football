@@ -56,17 +56,20 @@ Rectangle {
         }
 
         Chart {
+            id: chart
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.leftMargin: Sizes.featuredStats.smallMargin
             Layout.rightMargin: Sizes.featuredStats.smallMargin
 
             theme: root.theme
-            points: {
-                print(statsTable.presenter.ratingHistory)
-                return statsTable.presenter.ratingHistory
+            points: []
+
+            Connections {
+                target: statsTable.presenter
+                onPlayerChanged: chart.updatePoints(statsTable.presenter.ratingHistory)
             }
-                    //[Qt.point(20, 3021), Qt.point(40, 1004), Qt.point(50, 8024), Qt.point(80, 1011)]
+            //points:[Qt.point(20, 3021), Qt.point(40, 1004), Qt.point(50, 8024), Qt.point(80, 1011)]
             //points: [Qt.point(20, 4021)]
         }
     }

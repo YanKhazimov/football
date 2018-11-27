@@ -15,6 +15,21 @@ Rectangle {
     border.color: theme.secondaryFillColor
     border.width: Sizes.borderWidth
 
+    function updatePoints(ratingValues) {
+        var res = []
+        ratingValues.forEach(function(index){
+            res.push(Qt.point(res.length, index))
+        })
+        points = res
+
+        var ctx = canvas.getContext("2d");
+        if (ctx !== null)
+        {
+            ctx.reset();
+            canvas.requestPaint()
+        }
+    }
+
     function findBest(betterThan) {
         var value = root.points.length === 0 ? "" : root.points[0].y
         var index = root.points.length === 0 ? -1 : 0

@@ -3,7 +3,7 @@
 #include "dataroles.h"
 
 PlayerStatsModel::PlayerStatsModel()
-    : m_sourceModel(nullptr), m_selectedPlayer(nullptr)//, QAbstractProxyModel(parent)
+    : m_sourceModel(nullptr), m_selectedPlayer(nullptr)
 {
     QStandardItem* item;
 
@@ -100,23 +100,16 @@ void PlayerStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRigh
             statItem->setData(statValue, DataRoles::DataRole::StatValue);
         }
 
-        m_selectedPlayer = topLeft.data(DataRoles::DataRole::Player).value<Player*>();
-
-        QVector<QPair<QDate, int>> history =
-                topLeft.data(DataRoles::DataRole::RatingHistory).value<QVector<QPair<QDate, int>>>();
-
-
-        for (auto ratingChange: m_ratingHistory)
+        if (selected)
         {
-            delete ratingChange;
+            m_selectedPlayer = topLeft.data(DataRoles::DataRole::Player).value<Player*>();
+            m_ratingHistory = topLeft.data(DataRoles::DataRole::RatingHistory).value<QList<int>>();
         }
-        m_ratingHistory.clear();
-
-        for (auto ratingChange: history)
+        else
         {
-            m_ratingHistory.append(new QValueAtDate(ratingChange.first, ratingChange.second));
+            m_selectedPlayer = nullptr;
+            m_ratingHistory = {};
         }
-
         emit playerChanged();
     }
 }
@@ -124,9 +117,4 @@ void PlayerStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRigh
 void PlayerStatsModel::resetData()
 {
 
-}
-
-QValueAtDate::QValueAtDate(QDate d, int v)
-    : date(d), value(v)
-{
 }

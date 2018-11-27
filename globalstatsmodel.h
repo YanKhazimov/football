@@ -1,13 +1,11 @@
 #ifndef GLOBALSTATSMODEL_H
 #define GLOBALSTATSMODEL_H
 
-#include <QAbstractProxyModel>
 #include <map>
-#include "playersmodel.h"
 #include "playerbase.h"
 #include "dataroles.h"
 
-class GlobalStatsModel: public QAbstractTableModel//, public QAbstractProxyModel
+class GlobalStatsModel: public QAbstractTableModel
 {
     Q_OBJECT
     Q_PROPERTY(int length READ rowCount CONSTANT)
@@ -16,7 +14,7 @@ public:
     GlobalStatsModel() = default;
     GlobalStatsModel(const Playerbase* base);
     GlobalStatsModel(const GlobalStatsModel& model);
-    GlobalStatsModel(const PlayersModel& model, Playerbase* base);
+//    GlobalStatsModel(const PlayersModel& model, Playerbase* base);
 
     Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     Q_INVOKABLE virtual int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
@@ -24,19 +22,10 @@ public:
     Q_INVOKABLE virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
 
 
-    virtual void setSourceModel(QAbstractItemModel *sourceModel);// Q_DECL_OVERRIDE;
-//    Q_INVOKABLE virtual QModelIndex mapToSource(const QModelIndex &proxyIndex) const Q_DECL_OVERRIDE;
-//    Q_INVOKABLE virtual QModelIndex mapFromSource(const QModelIndex &sourceIndex) const Q_DECL_OVERRIDE;
+    virtual void setSourceModel(QAbstractItemModel *sourceModel);
 
     using Stat = QPair<QString, QString>;
 
-//    enum Roles {
-//        PlayerName = Qt::UserRole + 1, //257
-//        Rating,
-//        WinsLosses,
-//        Progress,
-//        Dedication
-//    };
     virtual QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE Player* getPlayer(QString name);
@@ -51,10 +40,10 @@ private:
 
     struct PlayerGameStats {
         int changedRating;
-        bool participation;
+        int win;
 
         PlayerGameStats() = default;
-        PlayerGameStats(int rating, bool part);
+        PlayerGameStats(int rating, int res);
     };
 
     const Playerbase* m_base;

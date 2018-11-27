@@ -2,8 +2,6 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include <memory>
-
 #include "gamesmodel.h"
 #include "playersmodel.h"
 #include "playerbase.h"
@@ -11,7 +9,6 @@
 #include "globalstatsmodel.h"
 #include "teamsplitter.h"
 
-//Q_DECLARE_METATYPE(Player*)
 Q_DECLARE_METATYPE(PlayersModel)
 Q_DECLARE_METATYPE(PlayerStatsModel)
 Q_DECLARE_METATYPE(GlobalStatsModel)
