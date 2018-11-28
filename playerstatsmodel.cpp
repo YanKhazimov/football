@@ -66,7 +66,7 @@ void PlayerStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
         connect(m_sourceModel, SIGNAL(modelReset()), this, SLOT(resetModel()));
     }
 
-    resetData();
+    resetModel();
 
     endResetModel();
 }
@@ -74,6 +74,11 @@ void PlayerStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
 QString PlayerStatsModel::getStatCategory(int idx)
 {
     return (idx >= rowCount()) ? "" : index(idx, 0).data(DataRoles::DataRole::StatCategory).toString();
+}
+
+int PlayerStatsModel::getStatRole(int row)
+{
+    return index(row, 0).data(DataRoles::DataRole::SourceRole).toInt();
 }
 
 QHash<int, QByteArray> PlayerStatsModel::roleNames() const
@@ -114,7 +119,7 @@ void PlayerStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRigh
     }
 }
 
-void PlayerStatsModel::resetData()
+void PlayerStatsModel::resetModel()
 {
 
 }

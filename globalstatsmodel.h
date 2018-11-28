@@ -30,7 +30,6 @@ public:
 
     Q_INVOKABLE Player* getPlayer(QString name);
     Q_INVOKABLE Player* getPlayer(int idx);
-    Q_INVOKABLE bool selectRow(int row);
 
 private slots:
     void resetModel();

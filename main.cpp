@@ -8,6 +8,7 @@
 #include "playerstatsmodel.h"
 #include "globalstatsmodel.h"
 #include "teamsplitter.h"
+#include "playersortfilterproxymodel.h"
 
 Q_DECLARE_METATYPE(PlayersModel)
 Q_DECLARE_METATYPE(PlayerStatsModel)
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<Player>("com.abc.abclib", 1, 0, "Player", "");
     qmlRegisterUncreatableType<GlobalStatsModel>("com.abc.abclib", 1, 0, "GlobalStatsModel", "");
     qmlRegisterUncreatableType<PlayerStatsModel>("com.abc.abclib", 1, 0, "PlayerStatsModel", "");
+    qmlRegisterUncreatableType<PlayerSortFilterProxyModel>("com.abc.abclib", 1, 0, "PlayerSortFilterProxyModel", "");
 
     GamesModel gm;
     gm.init();
@@ -31,6 +33,9 @@ int main(int argc, char *argv[])
     GlobalStatsModel globalStatsModel(&playerbase);
 
     globalStatsModel.setSourceModel(&gm);
+
+    PlayerSortFilterProxyModel sfm;
+    sfm.setSourceModel(&globalStatsModel);
 
 
 
@@ -51,6 +56,7 @@ int main(int argc, char *argv[])
 //    ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(featuredStatsModel));
     ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
     ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
+    ctxt->setContextProperty("sortModel", &sfm);
 
 //    TeamSplitter ts;
 //    ctxt->setContextProperty("teamSplitter", &ts);

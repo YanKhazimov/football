@@ -10,6 +10,7 @@ TableView {
     property var theme: null
     headerVisible: false
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+    frameVisible: false
 
     TableViewColumn {
         id: headColumn
@@ -70,6 +71,4 @@ TableView {
 
         backgroundColor: "transparent"
     }
-
-    frameVisible: false
 }

@@ -20,11 +20,12 @@ public:
 
     //using Stat = QPair<QString, QString>;
     Q_INVOKABLE QString getStatCategory(int idx);
+    Q_INVOKABLE int getStatRole(int row);
 
     virtual QHash<int, QByteArray> roleNames() const override;
 
 private slots:
-    void resetData();
+    void resetModel();
     void onDataChanged(QModelIndex topLeft, QModelIndex bottomRight, QVector<int> roles);
 
 signals:

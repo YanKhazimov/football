@@ -10,6 +10,7 @@ Rectangle {
     color: theme.primaryFillColor
     property var theme: null
     property Player player: statsTable.presenter.selectedPlayer
+    property var table: statsTable
 
     signal selectedStatChanged(string statCategory)
 

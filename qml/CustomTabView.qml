@@ -83,7 +83,7 @@ Rectangle {
 
                         StatsTable {
                             id: ratingsTable
-                            property GlobalStatsModel presenter: globalStatsModel
+                            property PlayerSortFilterProxyModel presenter: sortModel
                             model: presenter
                             theme: root.theme
 
@@ -102,13 +102,20 @@ Rectangle {
                         Connections {
                             target: ratingsTable.selection
                             onSelectionChanged: ratingsTable.selection.forEach( function(rowIndex) {
-                                globalStatsModel.selectRow(rowIndex)
+                                ratingsTable.presenter.selectRow(rowIndex)
                             })
                         }
 
                         Connections {
                             target: playerPage
                             onSelectedStatChanged: ratingsTable.replaceColumn(statCategory)
+                        }
+                        Connections {
+                            target: playerPage.table.selection
+                            onSelectionChanged: {
+                                var statRole = playerPage.table.presenter.getStatRole(playerPage.table.currentRow)
+                                ratingsTable.presenter.sortBy(statRole)
+                            }
                         }
                     }
                 }

@@ -122,7 +122,7 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
         auto playerIter = m_players.begin();
         std::advance(playerIter, index.row());
         float percentage = static_cast<float>(playerIter->second.size()) / m_sourceModel->rowCount() * 100;
-        return QVariant::fromValue(QString::number(percentage) + "%");
+        return QVariant::fromValue(QString::number(static_cast<int>(percentage)) + "%");
     }
     else if (role == DataRoles::DataRole::PlayerSelection)
     {
@@ -146,6 +146,7 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
 
 bool GlobalStatsModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+    Q_ASSERT(index.model() == this);
     if (role == DataRoles::DataRole::PlayerSelection)
     {
         m_selectedPlayerIndex = value.toBool() ? index.row() : -1;
@@ -178,12 +179,6 @@ Player *GlobalStatsModel::getPlayer(int idx)
 {
     QString name = data(index(idx, 0), DataRoles::DataRole::PlayerName).toString();
     return m_base->getPlayer(name);
-}
-
-bool GlobalStatsModel::selectRow(int row)
-{
-    setData(index(m_selectedPlayerIndex, 0), false, DataRoles::DataRole::PlayerSelection);
-    return setData(index(row, 0), true, DataRoles::DataRole::PlayerSelection);
 }
 
 void GlobalStatsModel::resetModel()
