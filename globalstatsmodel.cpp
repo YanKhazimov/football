@@ -106,7 +106,8 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
                 ++draws;
         }
 
-        return QVariant::fromValue(QString("%1-%2-%3").arg(QString::number(wins)).arg(QString::number(draws)).arg(QString::number(losses)));
+        return QVariant::fromValue(QVector<int>{ wins, draws, losses });
+        //QVariant::fromValue(QString("%1-%2-%3").arg(QString::number(wins)).arg(QString::number(draws)).arg(QString::number(losses)));
     }
     else if (role == DataRoles::DataRole::Progress)
     {
@@ -115,14 +116,14 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
         int initialRating = m_base->getPlayer(playerIter->first)->getInitialRating();
         int currentRating = playerIter->second.empty() ? initialRating : playerIter->second.back().changedRating;
         QString sign = currentRating > initialRating ? "+" : "";
-        return QVariant::fromValue(sign + QString::number(currentRating - initialRating));
+        return QVariant::fromValue(currentRating - initialRating);// sign + QString::number(currentRating - initialRating));
     }
     else if (role == DataRoles::DataRole::Dedication)
     {
         auto playerIter = m_players.begin();
         std::advance(playerIter, index.row());
         float percentage = static_cast<float>(playerIter->second.size()) / m_sourceModel->rowCount() * 100;
-        return QVariant::fromValue(QString::number(static_cast<int>(percentage)) + "%");
+        return QVariant::fromValue(percentage);//QString::number(static_cast<int>(percentage)) + "%");
     }
     else if (role == DataRoles::DataRole::PlayerSelection)
     {

@@ -70,7 +70,7 @@ TableView {
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
         role: "WinsLosses"
-        title: "W/L"
+        title: "W-D-L"
         width: root.width * 3/10
         resizable: false
         visible: false

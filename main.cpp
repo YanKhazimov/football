@@ -9,6 +9,7 @@
 #include "globalstatsmodel.h"
 #include "teamsplitter.h"
 #include "playersortfilterproxymodel.h"
+#include "statpresenterproxymodel.h"
 
 Q_DECLARE_METATYPE(PlayersModel)
 Q_DECLARE_METATYPE(PlayerStatsModel)
@@ -24,7 +25,7 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<Player>("com.abc.abclib", 1, 0, "Player", "");
     qmlRegisterUncreatableType<GlobalStatsModel>("com.abc.abclib", 1, 0, "GlobalStatsModel", "");
     qmlRegisterUncreatableType<PlayerStatsModel>("com.abc.abclib", 1, 0, "PlayerStatsModel", "");
-    qmlRegisterUncreatableType<PlayerSortFilterProxyModel>("com.abc.abclib", 1, 0, "PlayerSortFilterProxyModel", "");
+    qmlRegisterUncreatableType<StatPresenterProxyModel>("com.abc.abclib", 1, 0, "GlobalStatPresenter", "");
 
     GamesModel gm;
     gm.init();
@@ -34,9 +35,11 @@ int main(int argc, char *argv[])
 
     globalStatsModel.setSourceModel(&gm);
 
-    PlayerSortFilterProxyModel sfm;
-    sfm.setSourceModel(&globalStatsModel);
+    PlayerSortFilterProxyModel sortingStatModel;
+    sortingStatModel.setSourceModel(&globalStatsModel);
 
+    StatPresenterProxyModel statModel;
+    statModel.setSourceModel(&sortingStatModel);
 
 
 //    PlayersModel pm(gm);
@@ -46,8 +49,14 @@ int main(int argc, char *argv[])
 //    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
 //    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
 
+
+    StatPresenterProxyModel statModel2;
+    statModel.setSourceModel(&globalStatsModel);
+
     PlayerStatsModel playerStatsModel;
-    playerStatsModel.setSourceModel(&globalStatsModel);
+    playerStatsModel.setSourceModel(&statModel2);
+
+
 //    GlobalStatsModel globalStatsModel(pm, &playerbase);
 
     QQmlApplicationEngine engine;
@@ -56,7 +65,7 @@ int main(int argc, char *argv[])
 //    ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(featuredStatsModel));
     ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
     ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
-    ctxt->setContextProperty("sortModel", &sfm);
+    ctxt->setContextProperty("statModel", &statModel);
 
 //    TeamSplitter ts;
 //    ctxt->setContextProperty("teamSplitter", &ts);

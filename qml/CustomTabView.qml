@@ -83,7 +83,7 @@ Rectangle {
 
                         StatsTable {
                             id: ratingsTable
-                            property PlayerSortFilterProxyModel presenter: sortModel
+                            property GlobalStatPresenter presenter: statModel
                             model: presenter
                             theme: root.theme
 

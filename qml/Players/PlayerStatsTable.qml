@@ -12,6 +12,11 @@ TableView {
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
     frameVisible: false
 
+    Component.onCompleted: {
+        currentRow = 0
+        //selection.select(0)
+    }
+
     TableViewColumn {
         id: headColumn
         delegate:
