@@ -3,25 +3,27 @@
 #include "dataroles.h"
 
 PlayerSortFilterProxyModel::PlayerSortFilterProxyModel(QObject* parent)
-    : QSortFilterProxyModel(parent), CustomExtendableModel(this)
+    : QSortFilterProxyModel(parent)
 {
     setSortRole(DataRoles::DataRole::Rating);
 }
 
-void PlayerSortFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
+void PlayerSortFilterProxyModel::setSourceModel(QAbstractItemModel *source)
 {
     beginResetModel();
 
-//    if (m_sourceModel)
-//    {
-//        disconnect(m_sourceModel, SIGNAL(modelReset()), this, SLOT(resetModel()));
-//    }
-
-    QSortFilterProxyModel::setSourceModel(sourceModel);
-
-    if (sourceModel)
+    if (sourceModel())
     {
-        //m_sourceModel = sourceModel;
+        disconnect(sourceModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
+                   this, SLOT(sourceDataChanged(QModelIndex,QModelIndex,QVector<int>)));
+    }
+
+    QSortFilterProxyModel::setSourceModel(source);
+
+    if (sourceModel())
+    {
+        connect(sourceModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
+                this, SLOT(sourceDataChanged(QModelIndex,QModelIndex,QVector<int>)));
     }
 
     sort();
@@ -29,14 +31,10 @@ void PlayerSortFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     endResetModel();
 }
 
-QVariant PlayerSortFilterProxyModel::data(const QModelIndex &index, int role) const
-{
-    return sourceModel()->data(mapToSource(index), role);
-}
-
 bool PlayerSortFilterProxyModel::selectRow(int row)
 {
-    //setData(index(m_selectedPlayerIndex, 0), false, DataRoles::DataRole::PlayerSelection);
+    if (row == m_selectedIndex.row())
+        return false;
 
     return setData(index(row, 0), true, DataRoles::DataRole::PlayerSelection);
 }
@@ -44,7 +42,25 @@ bool PlayerSortFilterProxyModel::selectRow(int row)
 bool PlayerSortFilterProxyModel::sortBy(int statRole)
 {
     setSortRole(statRole);
-    sort();
+
+    emit selectedRowChanged(m_selectedIndex.row());
+
+    return true;
+}
+
+void PlayerSortFilterProxyModel::sourceDataChanged(QModelIndex topLeft, QModelIndex bottomRight, QVector<int> roles)
+{
+    if (roles.contains(DataRoles::DataRole::PlayerSelection))
+    {
+        if (topLeft.data(DataRoles::DataRole::PlayerSelection).toBool() == true)
+        {
+            m_selectedIndex = mapFromSource(topLeft);
+        }
+        else
+        {
+            m_selectedIndex = QModelIndex();
+        }
+    }
 }
 
 bool PlayerSortFilterProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const

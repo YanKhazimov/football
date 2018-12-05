@@ -92,6 +92,14 @@ Rectangle {
                             Layout.fillHeight: true
                         }
 
+                        Connections {
+                            target: ratingsTable.presenter
+                            onSelectedRowChanged: {
+                                ratingsTable.selection.clear()
+                                ratingsTable.selection.select(selectedRow)
+                            }
+                        }
+
                         PlayerPage {
                             id: playerPage
                             Layout.preferredWidth: parent.width - ratingsTable.width

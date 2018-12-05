@@ -4,7 +4,7 @@
 #include "dataroles.h"
 
 StatPresenterProxyModel::StatPresenterProxyModel(QObject* parent)
-    : QIdentityProxyModel(parent), CustomExtendableModel(this)
+    : QIdentityProxyModel(parent)
 {
 }
 
@@ -35,12 +35,35 @@ QVariant StatPresenterProxyModel::data(const QModelIndex &index, int role) const
     return sourceData;
 }
 
+void StatPresenterProxyModel::setSourceModel(QAbstractItemModel *source)
+{
+    beginResetModel();
+
+    if (sourceModel())
+    {
+        disconnect(sourceModel(), SIGNAL(selectedRowChanged(int)),
+                   this, SIGNAL(selectedRowChanged(int)));
+    }
+
+    QIdentityProxyModel::setSourceModel(source);
+
+    if (sourceModel())
+    {
+        connect(sourceModel(), SIGNAL(selectedRowChanged(int)),
+                this, SIGNAL(selectedRowChanged(int)));
+    }
+
+    endResetModel();
+}
+
 bool StatPresenterProxyModel::sortBy(int statRole)
 {
-    return CustomExtendableModel::sortBy(statRole);
+    PlayerSortFilterProxyModel* source = dynamic_cast<PlayerSortFilterProxyModel*>(sourceModel());
+    return source && source->sortBy(statRole);
 }
 
 bool StatPresenterProxyModel::selectRow(int row)
 {
-    return CustomExtendableModel::selectRow(row);
+    PlayerSortFilterProxyModel* source = dynamic_cast<PlayerSortFilterProxyModel*>(sourceModel());
+    return source && source->selectRow(row);
 }

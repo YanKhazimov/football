@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 
 
     StatPresenterProxyModel statModel2;
-    statModel.setSourceModel(&globalStatsModel);
+    statModel2.setSourceModel(&globalStatsModel);
 
     PlayerStatsModel playerStatsModel;
     playerStatsModel.setSourceModel(&statModel2);
