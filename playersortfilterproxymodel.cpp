@@ -65,7 +65,9 @@ void PlayerSortFilterProxyModel::sourceDataChanged(QModelIndex topLeft, QModelIn
 
 bool PlayerSortFilterProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
 {
-    if (source_left.data(sortRole()) == source_right.data(sortRole()))
+    QVariant leftData = source_left.data(sortRole()),
+            rightData = source_right.data(sortRole());
+    if (leftData == rightData)
     {
         // descending order in the table view so reversing for alphabetical order
         return source_left.data(DataRoles::DataRole::PlayerName) >
@@ -75,11 +77,15 @@ bool PlayerSortFilterProxyModel::lessThan(const QModelIndex &source_left, const 
     switch(sortRole())
     {
     case DataRoles::DataRole::WinsLosses:
-//    case DataRoles::DataRole::Dedication:
+        int leftWins = leftData.value<QVector<int>>()[0];
+        int leftDraws = leftData.value<QVector<int>>()[1];
+        int leftLosses = leftData.value<QVector<int>>()[2];
+        int rightWins = rightData.value<QVector<int>>()[0];
+        int rightDraws = rightData.value<QVector<int>>()[1];
+        int rightLosses = rightData.value<QVector<int>>()[2];
 
-//    case DataRoles::DataRole::Rating:
-//    case DataRoles::DataRole::Progress:
-        ;
+        int gamesBehindx2 = (rightWins - leftWins) - (rightLosses - leftLosses);
+        return gamesBehindx2 > 0 || gamesBehindx2 == 0 && leftDraws > rightDraws;
     }
 
     return QSortFilterProxyModel::lessThan(source_left, source_right);

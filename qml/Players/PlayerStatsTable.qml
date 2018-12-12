@@ -13,8 +13,8 @@ TableView {
     frameVisible: false
 
     Component.onCompleted: {
+        selection.select(0)
         currentRow = 0
-        //selection.select(0)
     }
 
     TableViewColumn {
@@ -48,8 +48,8 @@ TableView {
         delegate: Text {
             text: model.StatCategory + ":"
             horizontalAlignment: Text.AlignRight
-            color: theme.textColor
-            font.bold: root.currentRow === model.index
+            color: styleData.selected ? theme.secondaryFillColor : theme.textColor
+            font.bold: styleData.selected
             font.pixelSize: 14
             font.family: Themes.fontFamily
         }
@@ -60,8 +60,8 @@ TableView {
         delegate: Text {
             text: model.StatValue === undefined ? "" : model.StatValue
             horizontalAlignment: Text.AlignHCenter
-            color: theme.textColor
-            font.bold: root.currentRow === model.index
+            color: styleData.selected ? theme.secondaryFillColor : theme.textColor
+            font.bold: styleData.selected
             font.pixelSize: 14
             font.family: Themes.fontFamily
         }
@@ -70,7 +70,7 @@ TableView {
 
     style: TableViewStyle {
         rowDelegate: Rectangle {
-            color: "transparent"
+            color: /*styleData.pressed ? "red" :*/ "transparent"
             height: Sizes.fontPixelSize
         }
 

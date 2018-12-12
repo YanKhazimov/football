@@ -42,12 +42,12 @@ int main(int argc, char *argv[])
     statModel.setSourceModel(&sortingStatModel);
 
 
-//    PlayersModel pm(gm);
+    PlayersModel pm(gm);
 
-//    QList<QObject*> featuredStatsModel;
-//    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "ON FIRE", "Longest win streak");
-//    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
-//    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
+    QList<QObject*> featuredStatsModel;
+    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "ON FIRE", "Longest win streak");
+    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
+    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
 
 
     StatPresenterProxyModel statModel2;
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();
 
-//    ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(featuredStatsModel));
+    ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(featuredStatsModel));
     ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
     ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
     ctxt->setContextProperty("statModel", &statModel);
