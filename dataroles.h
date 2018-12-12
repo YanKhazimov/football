@@ -26,6 +26,9 @@ public:
         StatValue,
         SourceRole,
         PlayerSelection,        //272
+        FeaturedStatName,       //273
+        FeaturedStatDescription,
+        FeaturedStatQueryResult,
         DataRoleEnd = Qt::UserRole + 2000
     };
     Q_ENUM(DataRole)

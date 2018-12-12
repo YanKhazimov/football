@@ -4,7 +4,7 @@
 #include <QAbstractListModel>
 #include <QUrl>
 #include <QMap>
-#include "playersmodel.h"
+#include "player.h"
 
 class Playerbase: public QObject
 {
@@ -63,7 +63,7 @@ class PlayerbaseQuery : public QObject
     using Query = int;
 
 public:
-    PlayerbaseQuery(const PlayersModel& model, Playerbase& base,
+    PlayerbaseQuery(Playerbase& base,
                     Query rule, QString title = "1", QString description = "11");
     ~PlayerbaseQuery();
 

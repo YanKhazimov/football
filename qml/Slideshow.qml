@@ -124,12 +124,15 @@ Rectangle {
             interactive: false
             highlightMoveDuration: 300
 
-            model: root.model
+            model: {
+                print("root.model=", root.model)
+                return root.model
+            }
             delegate: SlideContent {
-                title: ListView.isCurrentItem ? model.modelData.name : ""
-                descr: ListView.isCurrentItem ? model.modelData.description : ""
+                title: ListView.isCurrentItem ? model.name : ""
+                descr: ListView.isCurrentItem ? model.description : ""
                 theme: root.theme
-                statGroupsModel: ListView.isCurrentItem ? model.modelData.queryResult : null
+                statGroupsModel: ListView.isCurrentItem ? model.queryResult : null
                 width: listView.width
                 height: listView.height
             }

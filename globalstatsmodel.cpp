@@ -1,6 +1,6 @@
 #include "globalstatsmodel.h"
+#include <QDate>
 #include <QDebug>
-
 
 GlobalStatsModel::GlobalStatsModel(const Playerbase* base)
     : m_sourceModel(nullptr), m_base(base)

@@ -1,10 +1,10 @@
 #include "playerbase.h"
 #include <memory>
 
-PlayerbaseQuery::PlayerbaseQuery(const PlayersModel& model, Playerbase& base, Query rule, QString title, QString description)
+PlayerbaseQuery::PlayerbaseQuery(Playerbase& base, Query rule, QString title, QString description)
     : m_name(title), m_description(description)
 {
-    QList<PlayerRef> players = model.getPlayers();
+    QList<PlayerRef> players = base.listAllPlayers();
     int i = 0;
     for (auto p = players.constBegin(); p != players.constEnd() && i < rule; ++i, ++p)
     {

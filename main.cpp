@@ -3,15 +3,14 @@
 #include <QQmlContext>
 
 #include "gamesmodel.h"
-#include "playersmodel.h"
 #include "playerbase.h"
 #include "playerstatsmodel.h"
 #include "globalstatsmodel.h"
 #include "teamsplitter.h"
 #include "playersortfilterproxymodel.h"
 #include "statpresenterproxymodel.h"
+#include "featuredstatsmodel.h"
 
-Q_DECLARE_METATYPE(PlayersModel)
 Q_DECLARE_METATYPE(PlayerStatsModel)
 Q_DECLARE_METATYPE(GlobalStatsModel)
 Q_DECLARE_METATYPE(PlayerbaseQuery*)
@@ -30,6 +29,8 @@ int main(int argc, char *argv[])
     GamesModel gm;
     gm.init();
 
+    // GamesModel - GlobalStatsModel - PlayerSortFilterProxyModel - StatPresenterProxyModel [ - StatTable ]
+
     Playerbase playerbase;
     GlobalStatsModel globalStatsModel(&playerbase);
 
@@ -41,14 +42,17 @@ int main(int argc, char *argv[])
     StatPresenterProxyModel statModel;
     statModel.setSourceModel(&sortingStatModel);
 
+    // GlobalStatsModel - featuredStatsModel [ - SlideShow ]
 
-    PlayersModel pm(gm);
+    FeaturedStatsModel fsm;
+    fsm.setSourceModel(&globalStatsModel);
 
     QList<QObject*> featuredStatsModel;
-    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
-    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "ON FIRE", "Active win streak");
-    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
+    featuredStatsModel << new PlayerbaseQuery (playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
+    featuredStatsModel << new PlayerbaseQuery (playerbase, 2, "ON FIRE", "Active win streak");
+    featuredStatsModel << new PlayerbaseQuery (playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
 
+    // GlobalStatsModel - StatPresenterProxyModel - PlayerStatsModel [ - PlayerStatsTable ]
 
     StatPresenterProxyModel statModel2;
     statModel2.setSourceModel(&globalStatsModel);
@@ -60,7 +64,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();
 
-    ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(featuredStatsModel));
+    ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(&fsm/*featuredStatsModel*/));
     ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
     ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
     ctxt->setContextProperty("statModel", &statModel);
