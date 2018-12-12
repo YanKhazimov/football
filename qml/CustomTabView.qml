@@ -121,7 +121,10 @@ Rectangle {
                         Connections {
                             target: playerPage.table.selection
                             onSelectionChanged: {
-                                var statRole = playerPage.table.presenter.getStatRole(playerPage.table.currentRow)
+                                if (playerPage.table.selection.count === 0)
+                                    return
+                                var selectedStatRow = playerPage.table.selection[0]
+                                var statRole = playerPage.table.presenter.getStatRole(selectedStatRow)
                                 ratingsTable.presenter.sortBy(statRole)
                             }
                         }

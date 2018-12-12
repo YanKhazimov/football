@@ -1,6 +1,7 @@
 #include "globalstatsmodel.h"
 #include <QDebug>
 
+
 GlobalStatsModel::GlobalStatsModel(const Playerbase* base)
     : m_sourceModel(nullptr), m_base(base)
 {
@@ -52,7 +53,7 @@ void GlobalStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
 int GlobalStatsModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return m_players.size();
+    return static_cast<int>(m_playersData.size());
 }
 
 int GlobalStatsModel::columnCount(const QModelIndex &parent) const
@@ -68,35 +69,29 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
 
     Q_ASSERT(index.model() == this);
 
-    if (index.row() >= m_players.size() || index.column() >= m_sourceModel->rowCount() + 1)
+    if (index.row() >= m_playersData.size() || index.column() >= m_sourceModel->rowCount() + 1)
         return QVariant();
+
+    const std::pair<PlayerRef, QVector<GlobalStatsModel::PlayerGameStats>> playerData = getPlayer(index);
 
     if (role == DataRoles::DataRole::PlayerName)
     {
-        auto playerIter = m_players.begin();
-        std::advance(playerIter, index.row());
-        return QVariant::fromValue(playerIter->first);
+        return QVariant::fromValue(playerData.first);
     }
     else if (role == DataRoles::DataRole::Player)
     {
-        auto playerIter = m_players.begin();
-        std::advance(playerIter, index.row());
-        return QVariant::fromValue(m_base->getPlayer(playerIter->first));
+        return QVariant::fromValue(m_base->getPlayer(playerData.first));
     }
     else if (role == DataRoles::DataRole::Rating)
     {
-        auto playerIter = m_players.begin();
-        std::advance(playerIter, index.row());
-        return QVariant::fromValue(playerIter->second.back().changedRating);
+        return QVariant::fromValue(playerData.second.back().changedRating);
     }
     else if (role == DataRoles::DataRole::WinsLosses)
     {
-        auto playerIter = m_players.begin();
-        std::advance(playerIter, index.row());
         int wins = 0, draws = 0, losses = 0;
-        for (int i = 0; i < playerIter->second.size(); ++i)
+        for (int i = 0; i < playerData.second.size(); ++i)
         {
-            const int& win = playerIter->second[i].win;
+            const int& win = playerData.second[i].resultSign;
 
             if (win < 0)
                 ++losses;
@@ -107,23 +102,17 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
         }
 
         return QVariant::fromValue(QVector<int>{ wins, draws, losses });
-        //QVariant::fromValue(QString("%1-%2-%3").arg(QString::number(wins)).arg(QString::number(draws)).arg(QString::number(losses)));
     }
     else if (role == DataRoles::DataRole::Progress)
     {
-        auto playerIter = m_players.begin();
-        std::advance(playerIter, index.row());
-        int initialRating = m_base->getPlayer(playerIter->first)->getInitialRating();
-        int currentRating = playerIter->second.empty() ? initialRating : playerIter->second.back().changedRating;
-        QString sign = currentRating > initialRating ? "+" : "";
-        return QVariant::fromValue(currentRating - initialRating);// sign + QString::number(currentRating - initialRating));
+        int initialRating = m_base->getPlayer(playerData.first)->getInitialRating();
+        int currentRating = playerData.second.empty() ? initialRating : playerData.second.back().changedRating;
+        return QVariant::fromValue(currentRating - initialRating);
     }
     else if (role == DataRoles::DataRole::Dedication)
     {
-        auto playerIter = m_players.begin();
-        std::advance(playerIter, index.row());
-        float percentage = static_cast<float>(playerIter->second.size()) / m_sourceModel->rowCount() * 100;
-        return QVariant::fromValue(percentage);//QString::number(static_cast<int>(percentage)) + "%");
+        float percentage = static_cast<float>(playerData.second.size()) / m_sourceModel->rowCount() * 100;
+        return QVariant::fromValue(percentage);
     }
     else if (role == DataRoles::DataRole::PlayerSelection)
     {
@@ -131,11 +120,8 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
     }
     else if (role == DataRoles::DataRole::RatingHistory)
     {
-        auto playerIter = m_players.begin();
-        std::advance(playerIter, index.row());
-
-        QList<int> onlyRating {m_base->getPlayer(playerIter->first)->getInitialRating()};
-        for (const PlayerGameStats& game: playerIter->second)
+        QList<int> onlyRating {m_base->getPlayer(playerData.first)->getInitialRating()};
+        for (const PlayerGameStats& game: playerData.second)
         {
             onlyRating.append(game.changedRating);
         }
@@ -211,7 +197,7 @@ int getHomeRatingChange(int scoreDiff, float totalRating1, float totalRating2)
 void GlobalStatsModel::resetData()
 {
     m_dates.resize(m_sourceModel->rowCount());
-    m_players.clear();
+    m_playersData.clear();
 
     QMap<PlayerRef, int> currentRatings;
     for (PlayerRef playerRef: m_base->listAllPlayers())
@@ -245,17 +231,32 @@ void GlobalStatsModel::resetData()
         for (const QString &playerRef: hometeam)
         {
             currentRatings[playerRef] += ratingChange;
-            m_players[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(scoreDiff)));
+            m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(scoreDiff)));
         }
         for (PlayerRef playerRef: awayteam)
         {
             currentRatings[playerRef] -= ratingChange;
-            m_players[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(-scoreDiff)));
+            m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(-scoreDiff)));
         }
     }
 }
 
-GlobalStatsModel::PlayerGameStats::PlayerGameStats(int rating, int res)
-    : changedRating(rating), win(res)
+std::pair<PlayerRef, QVector<GlobalStatsModel::PlayerGameStats> > GlobalStatsModel::getPlayer(const QModelIndex &index) const
+{
+    std::map<PlayerRef, QVector<PlayerGameStats>>::const_iterator playerIter = m_playersData.begin();
+    if (playerIter != m_playersData.end())
+    {
+        std::advance(playerIter, index.row());
+        if (playerIter != m_playersData.end())
+        {
+            return *playerIter;
+        }
+    }
+
+    return std::make_pair<PlayerRef, QVector<PlayerGameStats>>(PlayerRef(), QVector<PlayerGameStats>());
+}
+
+GlobalStatsModel::PlayerGameStats::PlayerGameStats(int rating, int sign)
+    : changedRating(rating), resultSign(sign)
 {
 }

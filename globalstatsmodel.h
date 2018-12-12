@@ -14,7 +14,6 @@ public:
     GlobalStatsModel() = default;
     GlobalStatsModel(const Playerbase* base);
     GlobalStatsModel(const GlobalStatsModel& model);
-//    GlobalStatsModel(const PlayersModel& model, Playerbase* base);
 
     Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     Q_INVOKABLE virtual int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
@@ -34,22 +33,23 @@ public:
 private slots:
     void resetModel();
 
-private:
-    void resetData();
-
+private:    
     struct PlayerGameStats {
         int changedRating;
-        int win;
+        int resultSign;
 
         PlayerGameStats() = default;
-        PlayerGameStats(int rating, int res);
+        PlayerGameStats(int rating, int sign);
     };
+
+    void resetData();
+    std::pair<PlayerRef, QVector<PlayerGameStats>> getPlayer(const QModelIndex& index) const;
 
     const Playerbase* m_base;
     QAbstractItemModel *m_sourceModel;
 
     QVector<QDate> m_dates;
-    std::map<PlayerRef, QVector<PlayerGameStats>> m_players;
+    std::map<PlayerRef, QVector<PlayerGameStats>> m_playersData;
     int m_selectedPlayerIndex = -1;
 };
 

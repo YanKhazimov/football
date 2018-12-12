@@ -45,9 +45,9 @@ int main(int argc, char *argv[])
     PlayersModel pm(gm);
 
     QList<QObject*> featuredStatsModel;
-    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "ON FIRE", "Longest win streak");
-    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
     featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "RIVALRIES TO WATCH", "Closest-rated players");
+    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 2, "ON FIRE", "Active win streak");
+    featuredStatsModel << new PlayerbaseQuery (pm, playerbase, 7, "STRONGEST SYNERGY", "Highest W/L ratio together");
 
 
     StatPresenterProxyModel statModel2;
@@ -57,8 +57,6 @@ int main(int argc, char *argv[])
     playerStatsModel.setSourceModel(&statModel2);
 
 
-//    GlobalStatsModel globalStatsModel(pm, &playerbase);
-
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();
 
@@ -67,8 +65,8 @@ int main(int argc, char *argv[])
     ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
     ctxt->setContextProperty("statModel", &statModel);
 
-//    TeamSplitter ts;
-//    ctxt->setContextProperty("teamSplitter", &ts);
+    TeamSplitter ts;
+    ctxt->setContextProperty("teamSplitter", &ts);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())
