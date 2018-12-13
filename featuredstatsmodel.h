@@ -8,20 +8,32 @@ class FeaturedStat : public QObject
 {
     Q_OBJECT
 
-    QString m_name;
-    QString m_description;
     QObjectList m_queryResultItems;
 
-    using Criteria = int;
+    using Criteria = std::function<bool(Player*,Player*)>;
 
     Criteria m_criteria;
 
+protected:
+    QString m_name;
+    QString m_description;
+    QAbstractItemModel* m_dataModel;
+
 public:
-    FeaturedStat(QString title, QString description, Criteria rule);
+    FeaturedStat(QString name, QString description, QAbstractItemModel* dataModel);
     FeaturedStat(const FeaturedStat& fs);
     FeaturedStat& operator= (const FeaturedStat& fs);
     QString getName() const;
     QString getDescription() const;
+    virtual QObjectList calculate() = 0;
+    void resetDataModel(QAbstractItemModel* dataModel);
+};
+
+class ClosestPlayersStat: public FeaturedStat
+{
+public:
+    ClosestPlayersStat(QAbstractItemModel *dataModel);
+    QObjectList calculate() override;
 };
 
 class FeaturedStatsModel : public QAbstractListModel
@@ -29,7 +41,7 @@ class FeaturedStatsModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    FeaturedStatsModel ();
+    FeaturedStatsModel();
     int rowCount(const QModelIndex &parent) const override;
     //int columnCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex& index, int role) const override;
@@ -43,8 +55,11 @@ public:
 
     QHash<int, QByteArray> roleNames() const override;
 
+private slots:
+    void reset();
+
 private:
-    QList<FeaturedStat> m_featuredStats;
+    QList<FeaturedStat*> m_featuredStats;
     QAbstractItemModel* m_source;
 };
 
