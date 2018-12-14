@@ -49,8 +49,7 @@ Rectangle {
             top: separator.bottom
             left: parent.left; leftMargin: Sizes.borderWidth
             right: parent.right; rightMargin: Sizes.borderWidth
-            bottom: parent.bottom
-            bottomMargin: Sizes.borderWidth
+            bottom: parent.bottom; bottomMargin: Sizes.borderWidth
         }
 
         SlideshowWing {

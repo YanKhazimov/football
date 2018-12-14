@@ -5,6 +5,7 @@ FeaturedStatsModel::FeaturedStatsModel()
     : m_source(nullptr)
 {
     m_featuredStats.append(new ClosestPlayersStat(m_source));
+    m_stats.append(QObjectList());
     /*m_featuredStats.append(FeaturedStat("RIVALRIES TO WATCH", "Closest-rated players",
                                         [](Player* p1, Player* p2){return false;}));*/
 }
@@ -35,8 +36,15 @@ void FeaturedStatsModel::reset()
     for (FeaturedStat* fs: m_featuredStats)
     {
         fs->resetDataModel(m_source);
-        fs->calculate();
+        setStat(m_featuredStats.indexOf(fs), fs->calculate());
     }
+}
+
+void FeaturedStatsModel::setStat(int i, const QObjectList &newValue)
+{
+    // TODO: delete old
+
+    m_stats[i] = newValue;
 }
 
 QVariant FeaturedStatsModel::data(const QModelIndex &index, int role) const
@@ -56,10 +64,10 @@ QVariant FeaturedStatsModel::data(const QModelIndex &index, int role) const
     }
     else if (role == DataRoles::DataRole::FeaturedStatQueryResult)
     {
-        return QVariant();
+        return QVariant::fromValue(m_stats.at(index.row()));
     }
 
-    return QVariant();//sourceModel()->data(mapToSource(index), role);
+    return QVariant();
 }
 
 void FeaturedStatsModel::setSourceModel(QAbstractItemModel *source)
@@ -88,29 +96,6 @@ void FeaturedStatsModel::setSourceModel(QAbstractItemModel *source)
 
     reset();
 }
-
-//QModelIndex FeaturedStatsModel::parent(const QModelIndex &child) const
-//{
-//    Q_UNUSED(child);
-//    return QModelIndex();
-//}
-
-//QModelIndex FeaturedStatsModel::index(int row, int column, const QModelIndex &parent) const
-//{
-//    return QModelIndex();
-//}
-
-//QModelIndex FeaturedStatsModel::mapToSource(const QModelIndex &proxyIndex) const
-//{
-//    Q_UNUSED(proxyIndex);
-//    return QModelIndex();
-//}
-
-//QModelIndex FeaturedStatsModel::mapFromSource(const QModelIndex &sourceIndex) const
-//{
-//    Q_UNUSED(sourceIndex);
-//    return QModelIndex();
-//}
 
 FeaturedStat::FeaturedStat(QString name, QString description, QAbstractItemModel *dataModel)
     : m_name(name), m_description(description), m_dataModel(dataModel)
@@ -150,48 +135,55 @@ ClosestPlayersStat::ClosestPlayersStat(QAbstractItemModel *dataModel)
 {
 }
 
-#include <QDebug>
 QObjectList ClosestPlayersStat::calculate()
 {
-    int playerCount = m_dataModel->rowCount();
-
-    QVector<QVector<int>> diffs(playerCount, QVector<int>(playerCount, 0));
-    std::map<int, QVector<int>> playersByDiff;
-
     QObjectList result;
-    for (int i = 0; i < playerCount; ++i)
+
+    std::map<int, QList<Player*>> playersByRating;
+    for (int i = 0; i < m_dataModel->rowCount(); ++i)
     {
-        QModelIndex firstPlayerIndex = m_dataModel->index(i, 0);
-        qDebug() << m_dataModel->data(firstPlayerIndex, DataRoles::DataRole::PlayerName).toString();
+        QModelIndex playerIndex = m_dataModel->index(i, 0);
+        Player* playerPtr = playerIndex.data(DataRoles::DataRole::Player).value<Player*>();
+        playersByRating[playerIndex.data(DataRoles::DataRole::Progress).toInt()].append(playerPtr);
+    }
 
-        int baseRating = m_dataModel->data(m_dataModel->index(0, 0), DataRoles::DataRole::Rating).toInt();
-        int iRating = m_dataModel->data(m_dataModel->index(i, 0), DataRoles::DataRole::Rating).toInt();
-        playersByDiff[iRating - baseRating].push_back(i);
-
-        std::map<int, QVector<int>>::iterator base = playersByDiff.find(0);
-        std::map<int, QVector<int>>::iterator other = base;
-
-        for (++other; other != playersByDiff.end(); ++other)
+    std::map<int, QList<Player*>>::reverse_iterator reverseIter; // higher-rated shown first
+    for (reverseIter = playersByRating.rbegin(); reverseIter != playersByRating.rend(); ++reverseIter)
+    {
+        if (reverseIter->second.size() > 1)
         {
+            QObjectList group;
+            for (Player* p: reverseIter->second)
+                group << new PlayerStat(p, QString::number(reverseIter->first)/*"="*/); // where is it deleted?
 
+            result.append(new QueryResultItem("", group)); // where is it deleted?
         }
+    }
 
-        std::map<int, QVector<int>>::reverse_iterator reverseOther = std::map<int, QVector<int>>::reverse_iterator(base);
-        for (++reverseOther; reverseOther != playersByDiff.rend(); ++reverseOther)
-        {
+    std::multimap<int, std::map<int, QList<Player*>>::reverse_iterator> groupsByDiff;
 
-        }
+    reverseIter = playersByRating.rbegin();
+    for (++reverseIter; reverseIter != playersByRating.rend(); ++reverseIter)
+    {
+        std::map<int, QList<Player*>>::reverse_iterator prev = std::prev(reverseIter);
+        groupsByDiff.insert(std::make_pair(prev->first - reverseIter->first, reverseIter));
+    }
 
-        for (int j = i + 1; j < playerCount; ++j)
-        {
-            int iRating = m_dataModel->data(m_dataModel->index(i, 0), DataRoles::DataRole::Rating).toInt();
-            int jRating = m_dataModel->data(m_dataModel->index(j, 0), DataRoles::DataRole::Rating).toInt();
+    for (std::pair<int, std::map<int, QList<Player*>>::reverse_iterator> diffIter: groupsByDiff)
+    {
+        QObjectList group;
 
-            diffs[i][j] = iRating - jRating;
-            diffs[j][i] = jRating - iRating;
+        int diff = diffIter.first;
+        QString extraSign = diffIter.first > 0 ? "+" : "";
+        const QList<Player*>& lowerGroup = diffIter.second->second;
+        const QList<Player*>& higherGroup = std::prev(diffIter.second)->second;
 
-            playersByDiff[qAbs(iRating - jRating)].push_back(j);
-        }
+        for (Player* higherRatedPlayer: higherGroup)
+            group.append(new PlayerStat(higherRatedPlayer, extraSign + QString::number(diff)));
+        for (Player* lowerRatedPlayer: lowerGroup)
+            group.append(new PlayerStat(lowerRatedPlayer, extraSign + QString::number(-diff)));
+
+        result.append(new QueryResultItem("", group));
     }
 
     return result;

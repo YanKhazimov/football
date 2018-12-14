@@ -4,7 +4,7 @@
 #include <QAbstractProxyModel>
 #include "playerbase.h"
 
-class FeaturedStat : public QObject
+class FeaturedStat : public QObject // ?
 {
     Q_OBJECT
 
@@ -47,20 +47,17 @@ public:
     QVariant data(const QModelIndex& index, int role) const override;
     void setSourceModel(QAbstractItemModel* source);
 
-//    Q_INVOKABLE virtual QModelIndex parent(const QModelIndex &child) const override;
-//    Q_INVOKABLE virtual QModelIndex index(int row, int column,
-//                              const QModelIndex &parent = QModelIndex()) const override;
-//    Q_INVOKABLE virtual QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
-//    Q_INVOKABLE virtual QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
-
     QHash<int, QByteArray> roleNames() const override;
 
 private slots:
     void reset();
 
 private:
-    QList<FeaturedStat*> m_featuredStats;
+    QList<FeaturedStat*> m_featuredStats;// TODO: unite with m_stats, get rid of pointers
     QAbstractItemModel* m_source;
+
+    QList<QObjectList> m_stats;
+    void setStat(int i, const QObjectList& newValue);
 };
 
 #endif // FEATUREDSTATSMODEL_H
