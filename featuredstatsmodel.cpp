@@ -5,9 +5,14 @@ FeaturedStatsModel::FeaturedStatsModel()
     : m_source(nullptr)
 {
     m_featuredStats.append(new ClosestPlayersStat(m_source));
-    m_stats.append(QObjectList());
     /*m_featuredStats.append(FeaturedStat("RIVALRIES TO WATCH", "Closest-rated players",
                                         [](Player* p1, Player* p2){return false;}));*/
+}
+
+FeaturedStatsModel::~FeaturedStatsModel()
+{
+    m_source = nullptr;
+    reset();
 }
 
 int FeaturedStatsModel::rowCount(const QModelIndex &parent) const
@@ -15,12 +20,6 @@ int FeaturedStatsModel::rowCount(const QModelIndex &parent) const
     Q_UNUSED(parent);
     return static_cast<int>(m_featuredStats.size());
 }
-
-//int FeaturedStatsModel::columnCount(const QModelIndex &parent) const
-//{
-//    Q_UNUSED(parent);
-//    return 1;
-//}
 
 QHash<int, QByteArray> FeaturedStatsModel::roleNames() const
 {
@@ -36,15 +35,8 @@ void FeaturedStatsModel::reset()
     for (FeaturedStat* fs: m_featuredStats)
     {
         fs->resetDataModel(m_source);
-        setStat(m_featuredStats.indexOf(fs), fs->calculate());
+        fs->recalculate();
     }
-}
-
-void FeaturedStatsModel::setStat(int i, const QObjectList &newValue)
-{
-    // TODO: delete old
-
-    m_stats[i] = newValue;
 }
 
 QVariant FeaturedStatsModel::data(const QModelIndex &index, int role) const
@@ -64,7 +56,7 @@ QVariant FeaturedStatsModel::data(const QModelIndex &index, int role) const
     }
     else if (role == DataRoles::DataRole::FeaturedStatQueryResult)
     {
-        return QVariant::fromValue(m_stats.at(index.row()));
+        return QVariant::fromValue(m_featuredStats.at(index.row())->getValue());
     }
 
     return QVariant();
@@ -107,6 +99,12 @@ FeaturedStat::FeaturedStat(const FeaturedStat &fs)
 {
 }
 
+FeaturedStat::~FeaturedStat()
+{
+    for (QObject* group: m_queryResultItems)
+        delete group;
+}
+
 FeaturedStat &FeaturedStat::operator=(const FeaturedStat &fs)
 {
     m_name = fs.m_name;
@@ -125,19 +123,29 @@ QString FeaturedStat::getDescription() const
     return m_description;
 }
 
+QObjectList FeaturedStat::getValue() const
+{
+    return m_queryResultItems;
+}
+
 void FeaturedStat::resetDataModel(QAbstractItemModel *dataModel)
 {
     m_dataModel = dataModel;
 }
 
 ClosestPlayersStat::ClosestPlayersStat(QAbstractItemModel *dataModel)
-    : FeaturedStat("r2w", "crp", dataModel)
+    : FeaturedStat("RIVALRIES TO WATCH", "Closest-rated players", dataModel)
 {
 }
 
-QObjectList ClosestPlayersStat::calculate()
+void ClosestPlayersStat::recalculate()
 {
-    QObjectList result;
+    for (QObject* group: m_queryResultItems)
+        delete group;
+    m_queryResultItems.clear();
+
+    if (m_dataModel == nullptr)
+        return;
 
     std::map<int, QList<Player*>> playersByRating;
     for (int i = 0; i < m_dataModel->rowCount(); ++i)
@@ -154,9 +162,9 @@ QObjectList ClosestPlayersStat::calculate()
         {
             QObjectList group;
             for (Player* p: reverseIter->second)
-                group << new PlayerStat(p, QString::number(reverseIter->first)/*"="*/); // where is it deleted?
+                group << new PlayerStat(p, QString::number(reverseIter->first)/*"="*/);
 
-            result.append(new QueryResultItem("", group)); // where is it deleted?
+            m_queryResultItems.append(new QueryResultItem("", group));
         }
     }
 
@@ -183,8 +191,6 @@ QObjectList ClosestPlayersStat::calculate()
         for (Player* lowerRatedPlayer: lowerGroup)
             group.append(new PlayerStat(lowerRatedPlayer, extraSign + QString::number(-diff)));
 
-        result.append(new QueryResultItem("", group));
+        m_queryResultItems.append(new QueryResultItem("", group));
     }
-
-    return result;
 }

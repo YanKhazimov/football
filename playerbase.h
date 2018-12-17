@@ -40,12 +40,13 @@ class QueryResultItem : public QObject
 
 public:
     QueryResultItem ();
+    ~QueryResultItem();
     QueryResultItem (QString groupStatValue, QObjectList playersGroup);
     QList<QObject*> getGroup();
     QueryResultItem& operator= (const QueryResultItem& other);
 
 private:
-    QList<QObject*> m_playersGroup;
+    QList<QObject*> m_playerStatsGroup;
     QString m_groupStatValue;
 };
 

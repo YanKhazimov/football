@@ -35,25 +35,31 @@ QueryResultItem::QueryResultItem()
 {
 }
 
+QueryResultItem::~QueryResultItem()
+{
+    for (QObject* statGroup: m_playerStatsGroup)
+        delete statGroup;
+}
+
 QueryResultItem::QueryResultItem(QString groupStatValue, QObjectList playersGroup)
-    : m_playersGroup(playersGroup), m_groupStatValue(groupStatValue)
+    : m_playerStatsGroup(playersGroup), m_groupStatValue(groupStatValue)
 {
 }
 
 QList<QObject *> QueryResultItem::getGroup()
 {
-    return m_playersGroup;
+    return m_playerStatsGroup;
 }
 
 QueryResultItem &QueryResultItem::operator=(const QueryResultItem &other)
 {
     m_groupStatValue = other.m_groupStatValue;
 
-    for (auto ps: m_playersGroup)
+    for (auto ps: m_playerStatsGroup)
         delete ps;
 
-    for (auto ps: other.m_playersGroup)
-        m_playersGroup << new PlayerStat(*qobject_cast<PlayerStat*>(ps));
+    for (auto ps: other.m_playerStatsGroup)
+        m_playerStatsGroup << new PlayerStat(*qobject_cast<PlayerStat*>(ps));
 
     return *this;
 }

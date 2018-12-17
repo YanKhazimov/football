@@ -8,10 +8,7 @@ class FeaturedStat : public QObject // ?
 {
     Q_OBJECT
 
-    QObjectList m_queryResultItems;
-
     using Criteria = std::function<bool(Player*,Player*)>;
-
     Criteria m_criteria;
 
 protected:
@@ -19,13 +16,17 @@ protected:
     QString m_description;
     QAbstractItemModel* m_dataModel;
 
+    QObjectList m_queryResultItems;
+
 public:
     FeaturedStat(QString name, QString description, QAbstractItemModel* dataModel);
     FeaturedStat(const FeaturedStat& fs);
+    ~FeaturedStat();
     FeaturedStat& operator= (const FeaturedStat& fs);
     QString getName() const;
     QString getDescription() const;
-    virtual QObjectList calculate() = 0;
+    QObjectList getValue() const;
+    virtual void recalculate() = 0;
     void resetDataModel(QAbstractItemModel* dataModel);
 };
 
@@ -33,7 +34,7 @@ class ClosestPlayersStat: public FeaturedStat
 {
 public:
     ClosestPlayersStat(QAbstractItemModel *dataModel);
-    QObjectList calculate() override;
+    void recalculate() override;
 };
 
 class FeaturedStatsModel : public QAbstractListModel
@@ -42,8 +43,8 @@ class FeaturedStatsModel : public QAbstractListModel
 
 public:
     FeaturedStatsModel();
+    ~FeaturedStatsModel();
     int rowCount(const QModelIndex &parent) const override;
-    //int columnCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex& index, int role) const override;
     void setSourceModel(QAbstractItemModel* source);
 
@@ -53,11 +54,8 @@ private slots:
     void reset();
 
 private:
-    QList<FeaturedStat*> m_featuredStats;// TODO: unite with m_stats, get rid of pointers
+    QList<FeaturedStat*> m_featuredStats;
     QAbstractItemModel* m_source;
-
-    QList<QObjectList> m_stats;
-    void setStat(int i, const QObjectList& newValue);
 };
 
 #endif // FEATUREDSTATSMODEL_H
