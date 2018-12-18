@@ -121,11 +121,14 @@ Rectangle {
                         Connections {
                             target: playerPage.table.selection
                             onSelectionChanged: {
-                                if (playerPage.table.selection.count === 0)
+                                if (playerPage.table.selection.count !== 1) {
+                                    print("playerPage.table.selection.count=", playerPage.table.selection.count)
                                     return
-                                var selectedStatRow = playerPage.table.selection[0]
-                                var statRole = playerPage.table.presenter.getStatRole(selectedStatRow)
-                                ratingsTable.presenter.sortBy(statRole)
+                                }
+                                playerPage.table.selection.forEach( function(rowIndex) {
+                                    var statRole = playerPage.table.presenter.getStatRole(rowIndex)
+                                    ratingsTable.presenter.sortBy(statRole)
+                                })
                             }
                         }
                     }

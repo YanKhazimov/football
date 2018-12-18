@@ -1,41 +1,8 @@
 #ifndef FEATUREDSTATSMODEL_H
 #define FEATUREDSTATSMODEL_H
 
-#include <QAbstractProxyModel>
-#include "playerbase.h"
-
-class FeaturedStat : public QObject // ?
-{
-    Q_OBJECT
-
-    using Criteria = std::function<bool(Player*,Player*)>;
-    Criteria m_criteria;
-
-protected:
-    QString m_name;
-    QString m_description;
-    QAbstractItemModel* m_dataModel;
-
-    QObjectList m_queryResultItems;
-
-public:
-    FeaturedStat(QString name, QString description, QAbstractItemModel* dataModel);
-    FeaturedStat(const FeaturedStat& fs);
-    ~FeaturedStat();
-    FeaturedStat& operator= (const FeaturedStat& fs);
-    QString getName() const;
-    QString getDescription() const;
-    QObjectList getValue() const;
-    virtual void recalculate() = 0;
-    void resetDataModel(QAbstractItemModel* dataModel);
-};
-
-class ClosestPlayersStat: public FeaturedStat
-{
-public:
-    ClosestPlayersStat(QAbstractItemModel *dataModel);
-    void recalculate() override;
-};
+#include <QAbstractListModel>
+#include "featuredstats.h"
 
 class FeaturedStatsModel : public QAbstractListModel
 {

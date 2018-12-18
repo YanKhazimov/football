@@ -113,7 +113,7 @@ Rectangle {
 
             onCurrentIndexChanged: {
                 leftWing.update(currentIndex > 0)
-                rightWing.update(currentIndex < model.length - 1)
+                rightWing.update(currentIndex < model.rowCount() - 1)
             }
 
             clip: true
@@ -123,10 +123,7 @@ Rectangle {
             interactive: false
             highlightMoveDuration: 300
 
-            model: {
-                print("root.model=", root.model)
-                return root.model
-            }
+            model: root.model
             delegate: SlideContent {
                 title: ListView.isCurrentItem ? model.name : ""
                 descr: ListView.isCurrentItem ? model.description : ""
