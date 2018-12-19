@@ -2,7 +2,6 @@
 #define PLAYERSTATSMODEL_H
 
 #include <QStandardItemModel>
-#include <QDate>
 #include "player.h"
 
 class PlayerStatsModel: public QStandardItemModel
@@ -18,7 +17,6 @@ public:
 
     virtual void setSourceModel(QAbstractItemModel *sourceModel);
 
-    //using Stat = QPair<QString, QString>;
     Q_INVOKABLE QString getStatCategory(int idx);
     Q_INVOKABLE int getStatRole(int row);
 
@@ -35,7 +33,6 @@ private:
     Player* m_selectedPlayer;
     QList<int> m_ratingHistory;
     QAbstractItemModel *m_sourceModel;
-    //QVector<Stat> m_stats;
 };
 
 #endif // PLAYERSTATSMODEL_H

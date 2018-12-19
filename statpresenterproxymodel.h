@@ -3,7 +3,7 @@
 
 #include <QIdentityProxyModel>
 
-class StatPresenterProxyModel: public QIdentityProxyModel//, public CustomExtendableModel
+class StatPresenterProxyModel: public QIdentityProxyModel
 {
     Q_OBJECT
 

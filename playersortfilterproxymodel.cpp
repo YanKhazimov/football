@@ -1,4 +1,3 @@
-#include <QDebug>
 #include "playersortfilterproxymodel.h"
 #include "dataroles.h"
 

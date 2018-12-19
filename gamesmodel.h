@@ -18,17 +18,15 @@ class Game : public QObject
 public:
     Game() = delete;
     Game(QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam, QPair<int, int> score);
-    QVector<PlayerRef> getAllParticipants();
     QVector<PlayerRef> getHometeam() const;
     QVector<PlayerRef> getAwayteam() const;
     QPair<int, int> getScore() const;
     QDate getDate() const;
 };
 
-class GamesModel : public QAbstractListModel
+class GamesModel : public QAbstractListModel //?
 {
     Q_OBJECT
-    //Q_PROPERTY(QList<QObject*> games READ getGames CONSTANT)
 
 public:
     GamesModel();

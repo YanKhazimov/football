@@ -5,11 +5,6 @@ Game::Game(QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam,
 {
 }
 
-QVector<PlayerRef> Game::getAllParticipants()
-{
-    return m_hometeam + m_awayteam;
-}
-
 QVector<PlayerRef> Game::getHometeam() const
 {
     return m_hometeam;

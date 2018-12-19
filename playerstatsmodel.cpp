@@ -121,5 +121,4 @@ void PlayerStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRigh
 
 void PlayerStatsModel::resetModel()
 {
-
 }
