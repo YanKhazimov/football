@@ -43,7 +43,7 @@ GamesModel::~GamesModel()
 bool GamesModel::init()
 {
     beginResetModel();
-    m_games << new Game(QDate::currentDate(), {"p1", "p2"}, {"p3", "p4"}, {20, 10})
+    m_games << new Game(QDate::currentDate(), {"p1", "p2"}, {"p3", "p4"}, {10, 10})
             << new Game(QDate(2018, 12, 31), {"p1"}, {"p5"}, {15, 15})
             << new Game(QDate(2019, 1, 1), {"p1", "p2", "p7", "p8", "p9", "p10", "p11", "p12"}, {"p6"}, {30, 1});
     endResetModel();

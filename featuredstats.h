@@ -18,7 +18,7 @@ private:
 public:
     FeaturedStat(QString name, QString description, QAbstractItemModel* dataModel);
     FeaturedStat(const FeaturedStat& fs);
-    virtual ~FeaturedStat();
+    ~FeaturedStat();
     FeaturedStat& operator= (const FeaturedStat& fs);
     QString getName() const;
     QString getDescription() const;

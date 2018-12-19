@@ -29,6 +29,7 @@ public:
         FeaturedStatName,       //273
         FeaturedStatDescription,
         FeaturedStatQueryResult,
+        Synergy,
         DataRoleEnd = Qt::UserRole + 2000
     };
     Q_ENUM(DataRole)

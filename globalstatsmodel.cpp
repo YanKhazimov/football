@@ -3,7 +3,7 @@
 #include <QDebug>
 
 GlobalStatsModel::GlobalStatsModel(const Playerbase* base)
-    : m_sourceModel(nullptr), m_base(base)
+    : m_base(base), m_sourceModel(nullptr)
 {
 }
 
@@ -69,10 +69,10 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
 
     Q_ASSERT(index.model() == this);
 
-    if (index.row() >= m_playersData.size() || index.column() >= m_sourceModel->rowCount() + 1)
+    if (index.row() >= static_cast<int>(m_playersData.size()) || index.column() >= m_sourceModel->rowCount() + 1)
         return QVariant();
 
-    const std::pair<PlayerRef, QVector<GlobalStatsModel::PlayerGameStats>> playerData = getPlayer(index);
+    const std::pair<PlayerRef, QVector<GlobalStatsModel::PlayerGameStats>> playerData = getPlayerData(index);
 
     if (role == DataRoles::DataRole::PlayerName)
     {
@@ -126,6 +126,53 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
             onlyRating.append(game.changedRating);
         }
         return QVariant::fromValue(onlyRating);
+    }
+    else if (role == DataRoles::DataRole::Synergy)
+    {
+        typedef QVector<int> WDL;
+        QMap<PlayerRef, WDL> synergy;
+
+        auto collectSynergy = [&playerData, &synergy](const QModelIndex& gameIdx, DataRoles::DataRole teamRole, int outcomeIdx) -> bool
+        {
+            QVector<PlayerRef> team = gameIdx.data(teamRole).value<QVector<PlayerRef>>();
+            if (team.indexOf(playerData.first) == -1)
+                return false;
+
+            for (PlayerRef p: team)
+            {
+                if (synergy.count(p) > 0)
+                    ++synergy[p][outcomeIdx];
+                else
+                {
+                    WDL wdl(3, 0);
+                    ++wdl[outcomeIdx];
+                    synergy[p] = wdl;
+                }
+            }
+            return true;
+        };
+
+        for (const PlayerGameStats& game: playerData.second)
+        {
+            int scoreDiff = game.sourceIndex.data(DataRoles::DataRole::ScoreDiff).toInt();
+            if (game.resultSign * scoreDiff > 0)
+            {
+                // add a win
+                collectSynergy(game.sourceIndex, DataRoles::DataRole::Hometeam, 0);
+            }
+            else if (game.resultSign * scoreDiff < 0)
+            {
+                // add a loss
+                collectSynergy(game.sourceIndex, DataRoles::DataRole::Awayteam, 2);
+            }
+            else
+            {
+                // add a draw
+                if (!collectSynergy(game.sourceIndex, DataRoles::DataRole::Hometeam, 1))
+                    collectSynergy(game.sourceIndex, DataRoles::DataRole::Awayteam, 1);
+            }
+        }
+        return QVariant::fromValue(synergy);
     }
 
     return QVariant();
@@ -231,17 +278,17 @@ void GlobalStatsModel::resetData()
         for (const QString &playerRef: hometeam)
         {
             currentRatings[playerRef] += ratingChange;
-            m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(scoreDiff)));
+            m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(scoreDiff), sourceGameIndex));
         }
         for (PlayerRef playerRef: awayteam)
         {
             currentRatings[playerRef] -= ratingChange;
-            m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(-scoreDiff)));
+            m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(-scoreDiff), sourceGameIndex));
         }
     }
 }
 
-std::pair<PlayerRef, QVector<GlobalStatsModel::PlayerGameStats> > GlobalStatsModel::getPlayer(const QModelIndex &index) const
+std::pair<PlayerRef, QVector<GlobalStatsModel::PlayerGameStats> > GlobalStatsModel::getPlayerData(const QModelIndex &index) const
 {
     std::map<PlayerRef, QVector<PlayerGameStats>>::const_iterator playerIter = m_playersData.begin();
     if (playerIter != m_playersData.end())
@@ -256,7 +303,7 @@ std::pair<PlayerRef, QVector<GlobalStatsModel::PlayerGameStats> > GlobalStatsMod
     return std::make_pair<PlayerRef, QVector<PlayerGameStats>>(PlayerRef(), QVector<PlayerGameStats>());
 }
 
-GlobalStatsModel::PlayerGameStats::PlayerGameStats(int rating, int sign)
-    : changedRating(rating), resultSign(sign)
+GlobalStatsModel::PlayerGameStats::PlayerGameStats(int rating, int sign, QModelIndex srcIdx)
+    : changedRating(rating), resultSign(sign), sourceIndex(srcIdx)
 {
 }

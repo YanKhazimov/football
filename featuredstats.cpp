@@ -129,5 +129,44 @@ SynergyStat::SynergyStat(QAbstractItemModel *dataModel)
 
 void SynergyStat::calculate()
 {
+    int playerCount = m_dataModel->rowCount();
+    typedef QVector<int> WDL;
+    std::multimap<float, QPair<Player*, Player*>> groupsSynergy;
 
+    for (int i = 0; i < playerCount - 1; ++i)
+    {
+        QModelIndex iIndex = m_dataModel->index(i, 0);
+        QMap<PlayerRef, WDL> synergy = iIndex.data(DataRoles::DataRole::Synergy).value<QMap<PlayerRef, WDL>>();
+        for (int j = i + 1; j < playerCount; ++j)
+        {
+            QModelIndex jIndex = m_dataModel->index(j, 0);
+            PlayerRef jName = jIndex.data(DataRoles::DataRole::PlayerName).value<PlayerRef>();
+
+            if (synergy.count(jName) > 0)
+            {
+                const WDL& ijWDL = synergy[jName];
+                float synergy = (ijWDL[0] + static_cast<float>(ijWDL[1]) / 2) /
+                        (ijWDL[0] + ijWDL[1] + ijWDL[2]);
+                Player* iPlayer = iIndex.data(DataRoles::DataRole::Player).value<Player*>();
+                Player* jPlayer = jIndex.data(DataRoles::DataRole::Player).value<Player*>();
+                groupsSynergy.insert(std::make_pair(synergy, qMakePair(iPlayer, jPlayer)));
+            }
+        }
+    }
+
+    // TODO: regroup into larger groups
+
+    int maxShown = 9;
+    int shown = 0;
+    std::multimap<float, QPair<Player*, Player*>>::reverse_iterator iter = groupsSynergy.rbegin();
+    for (; iter != groupsSynergy.rend() && (shown += 2) <= maxShown; ++iter)
+    {
+        QObjectList group;
+
+        group << new PlayerStat(iter->second.first, "")
+              << new PlayerStat(iter->second.second, "");
+
+        QString groupStat = QString::number(static_cast<int>(iter->first * 100)) + "%";
+        m_queryResultItems.append(new QueryResultItem(groupStat, group));
+    }
 }

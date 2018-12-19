@@ -20,10 +20,7 @@ public:
     Q_INVOKABLE virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
     Q_INVOKABLE virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
 
-
     virtual void setSourceModel(QAbstractItemModel *sourceModel);
-
-    using Stat = QPair<QString, QString>;
 
     virtual QHash<int, QByteArray> roleNames() const override;
 
@@ -37,13 +34,14 @@ private:
     struct PlayerGameStats {
         int changedRating;
         int resultSign;
+        QModelIndex sourceIndex;
 
         PlayerGameStats() = default;
-        PlayerGameStats(int rating, int sign);
+        PlayerGameStats(int rating, int sign, QModelIndex srcIdx);
     };
 
     void resetData();
-    std::pair<PlayerRef, QVector<PlayerGameStats>> getPlayer(const QModelIndex& index) const;
+    std::pair<PlayerRef, QVector<PlayerGameStats>> getPlayerData(const QModelIndex& index) const;
 
     const Playerbase* m_base;
     QAbstractItemModel *m_sourceModel;
