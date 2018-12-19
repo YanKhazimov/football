@@ -4,31 +4,37 @@
 #include <QAbstractListModel>
 #include <QDate>
 #include "player.h"
+#include "dataroles.h"
 
 class Game : public QObject
 {
     Q_OBJECT
-    //Q_PROPERTY(QDate date CONSTANT)
 
     QDate m_date;
     QVector<PlayerRef> m_hometeam;
     QVector<PlayerRef> m_awayteam;
+    QPair<int, int> m_score; // home, away
 
 public:
     Game() = delete;
-    Game(QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam);
-    QVector<PlayerRef> getAllPlayers();
+    Game(QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam, QPair<int, int> score);
+    QVector<PlayerRef> getHometeam() const;
+    QVector<PlayerRef> getAwayteam() const;
+    QPair<int, int> getScore() const;
+    QDate getDate() const;
 };
 
-class GamesModel : public QObject
+class GamesModel : public QAbstractListModel //?
 {
     Q_OBJECT
-    //Q_PROPERTY(QList<QObject*> games READ getGames CONSTANT)
 
 public:
     GamesModel();
     ~GamesModel();
     bool init();
+
+    Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    Q_INVOKABLE virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
     QList<Game*> getGames() const;
 

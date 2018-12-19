@@ -6,6 +6,7 @@ import "Players"
 import "NextGame"
 import "qrc:/qml/visualStyles"
 import "."
+import com.abc.abclib 1.0
 
 Rectangle {
     id: root
@@ -82,12 +83,21 @@ Rectangle {
 
                         StatsTable {
                             id: ratingsTable
-                            model: globalStatsModel
+                            property GlobalStatPresenter presenter: statModel
+                            model: presenter
                             theme: root.theme
 
                             Layout.preferredWidth: parent.width / 2
                             Layout.minimumWidth: parent.width / 2
                             Layout.fillHeight: true
+                        }
+
+                        Connections {
+                            target: ratingsTable.presenter
+                            onSelectedRowChanged: {
+                                ratingsTable.selection.clear()
+                                ratingsTable.selection.select(selectedRow)
+                            }
                         }
 
                         PlayerPage {
@@ -100,14 +110,26 @@ Rectangle {
                         Connections {
                             target: ratingsTable.selection
                             onSelectionChanged: ratingsTable.selection.forEach( function(rowIndex) {
-                                var player = globalStatsModel.getPlayer(rowIndex)
-                                playerPage.reset(player)
+                                ratingsTable.presenter.selectRow(rowIndex)
                             })
                         }
 
                         Connections {
                             target: playerPage
                             onSelectedStatChanged: ratingsTable.replaceColumn(statCategory)
+                        }
+                        Connections {
+                            target: playerPage.table.selection
+                            onSelectionChanged: {
+                                if (playerPage.table.selection.count !== 1) {
+                                    print("playerPage.table.selection.count=", playerPage.table.selection.count)
+                                    return
+                                }
+                                playerPage.table.selection.forEach( function(rowIndex) {
+                                    var statRole = playerPage.table.presenter.getStatRole(rowIndex)
+                                    ratingsTable.presenter.sortBy(statRole)
+                                })
+                            }
                         }
                     }
                 }

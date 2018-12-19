@@ -1,10 +1,10 @@
 #include "playerbase.h"
 #include <memory>
 
-PlayerbaseQuery::PlayerbaseQuery(const PlayersModel& model, Playerbase& base, Query rule, QString title, QString description)
+PlayerbaseQuery::PlayerbaseQuery(Playerbase& base, Query rule, QString title, QString description)
     : m_name(title), m_description(description)
 {
-    QList<PlayerRef> players = model.getPlayers();
+    QList<PlayerRef> players = base.listAllPlayers();
     int i = 0;
     for (auto p = players.constBegin(); p != players.constEnd() && i < rule; ++i, ++p)
     {
@@ -35,25 +35,31 @@ QueryResultItem::QueryResultItem()
 {
 }
 
+QueryResultItem::~QueryResultItem()
+{
+    for (QObject* statGroup: m_playerStatsGroup)
+        delete statGroup;
+}
+
 QueryResultItem::QueryResultItem(QString groupStatValue, QObjectList playersGroup)
-    : m_playersGroup(playersGroup), m_groupStatValue(groupStatValue)
+    : m_playerStatsGroup(playersGroup), m_groupStatValue(groupStatValue)
 {
 }
 
 QList<QObject *> QueryResultItem::getGroup()
 {
-    return m_playersGroup;
+    return m_playerStatsGroup;
 }
 
 QueryResultItem &QueryResultItem::operator=(const QueryResultItem &other)
 {
     m_groupStatValue = other.m_groupStatValue;
 
-    for (auto ps: m_playersGroup)
+    for (auto ps: m_playerStatsGroup)
         delete ps;
 
-    for (auto ps: other.m_playersGroup)
-        m_playersGroup << new PlayerStat(*qobject_cast<PlayerStat*>(ps));
+    for (auto ps: other.m_playerStatsGroup)
+        m_playerStatsGroup << new PlayerStat(*qobject_cast<PlayerStat*>(ps));
 
     return *this;
 }
@@ -85,6 +91,11 @@ Playerbase::~Playerbase()
 Player *Playerbase::getPlayer(PlayerRef id) const
 {
     return m_base.value(id);
+}
+
+QList<PlayerRef> Playerbase::listAllPlayers() const
+{
+    return m_base.keys();
 }
 
 PlayerStat::PlayerStat(Player *player, QString statValue)

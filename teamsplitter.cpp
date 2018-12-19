@@ -26,7 +26,7 @@ void TeamSplitter::pick(int picksToGo, QStringList home, const QStringList& away
     }
     else
     {
-        m_splitVariants.append(QVariant::fromValue(QStringList(home + away + unsorted)));
+        m_splitVariants.append(QVariant::fromValue(QStringList(home + away + unsorted))); // TODO: exclude mirror variants
     }
 }
 

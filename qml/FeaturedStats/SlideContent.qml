@@ -56,6 +56,7 @@ Rectangle {
             Layout.fillWidth: true
 
             theme: contentRoot.theme
+            statGroupsModel: contentRoot.statGroupsModel
         }
     }
 }

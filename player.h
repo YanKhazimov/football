@@ -13,6 +13,7 @@ class Player : public QObject
 
     QString m_name;
     QUrl m_photo;
+    int m_initialRating;
 
     static const QUrl m_defaultPhoto;
 
@@ -22,7 +23,10 @@ public:
     Player& operator =(const Player& p);
 
     Q_INVOKABLE int getRating() const;
+    int getInitialRating() const;
 };
+
+Q_DECLARE_METATYPE(Player*)
 
 using PlayerRef = QString;
 

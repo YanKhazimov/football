@@ -10,6 +10,12 @@ TableView {
     property var theme: null
     headerVisible: false
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+    frameVisible: false
+
+    Component.onCompleted: {
+        selection.select(0)
+        currentRow = 0
+    }
 
     TableViewColumn {
         id: headColumn
@@ -42,8 +48,8 @@ TableView {
         delegate: Text {
             text: model.StatCategory + ":"
             horizontalAlignment: Text.AlignRight
-            color: theme.textColor
-            font.bold: root.currentRow === model.index
+            color: styleData.selected ? theme.secondaryFillColor : theme.textColor
+            font.bold: styleData.selected
             font.pixelSize: 14
             font.family: Themes.fontFamily
         }
@@ -52,10 +58,10 @@ TableView {
 
     TableViewColumn {
         delegate: Text {
-            text: model.StatValue
+            text: model.StatValue === undefined ? "" : model.StatValue
             horizontalAlignment: Text.AlignHCenter
-            color: theme.textColor
-            font.bold: root.currentRow === model.index
+            color: styleData.selected ? theme.secondaryFillColor : theme.textColor
+            font.bold: styleData.selected
             font.pixelSize: 14
             font.family: Themes.fontFamily
         }
@@ -64,12 +70,10 @@ TableView {
 
     style: TableViewStyle {
         rowDelegate: Rectangle {
-            color: "transparent"
+            color: /*styleData.pressed ? "red" :*/ "transparent"
             height: Sizes.fontPixelSize
         }
 
         backgroundColor: "transparent"
     }
-
-    frameVisible: false
 }
