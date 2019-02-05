@@ -82,13 +82,14 @@ Rectangle {
     function split() {
         teamSplitter.split(zoneModels[PitchZones.leftHalf],
                            zoneModels[PitchZones.rightHalf],
-                           zoneModels[PitchZones.center])
+                           zoneModels[PitchZones.center],
+                           5)
 
-        console.log("teamSplitter.homeRoster", teamSplitter.homeRoster)
-        console.log("teamSplitter.awayRoster", teamSplitter.awayRoster)
+        console.log("teamSplitter.bestSplit", teamSplitter.splitVariants[0])
+        var splitVariant = teamSplitter.splitVariants[0]
 
-        zoneModels[PitchZones.leftHalf] = teamSplitter.homeRoster
-        zoneModels[PitchZones.rightHalf] = teamSplitter.awayRoster
+        zoneModels[PitchZones.leftHalf] = splitVariant.splice(0, splitVariant.length/2)
+        zoneModels[PitchZones.rightHalf] = splitVariant.splice(0, splitVariant.length) //???
         zoneModels[PitchZones.center] = []
 
         adjustFormation(PitchZones.leftHalf)
@@ -108,12 +109,29 @@ Rectangle {
         source: "qrc:/img/balance.png"
         color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
 
-        SequentialAnimation {
-            id: anm
-            running: false
-            NumberAnimation { target: splitButton; property: "rotation"; to: 45; duration: 125 }
-            NumberAnimation { target: splitButton; property: "rotation"; to: -45; duration: 250 }
-            NumberAnimation { target: splitButton; property: "rotation"; to: 0; duration: 125 }
+//        SequentialAnimation {
+//            id: anm
+//            running: false
+//            NumberAnimation { target: splitButton; property: "rotation"; to: 45; duration: 125 }
+//            NumberAnimation { target: splitButton; property: "rotation"; to: -45; duration: 250 }
+//            NumberAnimation { target: splitButton; property: "rotation"; to: 0; duration: 125 }
+
+        PropertyAnimation {
+            id: rotationAnimation
+            duration: 500
+            target: splitButton
+            property: "rotation"
+            from: 0
+            to: 720
+        }
+
+        function animateSplit() {
+            rotationAnimation.stopped.connect(function oneTimeSplit() {
+                root.split()
+                rotationAnimation.stopped.disconnect(oneTimeSplit) // wow
+            })
+
+            rotationAnimation.start()
         }
 
         MouseArea {
@@ -121,14 +139,8 @@ Rectangle {
             anchors.fill: parent
             hoverEnabled: true
             onClicked: {
-//                console.log("zoneModels[PitchZones.bench]", zoneModels[PitchZones.bench])
-//                console.log("zoneModels[PitchZones.leftHalf]", zoneModels[PitchZones.leftHalf])
-//                console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
-//                console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
-
-                anm.running = true
-                split()
-
+                if (zoneModels[PitchZones.center].length > 0)
+                    parent.animateSplit()
                 console.log("zoneModels[PitchZones.bench]", zoneModels[PitchZones.bench])
                 console.log("zoneModels[PitchZones.leftHalf]", zoneModels[PitchZones.leftHalf])
                 console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])

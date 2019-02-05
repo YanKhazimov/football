@@ -49,8 +49,7 @@ Rectangle {
             top: separator.bottom
             left: parent.left; leftMargin: Sizes.borderWidth
             right: parent.right; rightMargin: Sizes.borderWidth
-            bottom: parent.bottom
-            bottomMargin: Sizes.borderWidth
+            bottom: parent.bottom; bottomMargin: Sizes.borderWidth
         }
 
         SlideshowWing {
@@ -114,7 +113,7 @@ Rectangle {
 
             onCurrentIndexChanged: {
                 leftWing.update(currentIndex > 0)
-                rightWing.update(currentIndex < model.length - 1)
+                rightWing.update(currentIndex < model.rowCount() - 1)
             }
 
             clip: true
@@ -126,10 +125,10 @@ Rectangle {
 
             model: root.model
             delegate: SlideContent {
-                title: ListView.isCurrentItem ? model.modelData.name : ""
-                descr: ListView.isCurrentItem ? model.modelData.description : ""
+                title: ListView.isCurrentItem ? model.name : ""
+                descr: ListView.isCurrentItem ? model.description : ""
                 theme: root.theme
-                statGroupsModel: ListView.isCurrentItem ? model.modelData.queryResult : null
+                statGroupsModel: ListView.isCurrentItem ? model.queryResult : null
                 width: listView.width
                 height: listView.height
             }

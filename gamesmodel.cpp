@@ -1,13 +1,28 @@
 #include "gamesmodel.h"
 
-Game::Game(QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam)
-    : m_date(date), m_hometeam(hometeam), m_awayteam(awayteam)
+Game::Game(QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam, QPair<int, int> score)
+    : m_date(date), m_hometeam(hometeam), m_awayteam(awayteam), m_score(score)
 {
 }
 
-QVector<PlayerRef> Game::getAllPlayers()
+QVector<PlayerRef> Game::getHometeam() const
 {
-    return m_hometeam + m_awayteam;
+    return m_hometeam;
+}
+
+QVector<PlayerRef> Game::getAwayteam() const
+{
+    return m_awayteam;
+}
+
+QPair<int, int> Game::getScore() const
+{
+    return m_score;
+}
+
+QDate Game::getDate() const
+{
+    return m_date;
 }
 
 GamesModel::GamesModel()
@@ -22,11 +37,45 @@ GamesModel::~GamesModel()
 
 bool GamesModel::init()
 {
-    m_games << new Game(QDate::currentDate(), {"p1", "p2"}, {"p3", "p4"})
-            << new Game(QDate(2018, 12, 31), {"p1"}, {"p5"})
-            << new Game(QDate(2019, 1, 1), {"p1", "p2", "p7", "p8", "p9", "p10", "p11", "p12"}, {"p6"});
+    beginResetModel();
+    m_games << new Game(QDate::currentDate(), {"p1", "p2"}, {"p3", "p4"}, {10, 10})
+            << new Game(QDate(2018, 12, 31), {"p1"}, {"p5"}, {15, 15})
+            << new Game(QDate(2019, 1, 1), {"p1", "p2", "p7", "p8", "p9", "p10", "p11", "p12"}, {"p6"}, {30, 1});
+    endResetModel();
 
     return true;
+}
+
+int GamesModel::rowCount(const QModelIndex &parent) const
+{
+    return parent.isValid() ? 0 : static_cast<int>(m_games.size());
+}
+
+QVariant GamesModel::data(const QModelIndex &index, int role) const
+{
+    Q_ASSERT(index.parent() == QModelIndex() && index != QModelIndex());
+    if (role == DataRoles::DataRole::GameDate)
+    {
+        return QVariant::fromValue(m_games[index.row()]->getDate());
+    }
+    else if (role == DataRoles::DataRole::ScoreDiff)
+    {
+        Game* game = m_games[index.row()];
+        auto score = game->getScore();
+        return QVariant::fromValue(score.first - score.second);
+    }
+    else if (role == DataRoles::DataRole::Hometeam)
+    {
+        Game* game = m_games[index.row()];
+        return QVariant::fromValue(game->getHometeam());
+    }
+    else if (role == DataRoles::DataRole::Awayteam)
+    {
+        Game* game = m_games[index.row()];
+        return QVariant::fromValue(game->getAwayteam());
+    }
+
+    return QVariant();
 }
 
 QList<Game*> GamesModel::getGames() const

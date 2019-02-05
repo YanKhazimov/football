@@ -2,8 +2,9 @@ import QtQuick 2.0
 import "qrc:/qml/visualStyles"
 
 Item {
-    id: flowRect
+    id: root
     property var theme: null
+    property var statGroupsModel: null
     readonly property real groupSpacerMultiplier: 1.0
     readonly property real imgSpacerMultiplier: 0.1
     readonly property real maxFittingImageWidth: width / elemsAsImages()
@@ -11,37 +12,37 @@ Item {
     function elemsAsImages() {
         // returns the amount of images in statGroupsModel counting spacers as image parts
 
-        if (contentRoot.statGroupsModel === null)
+        if (statGroupsModel === null)
             return 0
 
-        var groupSpacers = contentRoot.statGroupsModel.length - 1
+        var groupSpacers = statGroupsModel.length - 1
         var images = 0
         var imgSpacers = 0
-        for (var i = 0; i < contentRoot.statGroupsModel.length; ++i)
+        for (var i = 0; i < statGroupsModel.length; ++i)
         {
-            images += contentRoot.statGroupsModel[i].group.length
-            imgSpacers += contentRoot.statGroupsModel[i].group.length - 1
+            images += statGroupsModel[i].group.length
+            imgSpacers += statGroupsModel[i].group.length - 1
         }
 
         return images + imgSpacers*imgSpacerMultiplier + groupSpacers*groupSpacerMultiplier
     }
 
     Row {
-        anchors.centerIn: flowRect
-        spacing: flowRect.groupSpacerMultiplier * flowRect.maxFittingImageWidth
+        anchors.centerIn: root
+        spacing: root.groupSpacerMultiplier * root.maxFittingImageWidth
         Repeater {
-            model: contentRoot.statGroupsModel
+            model: statGroupsModel
             delegate: Column {
                 Row {
                     id: statGroup
-                    spacing: flowRect.imgSpacerMultiplier * flowRect.maxFittingImageWidth
+                    spacing: root.imgSpacerMultiplier * root.maxFittingImageWidth
                     Repeater {
                         model: modelData.group
                         delegate: Column {
                             Image {
                                 id: playerImg
                                 width: Math.min(Sizes.featuredStats.iconWidth,
-                                                flowRect.maxFittingImageWidth)
+                                                root.maxFittingImageWidth)
                                 height: width
                                 source: modelData.player.photo
                             }

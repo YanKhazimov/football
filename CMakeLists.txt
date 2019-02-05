@@ -8,21 +8,28 @@ set(CMAKE_AUTORCC ON)
 
 set (HEADERS
     playerbase.h
-    playersmodel.h
+    featuredstatsmodel.h
     playerstatsmodel.h
     gamesmodel.h
     player.h
     globalstatsmodel.h
-    teamsplitter.h)
+    teamsplitter.h
+    dataroles.h
+    playersortfilterproxymodel.h
+    statpresenterproxymodel.h
+    featuredstats.h)
 
 set (SRC
     playerbase.cpp
-    playersmodel.cpp
+    featuredstatsmodel.cpp
     playerstatsmodel.cpp
     gamesmodel.cpp
     player.cpp
     globalstatsmodel.cpp
-    teamsplitter.cpp)
+    teamsplitter.cpp
+    playersortfilterproxymodel.cpp
+    statpresenterproxymodel.cpp
+    featuredstats.cpp)
 
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 

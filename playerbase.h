@@ -4,7 +4,7 @@
 #include <QAbstractListModel>
 #include <QUrl>
 #include <QMap>
-#include "playersmodel.h"
+#include "player.h"
 
 class Playerbase: public QObject
 {
@@ -15,6 +15,7 @@ public:
     Playerbase();
     ~Playerbase();
     Player *getPlayer(PlayerRef id) const;
+    QList<PlayerRef> listAllPlayers() const;
 };
 
 class PlayerStat : public QObject
@@ -39,12 +40,13 @@ class QueryResultItem : public QObject
 
 public:
     QueryResultItem ();
+    ~QueryResultItem();
     QueryResultItem (QString groupStatValue, QObjectList playersGroup);
     QList<QObject*> getGroup();
     QueryResultItem& operator= (const QueryResultItem& other);
 
 private:
-    QList<QObject*> m_playersGroup;
+    QList<QObject*> m_playerStatsGroup;
     QString m_groupStatValue;
 };
 
@@ -62,7 +64,7 @@ class PlayerbaseQuery : public QObject
     using Query = int;
 
 public:
-    PlayerbaseQuery(const PlayersModel& model, Playerbase& base,
+    PlayerbaseQuery(Playerbase& base,
                     Query rule, QString title = "1", QString description = "11");
     ~PlayerbaseQuery();
 

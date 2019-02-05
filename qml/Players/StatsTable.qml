@@ -70,7 +70,7 @@ TableView {
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
         role: "WinsLosses"
-        title: "W/L"
+        title: "W-D-L"
         width: root.width * 3/10
         resizable: false
         visible: false
@@ -90,13 +90,13 @@ TableView {
     }
     TableViewColumn {
         delegate: Text {
-            text: model.Reliability
+            text: model.Dedication
             horizontalAlignment: Text.AlignHCenter
             font.family: Themes.fontFamily
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
-        role: "Reliability"
-        title: "Reliability"
+        role: "Dedication"
+        title: "Dedication"
         width: root.width * 3/10
         resizable: false
         visible: false
