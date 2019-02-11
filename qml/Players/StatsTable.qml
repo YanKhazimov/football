@@ -90,6 +90,19 @@ TableView {
     }
     TableViewColumn {
         delegate: Text {
+            text: model.Relevance
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Themes.fontFamily
+            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+        }
+        role: "Relevance"
+        title: "Relevance"
+        width: root.width * 3/10
+        resizable: false
+        visible: false
+    }
+    TableViewColumn {
+        delegate: Text {
             text: model.Dedication
             horizontalAlignment: Text.AlignHCenter
             font.family: Themes.fontFamily

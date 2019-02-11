@@ -47,6 +47,12 @@ bool PlayerSortFilterProxyModel::sortBy(int statRole)
     return true;
 }
 
+void PlayerSortFilterProxyModel::setFilter(bool enabled)
+{
+    m_relevanceThreshold = enabled ? 0 : -1;
+    invalidateFilter();
+}
+
 void PlayerSortFilterProxyModel::sourceDataChanged(QModelIndex topLeft, QModelIndex bottomRight, QVector<int> roles)
 {
     if (roles.contains(DataRoles::DataRole::PlayerSelection))
@@ -84,10 +90,17 @@ bool PlayerSortFilterProxyModel::lessThan(const QModelIndex &source_left, const 
         int rightLosses = rightData.value<QVector<int>>()[2];
 
         int gamesBehindx2 = (rightWins - leftWins) - (rightLosses - leftLosses);
-        return gamesBehindx2 > 0 || gamesBehindx2 == 0 && leftDraws > rightDraws;
+        return gamesBehindx2 > 0 || (gamesBehindx2 == 0 && leftDraws > rightDraws);
     }
 
     return QSortFilterProxyModel::lessThan(source_left, source_right);
+}
+
+bool PlayerSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+{
+    Q_UNUSED(source_parent);
+    int relevance = sourceModel()->index(source_row, 0).data(DataRoles::DataRole::Relevance).toInt();
+    return relevance > m_relevanceThreshold;
 }
 
 void PlayerSortFilterProxyModel::sort()

@@ -23,6 +23,11 @@ PlayerStatsModel::PlayerStatsModel()
     this->appendRow(item);
 
     item = new QStandardItem;
+    item->setData(QString("Relevance"), DataRoles::DataRole::StatCategory);
+    item->setData(DataRoles::DataRole::Relevance, DataRoles::DataRole::SourceRole);
+    this->appendRow(item);
+
+    item = new QStandardItem;
     item->setData(QString("Dedication"), DataRoles::DataRole::StatCategory);
     item->setData(DataRoles::DataRole::Dedication, DataRoles::DataRole::SourceRole);
     this->appendRow(item);

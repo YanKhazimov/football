@@ -22,11 +22,12 @@ public:
         WinsLosses,
         Progress,
         Dedication,
-        StatCategory,           //269
+        Relevance,
+        StatCategory,           //270
         StatValue,
         SourceRole,
-        PlayerSelection,        //272
-        FeaturedStatName,       //273
+        PlayerSelection,        //273
+        FeaturedStatName,       //274
         FeaturedStatDescription,
         FeaturedStatQueryResult,
         Synergy,

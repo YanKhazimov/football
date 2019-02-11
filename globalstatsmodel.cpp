@@ -111,7 +111,29 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
     }
     else if (role == DataRoles::DataRole::Dedication)
     {
-        float percentage = static_cast<float>(playerData.second.size()) / m_sourceModel->rowCount() * 100;
+        int firstParticipationGlobalIndex = playerData.second.first().sourceIndex.row();
+        float percentage = 100.f * playerData.second.size() / (m_sourceModel->rowCount() - firstParticipationGlobalIndex);
+        return QVariant::fromValue(percentage);
+    }
+    else if (role == DataRoles::DataRole::Relevance)
+    {
+        int firstParticipationGlobalIndex = playerData.second.first().sourceIndex.row();
+        int gamesCounted = qMin(10, m_sourceModel->rowCount() - firstParticipationGlobalIndex);
+
+        int maxRelevancePoints = (1 + gamesCounted) * gamesCounted / 2; // 1 + 2 + ... + gamesCounted
+        int relevancePoints = 0;
+        int firstCountedGameIndex = m_sourceModel->rowCount() - gamesCounted;
+        for (int i = firstCountedGameIndex; i < m_sourceModel->rowCount(); ++i)
+        {
+            QModelIndex gameIndex = m_sourceModel->index(i, 0);
+            QVector<PlayerRef> participants =
+                    gameIndex.data(DataRoles::DataRole::Hometeam).value<QVector<PlayerRef>>() +
+                    gameIndex.data(DataRoles::DataRole::Awayteam).value<QVector<PlayerRef>>();
+            if (qFind(participants, playerData.first) != participants.end())
+                relevancePoints += i + 1 - firstCountedGameIndex;
+        }
+
+        float percentage = 100.f * relevancePoints / maxRelevancePoints;
         return QVariant::fromValue(percentage);
     }
     else if (role == DataRoles::DataRole::PlayerSelection)
@@ -199,6 +221,7 @@ QHash<int, QByteArray> GlobalStatsModel::roleNames() const
     result[DataRoles::DataRole::Rating] = "Rating";
     result[DataRoles::DataRole::WinsLosses] = "WinsLosses";
     result[DataRoles::DataRole::Progress] = "Progress";
+    result[DataRoles::DataRole::Relevance] = "Relevance";
     result[DataRoles::DataRole::Dedication] = "Dedication";
 
     return result;

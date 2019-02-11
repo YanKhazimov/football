@@ -15,6 +15,7 @@ public:
 
     bool selectRow(int row);
     bool sortBy(int statRole);
+    void setFilter(bool enabled);
 
 signals:
     void selectedRowChanged(int selectedRow);
@@ -24,11 +25,13 @@ public slots:
 
 protected:
     virtual bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const Q_DECL_OVERRIDE;
+    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const Q_DECL_OVERRIDE;
 
 private:
     void sort();
 
     QPersistentModelIndex m_selectedIndex;
+    int m_relevanceThreshold = -1;
 };
 
 #endif // PLAYERSORTFILTERMODEL_H

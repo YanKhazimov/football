@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
+import QtQuick.Controls.Styles 1.4
 import "Players"
 import "NextGame"
 import "qrc:/qml/visualStyles"
@@ -90,6 +91,25 @@ Rectangle {
                             Layout.preferredWidth: parent.width / 2
                             Layout.minimumWidth: parent.width / 2
                             Layout.fillHeight: true
+
+                            CheckBox {
+                                id: relevanceFilter
+                                anchors {
+                                    left: parent.left
+                                    bottom: parent.bottom
+                                    margins: Sizes.featuredStats.smallMargin
+                                }
+                                text: "Only relevant"
+                                style: CheckBoxStyle {
+                                    label: Text {
+                                        text: "Only relevant"
+                                        font.family: Themes.fontFamily
+                                        font.pixelSize: Sizes.fontPixelSize
+                                        color: theme.textColor
+                                    }
+                                }
+                                onClicked: ratingsTable.presenter.setFilter(checked)
+                            }
                         }
 
                         Connections {

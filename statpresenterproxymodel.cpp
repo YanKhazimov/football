@@ -26,7 +26,7 @@ QVariant StatPresenterProxyModel::data(const QModelIndex &index, int role) const
         QString extraSign = progress > 0 ? "+" : "";
         return QVariant::fromValue(extraSign + QString::number(progress));
     }
-    else if (role == DataRoles::DataRole::Dedication)
+    else if (role == DataRoles::DataRole::Dedication || role == DataRoles::DataRole::Relevance)
     {
         int rounded = static_cast<int>(sourceData.toFloat());
         return QVariant::fromValue(QString::number(rounded) + "%");
@@ -66,4 +66,12 @@ bool StatPresenterProxyModel::selectRow(int row)
 {
     PlayerSortFilterProxyModel* source = dynamic_cast<PlayerSortFilterProxyModel*>(sourceModel());
     return source && source->selectRow(row);
+}
+
+void StatPresenterProxyModel::setFilter(bool enabled)
+{
+    PlayerSortFilterProxyModel* source = dynamic_cast<PlayerSortFilterProxyModel*>(sourceModel());
+
+    if (source)
+        source->setFilter(enabled);
 }
