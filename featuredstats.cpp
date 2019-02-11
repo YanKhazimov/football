@@ -66,8 +66,8 @@ void ClosestPlayersStat::calculate()
 {
     int playersShown = 0;
 
-    auto fit = [&playersShown](int additionalSize) {
-        return (playersShown += additionalSize) <= 9;
+    auto fits = [&playersShown](int additionalSize) {
+        return (playersShown + additionalSize) <= 9;
     };
 
     std::map<int, QList<Player*>> playersByRating;
@@ -75,22 +75,20 @@ void ClosestPlayersStat::calculate()
     {
         QModelIndex playerIndex = m_dataModel->index(i, 0);
         Player* playerPtr = playerIndex.data(DataRoles::DataRole::Player).value<Player*>();
-        playersByRating[playerIndex.data(DataRoles::DataRole::Progress).toInt()].append(playerPtr);
+        playersByRating[playerIndex.data(DataRoles::DataRole::Rating).toInt()].append(playerPtr);
     }
 
     std::map<int, QList<Player*>>::reverse_iterator reverseIter; // higher-rated shown first
     for (reverseIter = playersByRating.rbegin(); reverseIter != playersByRating.rend(); ++reverseIter)
     {
-        if (!fit(reverseIter->second.size()))
-            return;
-
-        if (reverseIter->second.size() > 1)
+        if (fits(reverseIter->second.size()) && reverseIter->second.size() > 1)
         {
             QObjectList group;
             for (Player* p: reverseIter->second)
                 group << new PlayerStat(p, /*QString::number(reverseIter->first)*/"=");
 
             m_queryResultItems.append(new QueryResultItem("", group));
+            playersShown += reverseIter->second.size();
         }
     }
 
@@ -108,7 +106,7 @@ void ClosestPlayersStat::calculate()
         const QList<Player*>& lowerGroup = diffIter.second->second;
         const QList<Player*>& higherGroup = std::prev(diffIter.second)->second;
 
-        if (!fit(lowerGroup.size() + higherGroup.size()))
+        if (!fits(lowerGroup.size() + higherGroup.size()))
             return;
 
         QObjectList group;
@@ -119,6 +117,7 @@ void ClosestPlayersStat::calculate()
             group.append(new PlayerStat(lowerRatedPlayer, QString::number(-diffIter.first)));
 
         m_queryResultItems.append(new QueryResultItem("", group));
+        playersShown += group.size();
     }
 }
 
