@@ -38,19 +38,20 @@ GamesModel::~GamesModel()
 bool GamesModel::init()
 {
     beginResetModel();
-    m_games << new Game(QDate(2018, 12, 21), {"p1"}, {"p4"}, {15, 15})
-            << new Game(QDate(2018, 12, 22), {"p1"}, {"p5"}, {15, 15})
-            << new Game(QDate(2018, 12, 23), {"p1"}, {"p5"}, {15, 15})
-            << new Game(QDate(2018, 12, 24), {"p1"}, {"p5"}, {15, 15})
-            << new Game(QDate(2018, 12, 25), {"p1"}, {"p5"}, {15, 15})
-            << new Game(QDate(2018, 12, 26), {"p1"}, {"p5"}, {15, 15})
-            << new Game(QDate(2018, 12, 27), {"p1"}, {"p5"}, {15, 15})
-            << new Game(QDate(2018, 12, 28), {"p1"}, {"p5"}, {15, 15})
-            << new Game(QDate(2018, 12, 29), {"p1"}, {"p5"}, {15, 15})
-            << new Game(QDate(2018, 12, 30), {"p1"}, {"p5"}, {15, 15})
-            << new Game(QDate(2018, 12, 31), {"p1"}, {"p5"}, {15, 15})
-            << new Game(QDate(2019, 1, 1), {"p1", "p2", "p7", "p8", "p9", "p10", "p11", "p12"}, {"p6"}, {30, 1})
-            << new Game(QDate::currentDate(), {"p1", "p2"}, {"p3"/*, "p4"*/}, {10, 10});
+    m_games << new Game(QDate(2018, 12, 21), {"player A"}, {"player D"}, {15, 15})
+            << new Game(QDate(2018, 12, 22), {"player A"}, {"player E"}, {15, 15})
+            << new Game(QDate(2018, 12, 23), {"player A"}, {"player E"}, {15, 15})
+            << new Game(QDate(2018, 12, 24), {"player A"}, {"player E"}, {15, 15})
+            << new Game(QDate(2018, 12, 25), {"player A"}, {"player E"}, {15, 15})
+            << new Game(QDate(2018, 12, 26), {"player A"}, {"player E"}, {15, 15})
+            << new Game(QDate(2018, 12, 27), {"player A"}, {"player E"}, {15, 15})
+            << new Game(QDate(2018, 12, 28), {"player A"}, {"player E"}, {15, 15})
+            << new Game(QDate(2018, 12, 29), {"player A"}, {"player E"}, {15, 15})
+            << new Game(QDate(2018, 12, 30), {"player A"}, {"player E"}, {15, 15})
+            << new Game(QDate(2018, 12, 31), {"player A"}, {"player E"}, {15, 15})
+            << new Game(QDate(2019, 1, 1),
+    {"player A", "player BBB", "player G", "player H", "player I", "player J", "player K"}, {"player F"}, {30, 1})
+            << new Game(QDate::currentDate(), {"player A", "player BBB"}, {"player C"/*, "player D"*/}, {10, 10});
     endResetModel();
 
     return true;

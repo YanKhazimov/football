@@ -1,51 +1,25 @@
 import QtQuick 2.0
 import com.abc.abclib 1.0
 import "qrc:/qml/visualStyles"
+import ".."
 
 Rectangle {
+    id: root
     property Player player: null
 
     property var theme: null
-    width: Sizes.playerHandleWidth
-    height: Sizes.playerHandleWidth + Sizes.playerHandleRatingHeight
+    width: pic.width
+    height: pic.height + Sizes.playerHandleRatingHeight
 
     color: "transparent"
 
-    function hasPhoto() {
-        return (player !== null) && (player.photo != "qrc:/img/playerImages/default.png")
-    }
-
-    Rectangle {
+    PlayerAvatar {
         id: pic
-        width: Sizes.playerHandleWidth
-        height: Sizes.playerHandleWidth
-        radius: Sizes.playerHandleWidth
-        anchors.top: parent.top
-        color: "transparent"
-
-        Rectangle {
-            width: parent.width
-            height: width
-            radius: width
-            color: "white"
-            border.width: Sizes.borderWidth
-            border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
-        }
-        Text {
-            id: name
-            text: hasPhoto() ? "" : player.name
-            font.family: Themes.fontFamily
-            font.pixelSize: Sizes.fontPixelSize
-            anchors.centerIn: parent
-            color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.primaryFillColor
-        }
-        Image {
-            source: hasPhoto() ? player.photo : ""
-            width: parent.width
-            height: width
-            anchors.centerIn: parent
-            visible: hasPhoto()
-        }
+        player: root.player
+        theme: root.theme
+        textColor: mouseArea.containsMouse ? theme.secondaryFillColor : theme.primaryFillColor
+        border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "transparent"
+        tooltipMouseArea: mouseArea
     }
     Rectangle {
         id: rating

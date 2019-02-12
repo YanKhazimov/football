@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import "qrc:/qml/visualStyles"
+import ".."
 
 Item {
     id: root
@@ -39,13 +40,18 @@ Item {
                     Repeater {
                         model: modelData.group
                         delegate: Column {
-                            Image {
+                            PlayerAvatar {
                                 id: playerImg
+                                player: modelData.player
+                                theme: root.theme
                                 width: Math.min(Sizes.featuredStats.iconWidth,
                                                 root.maxFittingImageWidth)
                                 height: width
-                                source: modelData.player.photo
+                                backColor: theme.primaryFillColor
+                                textColor: theme.textColor
+                                border.color: textColor
                             }
+
                             Text {
                                 text: modelData.statValue
                                 anchors.horizontalCenter: playerImg.horizontalCenter

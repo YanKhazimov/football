@@ -1,7 +1,15 @@
 #include "player.h"
 
+QString Player::shorten() const
+{
+    if (m_name.isEmpty() || !m_name.chopped(1).contains(' '))
+        return m_name;
+
+    return QString(m_name.at(0)) + QString(m_name.at(m_name.lastIndexOf(' ') + 1));
+}
+
 Player::Player(const QString &name, QObject* parent, const QUrl photoUrl)
-    : m_name(name), m_photo(photoUrl), QObject(parent)
+    : QObject(parent), m_name(name), m_photo(photoUrl)
 {
     m_initialRating = getRating();
 }

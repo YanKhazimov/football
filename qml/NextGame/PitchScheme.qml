@@ -253,7 +253,7 @@ Rectangle {
         id: positionHint
         width: Sizes.playerHandleWidth
         height: Sizes.playerHandleWidth
-        radius: Sizes.playerHandleWidth
+        radius: Sizes.playerHandleWidth/3
         visible: false
         color: "transparent"
         border.width: Sizes.borderWidth

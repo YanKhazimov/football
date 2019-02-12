@@ -67,18 +67,17 @@ QueryResultItem &QueryResultItem::operator=(const QueryResultItem &other)
 Playerbase::Playerbase()
 {
     m_base = {
-        {"p1", new Player("p1", this, QUrl("qrc:/img/playerImages/13128.png"))},
-        {"p2", new Player("p2", this)},
-        {"p3", new Player("p3", this, QUrl("qrc:/img/playerImages/238430.png"))},
-        {"p4", new Player("p4", this, QUrl("qrc:/img/playerImages/242510.png"))},
-        {"p5", new Player("p5", this, QUrl("qrc:/img/playerImages/5984.png"))},
-        {"p6", new Player("p6", this)},
-        {"p7", new Player("p7", this)},
-        {"p8", new Player("p8", this)},
-        {"p9", new Player("p9", this)},
-        {"p10", new Player("p10", this)},
-        {"p11", new Player("p11", this)},
-        {"p12", new Player("p12", this)}
+        {"player A", new Player("player A", this, QUrl("qrc:/img/playerImages/13128.png"))},
+        {"player BBB", new Player("player BBB", this)},
+        {"player C", new Player("player C", this, QUrl("qrc:/img/playerImages/242510.png"))},
+        {"player D", new Player("player D", this, QUrl("qrc:/img/playerImages/5984.png"))},
+        {"player E", new Player("player E", this)},
+        {"player F", new Player("player F", this)},
+        {"player G", new Player("player G", this)},
+        {"player H", new Player("player H", this)},
+        {"player I", new Player("player I", this)},
+        {"player J", new Player("player J", this)},
+        {"player K", new Player("player K", this)}
     };
 }
 
