@@ -49,7 +49,6 @@ Item {
                                 height: width
                                 backColor: theme.primaryFillColor
                                 textColor: theme.textColor
-                                border.color: textColor
                             }
 
                             Text {

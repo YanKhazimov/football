@@ -51,7 +51,7 @@ bool GamesModel::init()
             << new Game(QDate(2018, 12, 31), {"player A"}, {"player E"}, {15, 15})
             << new Game(QDate(2019, 1, 1),
     {"player A", "player BBB", "player G", "player H", "player I", "player J", "player K"}, {"player F"}, {30, 1})
-            << new Game(QDate::currentDate(), {"player A", "player BBB"}, {"player C"/*, "player D"*/}, {10, 10});
+            << new Game(QDate::currentDate(), {"player A", "player BBB"}, {"player C", "player L"}, {10, 10});
     endResetModel();
 
     return true;

@@ -30,9 +30,15 @@ Rectangle {
             color: root.theme.textColor
             Layout.alignment: Qt.AlignHCenter
         }
-        Image {
+        PlayerAvatar
+        {
             id: photo
-            source: player ? player.photo : ""
+            player: root.player
+            theme: root.theme
+            backColor: "transparent"
+            textColor: "white"
+            Layout.preferredHeight: 128
+            Layout.preferredWidth: 128
             Layout.alignment: Qt.AlignHCenter
         }
 

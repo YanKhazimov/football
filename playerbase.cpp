@@ -67,7 +67,7 @@ QueryResultItem &QueryResultItem::operator=(const QueryResultItem &other)
 Playerbase::Playerbase()
 {
     m_base = {
-        {"player A", new Player("player A", this, QUrl("qrc:/img/playerImages/13128.png"))},
+        {"player A", new Player("player A", this)},
         {"player BBB", new Player("player BBB", this)},
         {"player C", new Player("player C", this, QUrl("qrc:/img/playerImages/242510.png"))},
         {"player D", new Player("player D", this, QUrl("qrc:/img/playerImages/5984.png"))},
@@ -76,8 +76,9 @@ Playerbase::Playerbase()
         {"player G", new Player("player G", this)},
         {"player H", new Player("player H", this)},
         {"player I", new Player("player I", this)},
-        {"player J", new Player("player J", this)},
-        {"player K", new Player("player K", this)}
+        {"player J", new Player("player J", this, QUrl("qrc:/img/playerImages/13128.png"))},
+        {"player K", new Player("player K", this)},
+        {"player L", new Player("player L", this)}
     };
 }
 

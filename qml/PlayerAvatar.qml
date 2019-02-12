@@ -20,6 +20,7 @@ Rectangle {
     radius: Sizes.playerHandleWidth/3
     color: backColor
     border.width: Sizes.borderWidth
+    border.color: hasPhoto() ? "transparent" : textColor
 
     MouseArea {
         id: ma
