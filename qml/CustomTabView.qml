@@ -14,9 +14,15 @@ Rectangle {
     property var theme: null
     color: root.theme.primaryFillColor
 
-    TiledBackground {
-        sourceImg: "qrc:/img/ball.png"
-        baseColor: theme.primaryFillColor
+//    TiledBackground {
+//        sourceImg: "qrc:/img/ball.png"
+//        baseColor: theme.primaryFillColor
+//    }
+
+    Image {
+        id: bg
+        source: "qrc:/img/corner.jpg"
+        anchors.fill: parent
     }
 
     RowLayout {
