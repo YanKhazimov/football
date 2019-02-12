@@ -7,11 +7,14 @@ Item {
     property color color: "transparent"
     width: img.sourceSize.width
     height: img.sourceSize.height
+    property int fillMode
 
     Image {
         id: img
         anchors.fill: parent
         source: root.source
+        horizontalAlignment: Image.AlignRight
+        fillMode: root.fillMode
     }
 
     ColorOverlay {

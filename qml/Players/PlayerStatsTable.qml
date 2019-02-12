@@ -3,7 +3,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtGraphicalEffects 1.0
 import "qrc:/qml/visualStyles"
-//import ".."
+import ".."
 
 TableView {
     id: root
@@ -19,27 +19,12 @@ TableView {
 
     TableViewColumn {
         id: headColumn
-        delegate:
-            Image {
-            id: img
+        horizontalAlignment: Text.AlignRight
+        delegate: ColoredImage {
             source: "qrc:/img/menuarrow.png"
             visible: root.currentRow === model.index
-            horizontalAlignment: Image.AlignRight
             fillMode: Image.PreserveAspectFit
-
-            ColorOverlay {
-                source: img
-                anchors.fill: img
-                color: theme.secondaryFillColor
-            }
-
-//            ColoredImage {
-//                source: "qrc:/img/menuarrow.png"
-//                visible: root.currentRow === model.index
-//                horizontalAlignment: Image.AlignRight
-//                fillMode: Image.PreserveAspectFit
-//                color: theme.secondaryFillColor
-//            }
+            color: theme.secondaryFillColor
         }
         width: root.width / 10
     }
