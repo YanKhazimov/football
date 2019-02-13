@@ -30,7 +30,7 @@ Rectangle {
         radius: height / 4
         color: "white"
         Text {
-            text: player.getRating()
+            text: globalStatsModel.getPlayerRating(player.name)
             font.family: Themes.fontFamily
             font.bold: true
             anchors.centerIn: parent

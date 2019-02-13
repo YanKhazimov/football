@@ -25,7 +25,6 @@ public:
     Player(const Player& p);
     Player& operator =(const Player& p);
 
-    Q_INVOKABLE int getRating() const;
     int getInitialRating() const;
 };
 

@@ -11,7 +11,9 @@ QString Player::shorten() const
 Player::Player(const QString &name, QObject* parent, const QUrl photoUrl)
     : QObject(parent), m_name(name), m_photo(photoUrl)
 {
-    m_initialRating = getRating();
+    m_initialRating = 0;
+    for(const QChar& c: m_name)
+        m_initialRating += c.toLatin1();
 }
 
 Player::Player(const Player &p)
@@ -26,14 +28,6 @@ Player &Player::operator =(const Player &p)
     m_initialRating = p.m_initialRating;
 
     return *this;
-}
-
-int Player::getRating() const
-{
-    int rating = 0;
-    for(const QChar c: m_name)
-        rating += c.toLatin1();
-    return rating;
 }
 
 int Player::getInitialRating() const

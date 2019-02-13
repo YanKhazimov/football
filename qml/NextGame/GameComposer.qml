@@ -61,7 +61,7 @@ Rectangle {
                 var offset = Qt.point(0, -Sizes.playerHandleRatingHeight/2)
                 showHint(zone, zoneModels[zone].length, zoneModels[zone].length + 1, offset)
 
-                updateTotals(zone, allPlayersModel.getPlayer(dragInfo.name).getRating())
+                updateTotals(zone, allPlayersModel.getPlayerRating(dragInfo.name))
             }
         }
 
@@ -211,14 +211,14 @@ Rectangle {
         {
             scheme.homeTotal = offset
             zoneModels[PitchZones.leftHalf].forEach(function(element){
-                scheme.homeTotal += allPlayersModel.getPlayer(element).getRating()
+                scheme.homeTotal += allPlayersModel.getPlayerRating(element)
             })
         }
         else if (zone === PitchZones.rightHalf)
         {
             scheme.awayTotal = offset
             zoneModels[PitchZones.rightHalf].forEach(function(element){
-                scheme.awayTotal += allPlayersModel.getPlayer(element).getRating()
+                scheme.awayTotal += allPlayersModel.getPlayerRating(element)
             })
         }
     }

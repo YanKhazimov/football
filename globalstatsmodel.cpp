@@ -238,6 +238,11 @@ Player *GlobalStatsModel::getPlayer(int idx)
     return m_base->getPlayer(name);
 }
 
+int GlobalStatsModel::getPlayerRating(QString name)
+{
+    return m_playersData[name].last().changedRating;
+}
+
 void GlobalStatsModel::resetModel()
 {
     if (!m_sourceModel)
