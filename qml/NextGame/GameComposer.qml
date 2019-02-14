@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
+import QtQuick.Controls 1.4
 import "."
 import ".."
 import "qrc:/qml/visualStyles"
@@ -221,5 +222,32 @@ Rectangle {
                 scheme.awayTotal += allPlayersModel.getPlayerRating(element)
             })
         }
+    }
+
+    GameOutcomeForm {
+        id: outcomeForm
+        anchors {
+            bottom: scheme.bottom
+            horizontalCenter: scheme.horizontalCenter
+            margins: Sizes.featuredStats.smallMargin
+        }
+        width: 2 * scheme.pitchCenterRadius
+        height: scheme.height - scheme.benchHeight - 2 * anchors.margins
+        visible: false
+    }
+
+    Button {
+        id: regGameButton
+        anchors {
+            right: root.left
+            rightMargin: Sizes.featuredStats.smallMargin
+            bottom: root.bottom
+        }
+
+        height: Sizes.elementButtonSize.height
+        width: Sizes.elementButtonSize.width
+        //iconSource: "qrc:/img/cancel.png"
+        text: "+"
+        onClicked: outcomeForm.visible = true
     }
 }

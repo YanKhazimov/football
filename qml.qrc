@@ -56,5 +56,8 @@
         <file>qml/ThemeSwitcher.qml</file>
         <file>qml/PlayerAvatar.qml</file>
         <file>img/corner.jpg</file>
+        <file>qml/NextGame/GameOutcomeForm.qml</file>
+        <file>img/cancel.png</file>
+        <file>img/ok.png</file>
     </qresource>
 </RCC>

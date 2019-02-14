@@ -36,7 +36,8 @@ public:
     Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     Q_INVOKABLE virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-    QList<Game*> getGames() const;
+    Q_INVOKABLE bool isDateBusy(const QDate &date) const;
+    Q_INVOKABLE void addGame();
 
 private:
     QList<Game*> m_games;

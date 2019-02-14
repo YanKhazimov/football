@@ -89,7 +89,29 @@ QVariant GamesModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QList<Game*> GamesModel::getGames() const
+bool GamesModel::isDateBusy(const QDate& date) const
 {
-    return m_games;
+    for (Game* g: m_games)
+    {
+        if (g->getDate() == date)
+            return true;
+    }
+
+    return false;
+}
+
+void GamesModel::addGame(/*QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam,
+                         QPair<int, int> score*/)
+{
+    int row = 0;
+    for (; row < rowCount(); ++row)
+    {
+        if (m_games[row]->getDate() > QDate(2000, 1, 1))
+            break;
+    }
+
+    beginInsertRows(QModelIndex(), row, row);
+    //m_games.insert(row, new Game(date, hometeam, awayteam, score));
+    m_games.insert(row, new Game(QDate(2000, 1, 1), {}, {}, {0, 0}));
+    endInsertRows();
 }

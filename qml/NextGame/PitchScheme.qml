@@ -41,6 +41,8 @@ Rectangle {
     signal dragEnter(int zone)
     signal dragExit(int zone)
 
+    property int benchHeight: bench.height
+
     Rectangle {
         id: bench
         width: parent.width

@@ -24,8 +24,8 @@ void GlobalStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
 //        disconnect(sourceModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
 //                   this, SLOT(sourceDataChanged(QModelIndex,QModelIndex,QVector<int>)));
 
-//        disconnect(sourceModel(), SIGNAL(rowsInserted(QModelIndex,int,int)),
-//                   this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
+        disconnect(m_sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
+                   this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
 
         disconnect(m_sourceModel, SIGNAL(modelReset()), this, SLOT(resetModel()));
     }
@@ -39,8 +39,8 @@ void GlobalStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
 //        connect(sourceModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
 //                      this, SLOT(sourceDataChanged(QModelIndex,QModelIndex,QVector<int>)));
 
-//        connect(sourceModel(), SIGNAL(rowsInserted(QModelIndex,int,int)),
-//                      this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
+        connect(m_sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
+                      this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
 
         connect(m_sourceModel, SIGNAL(modelReset()), this, SLOT(resetModel()));
     }
@@ -251,6 +251,11 @@ void GlobalStatsModel::resetModel()
     beginResetModel();
     resetData();
     endResetModel();
+}
+
+void GlobalStatsModel::sourceRowsInserted(QModelIndex parent, int first, int last)
+{
+    int ii = 0;
 }
 
 int getHomeRatingChange(int scoreDiff, float totalRating1, float totalRating2)

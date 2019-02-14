@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();
 
+    ctxt->setContextProperty("gamesModel", QVariant::fromValue(&gm));
     ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(&featuredStatsModel));
     ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
     ctxt->setContextProperty("globalStatsModel", &globalStatsModel);

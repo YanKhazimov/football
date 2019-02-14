@@ -30,6 +30,7 @@ public:
 
 private slots:
     void resetModel();
+    void sourceRowsInserted(QModelIndex parent, int first, int last);
 
 private:    
     struct PlayerGameStats {
