@@ -43,6 +43,9 @@ void StatPresenterProxyModel::setSourceModel(QAbstractItemModel *source)
     {
         disconnect(sourceModel(), SIGNAL(selectedRowChanged(int)),
                    this, SIGNAL(selectedRowChanged(int)));
+
+        disconnect(sourceModel(), SIGNAL(modelReset()),
+                   this, SIGNAL(modelReset()));
     }
 
     QIdentityProxyModel::setSourceModel(source);
@@ -51,6 +54,9 @@ void StatPresenterProxyModel::setSourceModel(QAbstractItemModel *source)
     {
         connect(sourceModel(), SIGNAL(selectedRowChanged(int)),
                 this, SIGNAL(selectedRowChanged(int)));
+
+        connect(sourceModel(), SIGNAL(modelReset()),
+                this, SIGNAL(modelReset()));
     }
 
     endResetModel();

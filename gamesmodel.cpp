@@ -100,8 +100,11 @@ bool GamesModel::isDateBusy(const QDate& date) const
     return false;
 }
 
-void GamesModel::addGame(/*QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam,
-                         QPair<int, int> score*/)
+void GamesModel::addGame(QDate date,
+                         QStringList hometeam,
+                         int homeScore,
+                         QStringList awayteam,
+                         int awayScore)
 {
     int row = 0;
     for (; row < rowCount(); ++row)
@@ -112,6 +115,6 @@ void GamesModel::addGame(/*QDate date, QVector<PlayerRef> hometeam, QVector<Play
 
     beginInsertRows(QModelIndex(), row, row);
     //m_games.insert(row, new Game(date, hometeam, awayteam, score));
-    m_games.insert(row, new Game(QDate(2000, 1, 1), {}, {}, {0, 0}));
+    m_games.insert(row, new Game(date, hometeam.toVector(), awayteam.toVector(), {homeScore, awayScore}));
     endInsertRows();
 }

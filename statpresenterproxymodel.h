@@ -20,6 +20,7 @@ public:
 
 signals:
     void selectedRowChanged(int selectedRow);
+    void modelReset();
 
 private:
     void sort();

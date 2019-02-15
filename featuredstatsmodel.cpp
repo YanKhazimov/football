@@ -31,11 +31,13 @@ QHash<int, QByteArray> FeaturedStatsModel::roleNames() const
 
 void FeaturedStatsModel::reset()
 {
+    beginResetModel();
     for (FeaturedStat* fs: m_featuredStats)
     {
         fs->resetDataModel(m_source);
         fs->updateValue();
     }
+    endResetModel();
 }
 
 QVariant FeaturedStatsModel::data(const QModelIndex &index, int role) const

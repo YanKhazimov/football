@@ -255,7 +255,7 @@ void GlobalStatsModel::resetModel()
 
 void GlobalStatsModel::sourceRowsInserted(QModelIndex parent, int first, int last)
 {
-    int ii = 0;
+    resetModel(); // TODO accurate updates instead of reset
 }
 
 int getHomeRatingChange(int scoreDiff, float totalRating1, float totalRating2)

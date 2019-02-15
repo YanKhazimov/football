@@ -42,6 +42,17 @@ Rectangle {
         }
     }
 
+    function benchAll() {
+        zoneModels = [zoneModels[PitchZones.bench].concat(zoneModels[PitchZones.leftHalf],
+                      zoneModels[PitchZones.rightHalf], zoneModels[PitchZones.center]),
+                      [], [], []]
+
+        adjustFormation(PitchZones.bench)
+        adjustFormation(PitchZones.leftHalf)
+        adjustFormation(PitchZones.rightHalf)
+        adjustFormation(PitchZones.center)
+    }
+
     PitchScheme {
         id: scheme
         benchLength: allPlayersModel.length
@@ -248,6 +259,34 @@ Rectangle {
         width: Sizes.elementButtonSize.width
         //iconSource: "qrc:/img/cancel.png"
         text: "+"
-        onClicked: outcomeForm.visible = true
+        onClicked: {
+            outcomeForm.homeTeam = zoneModels[PitchZones.leftHalf]
+            outcomeForm.awayTeam = zoneModels[PitchZones.rightHalf]
+            outcomeForm.visible = true
+
+            benchAll()
+        }
+    }
+
+    Button {
+        id: benchAllButton
+        anchors {
+            right: root.left
+            rightMargin: Sizes.featuredStats.smallMargin
+            bottom: regGameButton.top
+            bottomMargin: Sizes.featuredStats.smallMargin
+        }
+
+        height: Sizes.elementButtonSize.height
+        width: Sizes.elementButtonSize.width
+        //iconSource: "qrc:/img/cancel.png"
+        text: "^"
+        onClicked: {
+            benchAll()
+            console.log("zoneModels[PitchZones.bench]", zoneModels[PitchZones.bench])
+            console.log("zoneModels[PitchZones.leftHalf]", zoneModels[PitchZones.leftHalf])
+            console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
+            console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
+        }
     }
 }

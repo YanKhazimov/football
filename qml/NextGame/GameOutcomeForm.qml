@@ -6,6 +6,8 @@ import "qrc:/qml/visualStyles"
 Rectangle {
     id: root
     color: Qt.rgba(0.8, 0.8, 0.8, 0.8)
+    property var homeTeam: []
+    property var awayTeam: []
 
     ColumnLayout {
         anchors.fill: parent
@@ -56,13 +58,13 @@ Rectangle {
             }
 
             Button {
-                readonly property bool active: gamesModel.isDateBusy(calendar.selectedDate) === false
                 id: okButton
+                readonly property bool active: gamesModel.isDateBusy(calendar.selectedDate) === false
                 iconSource: active ? "qrc:/img/ok.png" : ""
                 isDefault: true
                 enabled: active
                 onClicked: {
-                    gamesModel.addGame()
+                    gamesModel.addGame(calendar.selectedDate, homeTeam, homeScore.value, awayTeam, awayScore.value)
                     root.visible = false
                 }
                 height: Sizes.elementButtonSize.height

@@ -37,7 +37,7 @@ public:
     Q_INVOKABLE virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
     Q_INVOKABLE bool isDateBusy(const QDate &date) const;
-    Q_INVOKABLE void addGame();
+    Q_INVOKABLE void addGame(QDate date, QStringList hometeam, int homeScore, QStringList awayteam, int awayScore);
 
 private:
     QList<Game*> m_games;

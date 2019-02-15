@@ -126,4 +126,28 @@ void PlayerStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRigh
 
 void PlayerStatsModel::resetModel()
 {
+    // update selected player
+    int playerCount = m_sourceModel->rowCount();
+    for (int p = 0; p < playerCount; ++p)
+    {
+        QModelIndex sourceIndex = m_sourceModel->index(p, 0);
+
+        if (sourceIndex.data(DataRoles::DataRole::PlayerSelection).toBool())
+        {
+            m_selectedPlayer = sourceIndex.data(DataRoles::DataRole::Player).value<Player*>();
+            m_ratingHistory = sourceIndex.data(DataRoles::DataRole::RatingHistory).value<QList<int>>();
+
+            for (int row = 0; row < rowCount(); ++row)
+            {
+                QStandardItem* statItem = item(row, 0);
+                int sourceRole = statItem->data(DataRoles::DataRole::SourceRole).toInt();
+                QVariant statValue = sourceIndex.data(sourceRole);
+                statItem->setData(statValue, DataRoles::DataRole::StatValue);
+            }
+
+            emit playerChanged();
+
+            break;
+        }
+    }
 }
