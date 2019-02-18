@@ -8,6 +8,7 @@ Rectangle {
     color: Qt.rgba(0.8, 0.8, 0.8, 0.8)
     property var homeTeam: []
     property var awayTeam: []
+    signal gameAdded()
 
     ColumnLayout {
         anchors.fill: parent
@@ -59,12 +60,14 @@ Rectangle {
 
             Button {
                 id: okButton
-                readonly property bool active: gamesModel.isDateBusy(calendar.selectedDate) === false
+                property bool active: gamesModel.isDateBusy(calendar.selectedDate) === false
                 iconSource: active ? "qrc:/img/ok.png" : ""
                 isDefault: true
                 enabled: active
                 onClicked: {
                     gamesModel.addGame(calendar.selectedDate, homeTeam, homeScore.value, awayTeam, awayScore.value)
+                    gameAdded()
+                    active = gamesModel.isDateBusy(calendar.selectedDate) === false
                     root.visible = false
                 }
                 height: Sizes.elementButtonSize.height

@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
-import QtQuick.Controls 1.4
 import "."
 import ".."
 import "qrc:/qml/visualStyles"
@@ -13,6 +12,8 @@ Rectangle {
     property var allPlayersModel: null
     property var zoneModels: []
 
+    Component.onCompleted: showControlPanel()
+
     onAllPlayersModelChanged: {
         var startingModel = []
         for (var i = 0; i < allPlayersModel.length; ++i)
@@ -22,6 +23,17 @@ Rectangle {
                 startingModel.push(player.name)
         }
         zoneModels = [ startingModel, [], [], [] ]
+    }
+
+    function benchAll() {
+        zoneModels = [zoneModels[PitchZones.bench].concat(zoneModels[PitchZones.leftHalf],
+                      zoneModels[PitchZones.rightHalf], zoneModels[PitchZones.center]),
+                      [], [], []]
+
+        adjustFormation(PitchZones.bench)
+        adjustFormation(PitchZones.leftHalf)
+        adjustFormation(PitchZones.rightHalf)
+        adjustFormation(PitchZones.center)
     }
 
     function adjustFormation(zone, newSize) {
@@ -40,17 +52,6 @@ Rectangle {
                 playerHandles.itemAt(i).y = dropPosition.y - playerHandles.itemAt(i).height/2
             }
         }
-    }
-
-    function benchAll() {
-        zoneModels = [zoneModels[PitchZones.bench].concat(zoneModels[PitchZones.leftHalf],
-                      zoneModels[PitchZones.rightHalf], zoneModels[PitchZones.center]),
-                      [], [], []]
-
-        adjustFormation(PitchZones.bench)
-        adjustFormation(PitchZones.leftHalf)
-        adjustFormation(PitchZones.rightHalf)
-        adjustFormation(PitchZones.center)
     }
 
     PitchScheme {
@@ -113,6 +114,7 @@ Rectangle {
     }
 
     ColoredImage {
+        visible: false
         id: splitButton
         width: 4 * Sizes.elementButtonSize.width
         height: 4 * Sizes.elementButtonSize.height
@@ -235,7 +237,7 @@ Rectangle {
         }
     }
 
-    GameOutcomeForm {
+    OutcomeForm {
         id: outcomeForm
         anchors {
             bottom: scheme.bottom
@@ -245,48 +247,40 @@ Rectangle {
         width: 2 * scheme.pitchCenterRadius
         height: scheme.height - scheme.benchHeight - 2 * anchors.margins
         visible: false
+        onGameAdded: benchAll()
     }
 
-    Button {
-        id: regGameButton
+    TeamControlPanel {
+        id: controlPanel
+        z: -1
         anchors {
             right: root.left
-            rightMargin: Sizes.featuredStats.smallMargin
+            rightMargin: -Sizes.elementButtonSize.width
             bottom: root.bottom
         }
 
-        height: Sizes.elementButtonSize.height
-        width: Sizes.elementButtonSize.width
-        //iconSource: "qrc:/img/cancel.png"
-        text: "+"
-        onClicked: {
+        onBenchAllClicked: benchAll()
+
+        onSplitClicked: split()
+
+        onAddGameClicked: {
             outcomeForm.homeTeam = zoneModels[PitchZones.leftHalf]
             outcomeForm.awayTeam = zoneModels[PitchZones.rightHalf]
             outcomeForm.visible = true
+        }
 
-            benchAll()
+        PropertyAnimation {
+            id: showAnimation
+            duration: 300
+            target: controlPanel
+            property: "anchors.rightMargin"
+            from: -Sizes.elementButtonSize.width
+            to: Sizes.featuredStats.smallMargin
         }
     }
 
-    Button {
-        id: benchAllButton
-        anchors {
-            right: root.left
-            rightMargin: Sizes.featuredStats.smallMargin
-            bottom: regGameButton.top
-            bottomMargin: Sizes.featuredStats.smallMargin
-        }
-
-        height: Sizes.elementButtonSize.height
-        width: Sizes.elementButtonSize.width
-        //iconSource: "qrc:/img/cancel.png"
-        text: "^"
-        onClicked: {
-            benchAll()
-            console.log("zoneModels[PitchZones.bench]", zoneModels[PitchZones.bench])
-            console.log("zoneModels[PitchZones.leftHalf]", zoneModels[PitchZones.leftHalf])
-            console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
-            console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
-        }
+    function showControlPanel() {
+        controlPanel.anchors.rightMargin = -Sizes.elementButtonSize.width
+        showAnimation.start()
     }
 }

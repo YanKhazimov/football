@@ -25,6 +25,9 @@ QQC2.ApplicationWindow {
     minimumHeight: featuredStats.height + contents.height
     minimumWidth: 600//featuredStats.minWidth
 
+    maximumHeight: height
+    maximumWidth: width
+
     property var theme: null
 
     Slideshow {

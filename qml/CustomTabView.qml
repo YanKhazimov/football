@@ -161,8 +161,17 @@ Rectangle {
                 }
                 Tab {
                     GameComposer {
+                        id: composer
                         allPlayersModel: globalStatsModel
                         theme: root.theme
+
+                        Connections {
+                            target: content
+                            onCurrentIndexChanged: {
+                                if (content.currentIndex == 1)
+                                    composer.showControlPanel()
+                            }
+                        }
                     }
                 }
                 Tab {
