@@ -1,36 +1,37 @@
-import QtQuick 2.0
-import QtQuick.Controls 1.4
+import QtQuick 2.6
+import QtQuick.Controls 2.1
 import "qrc:/qml/visualStyles"
 
 Column {
     spacing: Sizes.featuredStats.smallMargin
 
-    signal benchAllClicked()
-    signal splitClicked()
-    signal addGameClicked()
+    property var theme: null
 
-    Button {
-        id: benchAllButton
-        height: Sizes.elementButtonSize.height
-        width: Sizes.elementButtonSize.width
-        //iconSource: "qrc:/img/cancel.png"
-        text: "^"
-        onClicked: benchAllClicked()
-    }
-    Button {
-        id: splitButton
-        height: Sizes.elementButtonSize.height
-        width: Sizes.elementButtonSize.width
-        text: "<>"
-        onClicked: splitClicked()
-    }
+    signal buttonClicked(int idx)
 
-    Button {
-        id: regGameButton
-        height: Sizes.elementButtonSize.height
-        width: Sizes.elementButtonSize.width
-        //iconSource: "qrc:/img/cancel.png"
-        text: "+"
-        onClicked: addGameClicked()
+    Repeater {
+        model: ["^", "<>", "+"]
+        delegate: Button {
+            id: control
+            height: Sizes.elementButtonSize.height
+            width: Sizes.elementButtonSize.width
+            //icon.source: "qrc:/img/cancel.png"
+            hoverEnabled: true
+            text: modelData
+            contentItem: Text {
+                text: control.text
+                font.family: Themes.fontFamily
+                color: theme.textColor
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+            background: Rectangle {
+                color: theme.primaryFillColor
+                border.color: control.hovered ? theme.highlightColor : theme.secondaryFillColor
+                border.width: Sizes.borderWidth
+                radius: width/2
+            }
+            onClicked: buttonClicked(index)
+        }
     }
 }

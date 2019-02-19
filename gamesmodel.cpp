@@ -114,7 +114,6 @@ void GamesModel::addGame(QDate date,
     }
 
     beginInsertRows(QModelIndex(), row, row);
-    //m_games.insert(row, new Game(date, hometeam, awayteam, score));
     m_games.insert(row, new Game(date, hometeam.toVector(), awayteam.toVector(), {homeScore, awayScore}));
     endInsertRows();
 }

@@ -258,7 +258,7 @@ void GlobalStatsModel::sourceRowsInserted(QModelIndex parent, int first, int las
     resetModel(); // TODO accurate updates instead of reset
 }
 
-int getHomeRatingChange(int scoreDiff, float totalRating1, float totalRating2)
+int  getHomeRatingChange(int scoreDiff, float totalRating1, float totalRating2)
 {
     return scoreDiff;
     float handicap = totalRating1 > totalRating2 ?

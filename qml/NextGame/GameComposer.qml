@@ -237,6 +237,16 @@ Rectangle {
         }
     }
 
+    MouseArea {
+        id: disabler
+        visible: outcomeForm.visible
+        enabled: visible
+        anchors.fill: parent
+        hoverEnabled: false
+        propagateComposedEvents: false
+        z: 1
+    }
+
     OutcomeForm {
         id: outcomeForm
         anchors {
@@ -248,6 +258,7 @@ Rectangle {
         height: scheme.height - scheme.benchHeight - 2 * anchors.margins
         visible: false
         onGameAdded: benchAll()
+        z: 2
     }
 
     TeamControlPanel {
@@ -259,15 +270,15 @@ Rectangle {
             bottom: root.bottom
         }
 
-        onBenchAllClicked: benchAll()
+        theme: root.theme
 
-        onSplitClicked: split()
-
-        onAddGameClicked: {
+        readonly property var callbacks: [benchAll, split, function(){
             outcomeForm.homeTeam = zoneModels[PitchZones.leftHalf]
             outcomeForm.awayTeam = zoneModels[PitchZones.rightHalf]
             outcomeForm.visible = true
-        }
+        }]
+
+        onButtonClicked: callbacks[idx]()
 
         PropertyAnimation {
             id: showAnimation
