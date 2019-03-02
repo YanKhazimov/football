@@ -1,4 +1,5 @@
 #include "gamesmodel.h"
+#include <fstream>
 
 Game::Game(QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam, QPair<int, int> score)
     : m_date(date), m_hometeam(hometeam), m_awayteam(awayteam), m_score(score)
@@ -52,6 +53,29 @@ bool GamesModel::init()
             << new Game(QDate(2019, 1, 1),
     {"player A", "player BBB", "player G", "player H", "player I", "player J", "player K"}, {"player F"}, {30, 1})
             << new Game(QDate::currentDate(), {"player A", "player BBB"}, {"player C", "player L"}, {10, 10});
+    endResetModel();
+
+    return true;
+}
+
+bool GamesModel::init(QString gamesFilename)
+{
+    beginResetModel();
+
+    std::ifstream input(gamesFilename.toStdString().c_str());
+    std::string dateLine, homeLine, awayLine;
+    while (getline(input, dateLine) && getline(input, homeLine) && getline(input, awayLine))
+    {
+        QVector<PlayerRef> qHomeTokens = QString::fromStdString(homeLine).split("\t", QString::SplitBehavior::SkipEmptyParts).toVector();
+        QVector<PlayerRef> qAwayTokens = QString::fromStdString(awayLine).split("\t", QString::SplitBehavior::SkipEmptyParts).toVector();
+
+        QPair<int, int> score (qHomeTokens.takeFirst().toInt(), qAwayTokens.takeFirst().toInt());
+
+        m_games << new Game(QDate::fromString(QString::fromStdString(dateLine), Qt::SystemLocaleShortDate),
+                            qHomeTokens, qAwayTokens, score);
+    }
+    input.close();
+
     endResetModel();
 
     return true;

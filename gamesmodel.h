@@ -32,6 +32,7 @@ public:
     GamesModel();
     ~GamesModel();
     bool init();
+    bool init(QString gamesFilename);
 
     Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     Q_INVOKABLE virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;

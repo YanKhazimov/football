@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<StatPresenterProxyModel>("com.abc.abclib", 1, 0, "GlobalStatPresenter", "");
 
     GamesModel gm;
-    gm.init();
+    gm.init("games");
 
     // GamesModel - GlobalStatsModel - PlayerSortFilterProxyModel - StatPresenterProxyModel [ - StatTable ]
 
