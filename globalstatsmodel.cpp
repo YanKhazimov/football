@@ -1,6 +1,7 @@
 #include "globalstatsmodel.h"
 #include <QDate>
 #include <QDebug>
+#include <math.h>
 
 GlobalStatsModel::GlobalStatsModel(const Playerbase* base)
     : m_base(base), m_sourceModel(nullptr)
@@ -258,9 +259,16 @@ void GlobalStatsModel::sourceRowsInserted(QModelIndex parent, int first, int las
     resetModel(); // TODO accurate updates instead of reset
 }
 
-int  getHomeRatingChange(int scoreDiff, float totalRating1, float totalRating2)
+int getHomeRatingChange(int scoreDiff, int totalRating1, int totalRating2)
 {
-    return scoreDiff;
+    double coeff = 8.f;
+    double winnersRatingSum = static_cast<double>(scoreDiff > 0 ? totalRating1 : totalRating2);
+    double losersRatingSum = static_cast<double>(scoreDiff > 0 ? totalRating2 : totalRating1);
+    double chances = pow(10.0, winnersRatingSum/1000.0) /
+            (pow(10.0, winnersRatingSum/1000.0) + pow(10.0, losersRatingSum/1000.0));
+    return static_cast<int>(ceil(coeff * chances * std::min(5.0, 1.0 + fabs(double(scoreDiff))/3.0)));
+    //return scoreDiff;
+
     float handicap = totalRating1 > totalRating2 ?
                 totalRating2 / totalRating1 - 1 :
                 totalRating1 / totalRating2 - 1;
