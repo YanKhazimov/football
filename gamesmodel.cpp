@@ -66,6 +66,9 @@ bool GamesModel::init(QString gamesFilename)
     std::string dateLine, homeLine, awayLine;
     while (getline(input, dateLine) && getline(input, homeLine) && getline(input, awayLine))
     {
+        if (homeLine.find('?') != std::string::npos || awayLine.find('?') != std::string::npos)
+            continue;
+
         QVector<PlayerRef> qHomeTokens = QString::fromStdString(homeLine).split("\t", QString::SplitBehavior::SkipEmptyParts).toVector();
         QVector<PlayerRef> qAwayTokens = QString::fromStdString(awayLine).split("\t", QString::SplitBehavior::SkipEmptyParts).toVector();
 
