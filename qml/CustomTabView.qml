@@ -114,6 +114,10 @@ Rectangle {
                                         color: theme.textColor
                                     }
                                 }
+                                Component.onCompleted: {
+                                    checked = true
+                                    ratingsTable.presenter.setFilter(checked)
+                                }
                                 onClicked: ratingsTable.presenter.setFilter(checked)
                             }
                         }
