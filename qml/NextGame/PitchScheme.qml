@@ -137,7 +137,7 @@ Rectangle {
 
                 Text {
                     text: "Home"
-                    color: theme.textColor
+                    color: "white"
                     font.family: Themes.fontFamily
                     anchors.centerIn: parent
                 }
@@ -150,7 +150,7 @@ Rectangle {
                 }
 
                 text: homeTotal
-                color: theme.textColor
+                color: "white"
                 font.family: Themes.fontFamily
                 font.bold: true
             }
@@ -203,7 +203,7 @@ Rectangle {
 
                 Text {
                     text: "Away"
-                    color: theme.textColor
+                    color: "white"
                     font.family: Themes.fontFamily
                     anchors.centerIn: parent
                 }
@@ -216,7 +216,7 @@ Rectangle {
                 }
 
                 text: awayTotal
-                color: theme.textColor
+                color: "white"
                 font.family: Themes.fontFamily
                 font.bold: true
             }

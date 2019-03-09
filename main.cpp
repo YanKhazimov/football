@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
     ctxt->setContextProperty("statModel", &statModel);
 
-    TeamSplitter teamSplitter;
+    TeamSplitter teamSplitter(globalStatsModel);
     ctxt->setContextProperty("teamSplitter", &teamSplitter);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));

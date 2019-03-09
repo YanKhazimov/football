@@ -28,6 +28,8 @@ public:
     Q_INVOKABLE Player* getPlayer(int idx);
     Q_INVOKABLE int getPlayerRating(QString name);
 
+    int getRating(const PlayerRef& name) const;
+
 private slots:
     void resetModel();
     void sourceRowsInserted(QModelIndex parent, int first, int last);

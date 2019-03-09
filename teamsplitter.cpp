@@ -1,16 +1,9 @@
 #include "teamsplitter.h"
 #include <QVariant>
 
-TeamSplitter::TeamSplitter()
+TeamSplitter::TeamSplitter(const GlobalStatsModel& gsmodel)
+    : m_model(gsmodel)
 {
-}
-
-int getRating(QString name)
-{
-    int rating = 0;
-    for(const QChar c: name)
-        rating += c.toLatin1();
-    return rating;
 }
 
 void TeamSplitter::pick(int picksToGo, QStringList home, const QStringList& away, QStringList unsorted, int pickFrom)
@@ -47,14 +40,14 @@ void TeamSplitter::split(QStringList home, QStringList away, QStringList unsorte
         int diff1 = 0, diff2 = 0;
         for (int i = 0; i < list1.size() / 2; ++i)
         {
-            diff1 += getRating(list1.at(i));
-            diff2 += getRating(list2.at(i));
+            diff1 += m_model.getRating(list1.at(i));
+            diff2 += m_model.getRating(list2.at(i));
         }
 
         for (int i = list1.size() / 2; i < list1.size(); ++i)
         {
-            diff1 -= getRating(list1.at(i));
-            diff2 -= getRating(list2.at(i));
+            diff1 -= m_model.getRating(list1.at(i));
+            diff2 -= m_model.getRating(list2.at(i));
         }
 
         return qAbs(diff1) < qAbs(diff2);

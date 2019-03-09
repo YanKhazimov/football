@@ -65,22 +65,7 @@ QueryResultItem &QueryResultItem::operator=(const QueryResultItem &other)
 }
 
 Playerbase::Playerbase()
-{/*
-    m_base = {
-        {"player A", new Player("player A", this)},
-        {"player BBB", new Player("player BBB", this)},
-        {"player C", new Player("player C", this, QUrl("qrc:/img/playerImages/242510.png"))},
-        {"player D", new Player("player D", this, QUrl("qrc:/img/playerImages/5984.png"))},
-        {"player E", new Player("player E", this)},
-        {"player F", new Player("player F", this)},
-        {"player G", new Player("player G", this)},
-        {"player H", new Player("player H", this)},
-        {"player I", new Player("player I", this)},
-        {"player J", new Player("player J", this, QUrl("qrc:/img/playerImages/13128.png"))},
-        {"player K", new Player("player K", this)},
-        {"player L", new Player("player L", this)}
-    };*/
-
+{
     m_base = {
         {"Ян Хазимов", new Player("Ян Хазимов", 2189, this)},
         {"Александр Гоносков", new Player("Александр Гоносков", 1972, this)},
@@ -103,7 +88,7 @@ Playerbase::Playerbase()
         {"Коля Чалков", new Player("Коля Чалков", 1523, this)},
         {"Леха 5метров", new Player("Леха 5метров", 1800, this)},
         {"Рома Павлов", new Player("Рома Павлов", 1732, this)},
-        {"Серега Мартынов", new Player("Серега Мартынов", 1639, this)},
+        {"Серега Мартынов", new Player("Серега Мартынов", 1800, this)},
         {"Саня Таран", new Player("Саня Таран", 1800, this)},
         {"Сергей Саушкин", new Player("Сергей Саушкин", 1800, this)},
         {"Игорь Серов", new Player("Игорь Серов", 1650, this, QUrl("qrc:/img/playerImages/13128.png"))},

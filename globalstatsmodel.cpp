@@ -244,6 +244,18 @@ int GlobalStatsModel::getPlayerRating(QString name)
     return m_playersData[name].last().changedRating;
 }
 
+int GlobalStatsModel::getRating(const PlayerRef &name) const
+{
+    if (m_playersData.count(name) == 0 ||
+            m_playersData.at(name).empty())
+    {
+        throw std::exception();
+        return -1;
+    }
+
+    return m_playersData.at(name).last().changedRating;
+}
+
 void GlobalStatsModel::resetModel()
 {
     if (!m_sourceModel)
