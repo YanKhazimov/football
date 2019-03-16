@@ -39,6 +39,7 @@ public:
 
     Q_INVOKABLE bool isDateBusy(const QDate &date) const;
     Q_INVOKABLE void addGame(QDate date, QStringList hometeam, int homeScore, QStringList awayteam, int awayScore);
+    Q_INVOKABLE QStringList getSeasons() const;
 
 private:
     QList<Game*> m_games;

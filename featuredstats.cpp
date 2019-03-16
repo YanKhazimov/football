@@ -95,7 +95,10 @@ void ClosestPlayersStat::calculate()
     std::multimap<int, std::map<int, QList<Player*>>::reverse_iterator> groupsByDiff;
 
     reverseIter = playersByRating.rbegin();
-    for (++reverseIter; reverseIter != playersByRating.rend(); ++reverseIter)
+    if (reverseIter != playersByRating.rend())
+        ++reverseIter;
+
+    for (; reverseIter != playersByRating.rend(); ++reverseIter)
     {
         std::map<int, QList<Player*>>::reverse_iterator prev = std::prev(reverseIter);
         groupsByDiff.insert(std::make_pair(prev->first - reverseIter->first, reverseIter));

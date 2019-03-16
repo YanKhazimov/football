@@ -60,5 +60,7 @@
         <file>img/cancel.png</file>
         <file>img/ok.png</file>
         <file>qml/NextGame/TeamControlPanel.qml</file>
+        <file>qml/Seasoner.qml</file>
+        <file>img/season.png</file>
     </qresource>
 </RCC>

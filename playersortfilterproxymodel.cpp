@@ -49,7 +49,7 @@ bool PlayerSortFilterProxyModel::sortBy(int statRole)
 
 void PlayerSortFilterProxyModel::setFilter(bool enabled)
 {
-    m_relevanceThreshold = enabled ? 0 : -1;
+    m_relevanceThreshold = enabled ? 50 : -1;
     invalidateFilter();
 }
 
@@ -100,7 +100,7 @@ bool PlayerSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIn
 {
     Q_UNUSED(source_parent);
     int relevance = sourceModel()->index(source_row, 0).data(DataRoles::DataRole::Relevance).toInt();
-    return relevance > m_relevanceThreshold;
+    return relevance >= m_relevanceThreshold;
 }
 
 void PlayerSortFilterProxyModel::sort()

@@ -278,7 +278,8 @@ int getHomeRatingChange(int scoreDiff, int totalRating1, int totalRating2)
     double losersRatingSum = static_cast<double>(scoreDiff > 0 ? totalRating2 : totalRating1);
     double chances = pow(10.0, winnersRatingSum/1000.0) /
             (pow(10.0, winnersRatingSum/1000.0) + pow(10.0, losersRatingSum/1000.0));
-    return static_cast<int>(ceil(coeff * chances * std::min(5.0, 1.0 + fabs(double(scoreDiff))/3.0)));
+    int absChange = static_cast<int>(ceil(coeff * chances * std::min(5.0, 1.0 + fabs(double(scoreDiff))/3.0)));
+    return scoreDiff > 0 ? absChange : -absChange;
     //return scoreDiff;
 
     float handicap = totalRating1 > totalRating2 ?
@@ -309,6 +310,10 @@ void GlobalStatsModel::resetData()
         return (0 < val) - (val < 0);
     };
 
+    auto deduceRating = [](const PlayerRef& player) -> int {
+        return player.mid(2, 4).toInt();
+    };
+
     for (int i = 0; i < m_sourceModel->rowCount(); ++i)
     {
         QModelIndex sourceGameIndex = m_sourceModel->index(i, 0);
@@ -318,23 +323,31 @@ void GlobalStatsModel::resetData()
         int hometeamTotal = 0;
         for (PlayerRef playerRef: hometeam)
         {
-            hometeamTotal += currentRatings[playerRef];
+            int aprioriRating = m_base->getPlayer(playerRef) ? currentRatings[playerRef] : deduceRating(playerRef);
+            hometeamTotal += aprioriRating;
         }
         QVector<PlayerRef> awayteam = sourceGameIndex.data(DataRoles::DataRole::Awayteam).value<QVector<PlayerRef>>();
         int awayteamTotal = 0;
         for (PlayerRef playerRef: awayteam)
         {
-            awayteamTotal += currentRatings[playerRef];
+            int aprioriRating = m_base->getPlayer(playerRef) ? currentRatings[playerRef] : deduceRating(playerRef);
+            awayteamTotal += aprioriRating;
         }
         int ratingChange = getHomeRatingChange(scoreDiff, hometeamTotal, awayteamTotal);
 
         for (const QString &playerRef: hometeam)
         {
+            if (!m_base->getPlayer(playerRef))
+                continue;
+
             currentRatings[playerRef] += ratingChange;
             m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(scoreDiff), sourceGameIndex));
         }
         for (PlayerRef playerRef: awayteam)
         {
+            if (!m_base->getPlayer(playerRef))
+                continue;
+
             currentRatings[playerRef] -= ratingChange;
             m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(-scoreDiff), sourceGameIndex));
         }

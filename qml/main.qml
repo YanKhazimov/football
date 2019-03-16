@@ -59,6 +59,12 @@ QQC2.ApplicationWindow {
         }
         spacing: 0
 
+        Seasoner {
+            width: Sizes.elementButtonSize.width
+            height: Sizes.elementButtonSize.height
+            model: gamesModel.getSeasons()
+        }
+
         Image {
             id: languageSwitcher
             source: "qrc:/img/lang_en.png"

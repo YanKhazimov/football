@@ -12,7 +12,9 @@ public:
     GameFilterModel(QObject *parent = nullptr);
 
     void setPeriod(int yearSince, int yearTo);
-    //virtual void setSourceModel(QAbstractItemModel *source) Q_DECL_OVERRIDE;
+    virtual void setSourceModel(QAbstractItemModel *source) Q_DECL_OVERRIDE;
+
+    Q_INVOKABLE bool setSeasonFilter(QString filter);
 
 public slots:
     void sourceDataChanged(QModelIndex topLeft, QModelIndex bottomRight, QVector<int> roles);

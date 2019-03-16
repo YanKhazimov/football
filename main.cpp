@@ -3,6 +3,7 @@
 #include <QQmlContext>
 
 #include "gamesmodel.h"
+#include "gamefiltermodel.h"
 #include "playerbase.h"
 #include "playerstatsmodel.h"
 #include "globalstatsmodel.h"
@@ -29,12 +30,15 @@ int main(int argc, char *argv[])
     GamesModel gm;
     gm.init("games");
 
-    // GamesModel - GlobalStatsModel - PlayerSortFilterProxyModel - StatPresenterProxyModel [ - StatTable ]
+    // GamesModel - GameFilterModel - GlobalStatsModel - PlayerSortFilterProxyModel - StatPresenterProxyModel [ - StatTable ]
+
+    GameFilterModel gfm;
+    gfm.setSourceModel(&gm);
 
     Playerbase playerbase;
     GlobalStatsModel globalStatsModel(&playerbase);
 
-    globalStatsModel.setSourceModel(&gm);
+    globalStatsModel.setSourceModel(&gfm);
 
     PlayerSortFilterProxyModel sortingStatModel;
     sortingStatModel.setSourceModel(&globalStatsModel);
@@ -60,6 +64,7 @@ int main(int argc, char *argv[])
     QQmlContext* ctxt = engine.rootContext();
 
     ctxt->setContextProperty("gamesModel", QVariant::fromValue(&gm));
+    ctxt->setContextProperty("gamesFilterModel", QVariant::fromValue(&gfm));
     ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(&featuredStatsModel));
     ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
     ctxt->setContextProperty("globalStatsModel", &globalStatsModel);

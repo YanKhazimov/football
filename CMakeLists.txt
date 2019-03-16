@@ -17,7 +17,8 @@ set (HEADERS
     dataroles.h
     playersortfilterproxymodel.h
     statpresenterproxymodel.h
-    featuredstats.h)
+    featuredstats.h
+    gamefiltermodel.h)
 
 set (SRC
     playerbase.cpp
@@ -29,7 +30,8 @@ set (SRC
     teamsplitter.cpp
     playersortfilterproxymodel.cpp
     statpresenterproxymodel.cpp
-    featuredstats.cpp)
+    featuredstats.cpp
+    gamefiltermodel.cpp)
 
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 
