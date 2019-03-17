@@ -2,6 +2,7 @@
 #define GLOBALSTATSMODEL_H
 
 #include <map>
+#include <QDate>
 #include "playerbase.h"
 #include "dataroles.h"
 
@@ -30,6 +31,8 @@ public:
 
     int getRating(const PlayerRef& name) const;
 
+    Q_INVOKABLE bool setSeasonFilter(QString filter);
+
 private slots:
     void resetModel();
     void sourceRowsInserted(QModelIndex parent, int first, int last);
@@ -50,9 +53,10 @@ private:
     const Playerbase* m_base;
     QAbstractItemModel *m_sourceModel;
 
-    QVector<QDate> m_dates;
     std::map<PlayerRef, QVector<PlayerGameStats>> m_playersData;
+    QMap<PlayerRef, int> m_seasonStartingRating;
     int m_selectedPlayerIndex = -1;
+    QDate m_minDate, m_maxDate;
 };
 
 #endif // GLOBALSTATSMODEL_H

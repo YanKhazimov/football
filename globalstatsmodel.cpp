@@ -63,6 +63,30 @@ int GlobalStatsModel::columnCount(const QModelIndex &parent) const
     return m_sourceModel ? m_sourceModel->rowCount() + 1 : 0;
 }
 
+bool GlobalStatsModel::setSeasonFilter(QString filter)
+{
+    if (filter == "All")
+    {
+        beginResetModel();
+        m_minDate.setDate(2000, 0, 0);
+        m_maxDate = QDate::currentDate();
+        resetData();
+        endResetModel();
+        return true;
+    }
+
+    int year = filter.toInt();
+    if (year == 0)
+        return false;
+
+    beginResetModel();
+    m_minDate.setDate(year, 1, 1);
+    m_maxDate.setDate(year, 12, 31);
+    resetData();
+    endResetModel();
+    return true;
+}
+
 QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || index.parent().isValid())
@@ -106,7 +130,7 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
     }
     else if (role == DataRoles::DataRole::Progress)
     {
-        int initialRating = m_base->getPlayer(playerData.first)->getInitialRating();
+        int initialRating = m_seasonStartingRating[playerData.first];
         int currentRating = playerData.second.empty() ? initialRating : playerData.second.back().changedRating;
         return QVariant::fromValue(currentRating - initialRating);
     }
@@ -143,7 +167,7 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
     }
     else if (role == DataRoles::DataRole::RatingHistory)
     {
-        QList<int> onlyRating {m_base->getPlayer(playerData.first)->getInitialRating()};
+        QList<int> onlyRating {m_seasonStartingRating[playerData.first]};
         for (const PlayerGameStats& game: playerData.second)
         {
             onlyRating.append(game.changedRating);
@@ -273,10 +297,13 @@ void GlobalStatsModel::sourceRowsInserted(QModelIndex parent, int first, int las
 
 int getHomeRatingChange(int scoreDiff, int totalRating1, int totalRating2)
 {
+    if (scoreDiff == 0)
+        return 0;
+
     double coeff = 8.f;
     double winnersRatingSum = static_cast<double>(scoreDiff > 0 ? totalRating1 : totalRating2);
     double losersRatingSum = static_cast<double>(scoreDiff > 0 ? totalRating2 : totalRating1);
-    double chances = pow(10.0, winnersRatingSum/1000.0) /
+    double chances = pow(10.0, losersRatingSum/1000.0) /
             (pow(10.0, winnersRatingSum/1000.0) + pow(10.0, losersRatingSum/1000.0));
     int absChange = static_cast<int>(ceil(coeff * chances * std::min(5.0, 1.0 + fabs(double(scoreDiff))/3.0)));
     return scoreDiff > 0 ? absChange : -absChange;
@@ -297,8 +324,8 @@ int getHomeRatingChange(int scoreDiff, int totalRating1, int totalRating2)
 
 void GlobalStatsModel::resetData()
 {
-    m_dates.resize(m_sourceModel->rowCount());
     m_playersData.clear();
+    m_seasonStartingRating.clear();
 
     QMap<PlayerRef, int> currentRatings;
     for (PlayerRef playerRef: m_base->listAllPlayers())
@@ -317,7 +344,6 @@ void GlobalStatsModel::resetData()
     for (int i = 0; i < m_sourceModel->rowCount(); ++i)
     {
         QModelIndex sourceGameIndex = m_sourceModel->index(i, 0);
-        m_dates[i] = sourceGameIndex.data(DataRoles::DataRole::GameDate).value<QDate>();
         int scoreDiff = sourceGameIndex.data(DataRoles::DataRole::ScoreDiff).toInt();
         QVector<PlayerRef> hometeam = sourceGameIndex.data(DataRoles::DataRole::Hometeam).value<QVector<PlayerRef>>();
         int hometeamTotal = 0;
@@ -335,13 +361,22 @@ void GlobalStatsModel::resetData()
         }
         int ratingChange = getHomeRatingChange(scoreDiff, hometeamTotal, awayteamTotal);
 
+        QDate gameDate = sourceGameIndex.data(DataRoles::DataRole::GameDate).value<QDate>();
+        if (m_minDate <= gameDate && m_seasonStartingRating.empty())
+        {
+            m_seasonStartingRating = currentRatings;
+        }
+        if (m_maxDate < gameDate)
+            break;
+
         for (const QString &playerRef: hometeam)
         {
             if (!m_base->getPlayer(playerRef))
                 continue;
 
             currentRatings[playerRef] += ratingChange;
-            m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(scoreDiff), sourceGameIndex));
+            if (m_minDate <= gameDate)
+                m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(scoreDiff), sourceGameIndex));
         }
         for (PlayerRef playerRef: awayteam)
         {
@@ -349,7 +384,9 @@ void GlobalStatsModel::resetData()
                 continue;
 
             currentRatings[playerRef] -= ratingChange;
-            m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(-scoreDiff), sourceGameIndex));
+
+            if (m_minDate <= gameDate)
+                m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(-scoreDiff), sourceGameIndex));
         }
     }
 }

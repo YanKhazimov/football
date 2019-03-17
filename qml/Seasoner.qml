@@ -13,9 +13,10 @@ Rectangle {
     }
     MouseArea {
         anchors.fill: parent
+        Component.onCompleted: globalStatsModel.setSeasonFilter(model[curIndex])
         onClicked: {
             curIndex = (curIndex + 1) % model.length
-            gamesFilterModel.setSeasonFilter(model[curIndex])
+            globalStatsModel.setSeasonFilter(model[curIndex])
         }
     }
     Text {
