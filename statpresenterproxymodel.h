@@ -16,11 +16,10 @@ public:
 
     Q_INVOKABLE bool sortBy(int statRole);
     Q_INVOKABLE bool selectRow(int row);
-    Q_INVOKABLE void setFilter(bool enabled);
+    //Q_INVOKABLE void setFilter(bool enabled);
 
 signals:
     void selectedRowChanged(int selectedRow);
-    void modelReset();
 
 private:
     void sort();

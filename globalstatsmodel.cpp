@@ -65,6 +65,9 @@ int GlobalStatsModel::columnCount(const QModelIndex &parent) const
 
 bool GlobalStatsModel::setSeasonFilter(QString filter)
 {
+    PlayerRef selectedPlayerCopy = m_selectedPlayer;
+    QModelIndex selectedIndex = getIndexByRef(selectedPlayerCopy);
+
     if (filter == "All")
     {
         beginResetModel();
@@ -72,6 +75,14 @@ bool GlobalStatsModel::setSeasonFilter(QString filter)
         m_maxDate = QDate::currentDate();
         resetData();
         endResetModel();
+
+        m_selectedPlayer = selectedPlayerCopy;
+        if (m_playersData.count(selectedPlayerCopy))
+        {
+            selectedIndex = getIndexByRef(selectedPlayerCopy);
+            emit dataChanged(selectedIndex, selectedIndex, {DataRoles::DataRole::PlayerSelection});
+        }
+
         return true;
     }
 
@@ -83,6 +94,14 @@ bool GlobalStatsModel::setSeasonFilter(QString filter)
     m_minDate.setDate(year, 1, 1);
     m_maxDate.setDate(year, 12, 31);
     resetData();
+
+    m_selectedPlayer = selectedPlayerCopy;
+    if (m_playersData.count(selectedPlayerCopy))
+    {
+        selectedIndex = getIndexByRef(selectedPlayerCopy);
+        emit dataChanged(selectedIndex, selectedIndex, {DataRoles::DataRole::PlayerSelection});
+    }
+
     endResetModel();
     return true;
 }
@@ -163,7 +182,9 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
     }
     else if (role == DataRoles::DataRole::PlayerSelection)
     {
-        return QVariant::fromValue(m_selectedPlayerIndex == index.row());
+        auto iter = m_playersData.begin();
+        std::advance(iter, std::min(index.row(), static_cast<int>(m_playersData.size())));
+        return QVariant::fromValue(iter != m_playersData.end() && iter->first == m_selectedPlayer);
     }
     else if (role == DataRoles::DataRole::RatingHistory)
     {
@@ -230,7 +251,9 @@ bool GlobalStatsModel::setData(const QModelIndex &index, const QVariant &value, 
     Q_ASSERT(index.model() == this);
     if (role == DataRoles::DataRole::PlayerSelection)
     {
-        m_selectedPlayerIndex = value.toBool() ? index.row() : -1;
+        auto iter = m_playersData.begin();
+        std::advance(iter, std::min(index.row(), static_cast<int>(m_playersData.size())));
+        m_selectedPlayer = value.toBool() ? iter->first : "";
         emit dataChanged(index, index, {role});
         return true;
     }
@@ -255,17 +278,6 @@ QHash<int, QByteArray> GlobalStatsModel::roleNames() const
 Player *GlobalStatsModel::getPlayer(QString name)
 {
     return m_base->getPlayer(name);
-}
-
-Player *GlobalStatsModel::getPlayer(int idx)
-{
-    QString name = data(index(idx, 0), DataRoles::DataRole::PlayerName).toString();
-    return m_base->getPlayer(name);
-}
-
-int GlobalStatsModel::getPlayerRating(QString name)
-{
-    return m_playersData[name].last().changedRating;
 }
 
 int GlobalStatsModel::getRating(const PlayerRef &name) const
@@ -326,6 +338,9 @@ void GlobalStatsModel::resetData()
 {
     m_playersData.clear();
     m_seasonStartingRating.clear();
+    m_selectedPlayer.clear();
+    QModelIndex selectedIndex = getIndexByRef(m_selectedPlayer);
+    emit dataChanged(selectedIndex, selectedIndex, {DataRoles::DataRole::PlayerSelection});
 
     QMap<PlayerRef, int> currentRatings;
     for (PlayerRef playerRef: m_base->listAllPlayers())
@@ -404,6 +419,13 @@ std::pair<PlayerRef, QVector<GlobalStatsModel::PlayerGameStats> > GlobalStatsMod
     }
 
     return std::make_pair<PlayerRef, QVector<PlayerGameStats>>(PlayerRef(), QVector<PlayerGameStats>());
+}
+
+QModelIndex GlobalStatsModel::getIndexByRef(const PlayerRef &ref)
+{
+    std::map<PlayerRef, QVector<PlayerGameStats>>::const_iterator playerIter = m_playersData.find(ref);
+    std::map<PlayerRef, QVector<PlayerGameStats>>::const_iterator begin = m_playersData.begin();
+    return playerIter == m_playersData.end() ? QModelIndex() : index(std::distance(begin, playerIter), 0);
 }
 
 GlobalStatsModel::PlayerGameStats::PlayerGameStats(int rating, int sign, QModelIndex srcIdx)

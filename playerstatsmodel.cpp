@@ -96,10 +96,10 @@ QHash<int, QByteArray> PlayerStatsModel::roleNames() const
 
 void PlayerStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRight, QVector<int> roles)
 {
-    Q_ASSERT(topLeft == bottomRight);
-
     if (roles.contains(DataRoles::DataRole::PlayerSelection))
     {
+        Q_ASSERT(topLeft == bottomRight);
+
         bool selected = topLeft.data(DataRoles::DataRole::PlayerSelection).toBool();
 
         for (int row = 0; row < rowCount(); ++row)

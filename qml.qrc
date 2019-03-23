@@ -62,5 +62,6 @@
         <file>qml/NextGame/TeamControlPanel.qml</file>
         <file>qml/Seasoner.qml</file>
         <file>img/season.png</file>
+        <file>img/phil.jpg</file>
     </qresource>
 </RCC>

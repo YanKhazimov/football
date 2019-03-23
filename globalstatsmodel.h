@@ -9,7 +9,6 @@
 class GlobalStatsModel: public QAbstractTableModel
 {
     Q_OBJECT
-    Q_PROPERTY(int length READ rowCount CONSTANT)
 
 public:
     GlobalStatsModel() = default;
@@ -26,8 +25,6 @@ public:
     virtual QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE Player* getPlayer(QString name);
-    Q_INVOKABLE Player* getPlayer(int idx);
-    Q_INVOKABLE int getPlayerRating(QString name);
 
     int getRating(const PlayerRef& name) const;
 
@@ -50,12 +47,14 @@ private:
     void resetData();
     std::pair<PlayerRef, QVector<PlayerGameStats>> getPlayerData(const QModelIndex& index) const;
 
+    QModelIndex getIndexByRef(const PlayerRef& ref);
+
     const Playerbase* m_base;
     QAbstractItemModel *m_sourceModel;
 
     std::map<PlayerRef, QVector<PlayerGameStats>> m_playersData;
     QMap<PlayerRef, int> m_seasonStartingRating;
-    int m_selectedPlayerIndex = -1;
+    PlayerRef m_selectedPlayer;
     QDate m_minDate, m_maxDate;
 };
 

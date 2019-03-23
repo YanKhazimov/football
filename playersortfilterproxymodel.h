@@ -15,7 +15,9 @@ public:
 
     bool selectRow(int row);
     bool sortBy(int statRole);
-    void setFilter(bool enabled);
+    Q_INVOKABLE void setFilter(bool enabled);
+    Q_INVOKABLE Player* getPlayer(int idx);
+    Q_INVOKABLE int getPlayerRating(QString name);
 
 signals:
     void selectedRowChanged(int selectedRow);

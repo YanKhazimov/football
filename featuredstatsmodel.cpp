@@ -67,10 +67,6 @@ void FeaturedStatsModel::setSourceModel(QAbstractItemModel *source)
 {
     if (m_source)
     {
-//        disconnect(m_source, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, QVector<int>)),
-//                   this, SLOT(onSourceDataChanged(const QModelIndex&, const QModelIndex&, QVector<int>)));
-//        disconnect(m_source, SIGNAL(rowsInserted(const QModelIndex&, int, int)),
-//                   this, SLOT(onSourceRowsInserted(const QModelIndex&, int, int)));
         disconnect(m_source, SIGNAL(modelReset()),
                    this, SLOT(reset()));
     }
@@ -79,10 +75,6 @@ void FeaturedStatsModel::setSourceModel(QAbstractItemModel *source)
 
     if (m_source)
     {
-//        connect(m_source, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, QVector<int>)),
-//                   this, SLOT(onSourceDataChanged(const QModelIndex&, const QModelIndex&, QVector<int>)));
-//        connect(m_source, SIGNAL(rowsInserted(const QModelIndex&, int, int)),
-//                   this, SLOT(onSourceRowsInserted(const QModelIndex&, int, int)));
         connect(m_source, SIGNAL(modelReset()),
                    this, SLOT(reset()));
     }

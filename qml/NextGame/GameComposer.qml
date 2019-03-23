@@ -16,7 +16,7 @@ Rectangle {
 
     onAllPlayersModelChanged: {
         var startingModel = []
-        for (var i = 0; i < allPlayersModel.length; ++i)
+        for (var i = 0; i < allPlayersModel.rowCount(); ++i)
         {
             var player = allPlayersModel.getPlayer(i)
             if (player !== null)
@@ -56,7 +56,7 @@ Rectangle {
 
     PitchScheme {
         id: scheme
-        benchLength: allPlayersModel.length
+        benchLength: allPlayersModel.rowCount()
         theme: root.theme
 
         onDragEnter: {

@@ -11,6 +11,8 @@ StatPresenterProxyModel::StatPresenterProxyModel(QObject* parent)
 QVariant StatPresenterProxyModel::data(const QModelIndex &index, int role) const
 {
     QVariant sourceData = sourceModel()->data(mapToSource(index), role);
+    if (!sourceData.isValid())
+        return QVariant();
 
     if (role == DataRoles::DataRole::WinsLosses)
     {
@@ -46,6 +48,9 @@ void StatPresenterProxyModel::setSourceModel(QAbstractItemModel *source)
 
         disconnect(sourceModel(), SIGNAL(modelReset()),
                    this, SIGNAL(modelReset()));
+
+        disconnect(sourceModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
+                   this, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
     }
 
     QIdentityProxyModel::setSourceModel(source);
@@ -57,6 +62,9 @@ void StatPresenterProxyModel::setSourceModel(QAbstractItemModel *source)
 
         connect(sourceModel(), SIGNAL(modelReset()),
                 this, SIGNAL(modelReset()));
+
+        connect(sourceModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
+                   this, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
     }
 
     endResetModel();
@@ -74,10 +82,10 @@ bool StatPresenterProxyModel::selectRow(int row)
     return source && source->selectRow(row);
 }
 
-void StatPresenterProxyModel::setFilter(bool enabled)
-{
-    PlayerSortFilterProxyModel* source = dynamic_cast<PlayerSortFilterProxyModel*>(sourceModel());
+//void StatPresenterProxyModel::setFilter(bool enabled)
+//{
+//    PlayerSortFilterProxyModel* source = dynamic_cast<PlayerSortFilterProxyModel*>(sourceModel());
 
-    if (source)
-        source->setFilter(enabled);
-}
+//    if (source)
+//        source->setFilter(enabled);
+//}

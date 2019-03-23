@@ -15,7 +15,7 @@ Rectangle {
 
     ColumnLayout {
         id: column
-        spacing: 5
+        spacing: player ? 5 : Sizes.featuredStats.margin
         anchors {
             left: parent.left
             right: parent.right
@@ -24,20 +24,15 @@ Rectangle {
 
         Text {
             id: name
-            text: player ? player.name : ""
+            text: player ? player.name : "No player selected"
             font.family: Themes.fontFamily
             font.pixelSize: Sizes.fontPixelSize
             color: root.theme.textColor
             Layout.alignment: Qt.AlignHCenter
         }
-        Rectangle
-        {
-            id: photo
-            Image {
-                source: root.player.photo
-                anchors.fill: parent
-            }
-            color: root.theme.primaryFillColor
+
+        Image {
+            source: root.player.photo
             Layout.preferredHeight: 128
             Layout.preferredWidth: 128
             Layout.alignment: Qt.AlignHCenter
@@ -45,6 +40,7 @@ Rectangle {
 
         PlayerStatsTable {
             id: statsTable
+            visible: player
             property PlayerStatsModel presenter: playerStatsModel
             model: presenter
 
@@ -64,6 +60,7 @@ Rectangle {
 
         Chart {
             id: chart
+            visible: player
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.leftMargin: Sizes.featuredStats.smallMargin
@@ -76,8 +73,6 @@ Rectangle {
                 target: statsTable.presenter
                 onPlayerChanged: chart.updatePoints(statsTable.presenter.ratingHistory)
             }
-            //points:[Qt.point(20, 3021), Qt.point(40, 1004), Qt.point(50, 8024), Qt.point(80, 1011)]
-            //points: [Qt.point(20, 4021)]
         }
     }
 }

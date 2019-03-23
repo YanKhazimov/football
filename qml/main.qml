@@ -1,4 +1,6 @@
 import QtQuick 2.7
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 2.0 as QQC2
 import QtQuick.Window 2.0
 import com.abc.abclib 1.0
@@ -57,7 +59,31 @@ QQC2.ApplicationWindow {
             left: parent.left
             leftMargin: Sizes.featuredStats.margin
         }
-        spacing: 0
+        spacing: Sizes.featuredStats.smallMargin
+
+        CheckBox {
+            id: relevanceFilter
+            style: CheckBoxStyle {
+                indicator: Rectangle {
+                    width: Sizes.elementButtonSize.width
+                    height: Sizes.elementButtonSize.height
+                    Image {
+                        source: "qrc:/img/phil.jpg"
+                        anchors.fill: parent
+                    }
+                    Image {
+                        source: "qrc:/img/cancel.png"
+                        anchors.fill: parent
+                        visible: control.checked
+                    }
+                }
+            }
+            Component.onCompleted: {
+                checked = true
+                sortingStatModel.setFilter(checked)
+            }
+            onClicked: sortingStatModel.setFilter(checked)
+        }
 
         Seasoner {
             width: Sizes.elementButtonSize.width

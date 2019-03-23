@@ -43,15 +43,15 @@ int main(int argc, char *argv[])
     StatPresenterProxyModel statModel;
     statModel.setSourceModel(&sortingStatModel);
 
-    // GlobalStatsModel - featuredStatsModel [ - SlideShow ]
+    // PlayerSortFilterProxyModel - featuredStatsModel [ - SlideShow ]
 
     FeaturedStatsModel featuredStatsModel;
-    featuredStatsModel.setSourceModel(&globalStatsModel);
+    featuredStatsModel.setSourceModel(&sortingStatModel);
 
-    // GlobalStatsModel - StatPresenterProxyModel - PlayerStatsModel [ - PlayerStatsTable ]
+    // PlayerSortFilterProxyModel - StatPresenterProxyModel - PlayerStatsModel [ - PlayerStatsTable ]
 
     StatPresenterProxyModel statModel2;
-    statModel2.setSourceModel(&globalStatsModel);
+    statModel2.setSourceModel(&sortingStatModel);
 
     PlayerStatsModel playerStatsModel;
     playerStatsModel.setSourceModel(&statModel2);
@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
     ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(&featuredStatsModel));
     ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
     ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
+    ctxt->setContextProperty("sortingStatModel", &sortingStatModel);
     ctxt->setContextProperty("statModel", &statModel);
 
     TeamSplitter teamSplitter(globalStatsModel);

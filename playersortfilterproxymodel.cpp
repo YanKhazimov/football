@@ -35,6 +35,7 @@ bool PlayerSortFilterProxyModel::selectRow(int row)
     if (row == m_selectedIndex.row())
         return false;
 
+    QModelIndex idx = index(row, 0);
     return setData(index(row, 0), true, DataRoles::DataRole::PlayerSelection);
 }
 
@@ -49,8 +50,27 @@ bool PlayerSortFilterProxyModel::sortBy(int statRole)
 
 void PlayerSortFilterProxyModel::setFilter(bool enabled)
 {
+    beginResetModel();
     m_relevanceThreshold = enabled ? 50 : -1;
     invalidateFilter();
+    endResetModel();
+
+    //emit dataChanged(index(0, 0), index(rowCount(), 0), { DataRoles::DataRole::RelevanceFilter });
+}
+
+Player* PlayerSortFilterProxyModel::getPlayer(int idx)
+{
+    Player* player = data(index(idx, 0), DataRoles::DataRole::Player).value<Player*>();
+    return player;
+}
+
+int PlayerSortFilterProxyModel::getPlayerRating(QString name)
+{
+    for (int i = 0; i < sourceModel()->rowCount(); ++i)
+        if (sourceModel()->index(i, 0).data(DataRoles::DataRole::PlayerName).toString() == name)
+            return sourceModel()->index(i, 0).data(DataRoles::DataRole::Rating).toInt();
+
+    return 0;
 }
 
 void PlayerSortFilterProxyModel::sourceDataChanged(QModelIndex topLeft, QModelIndex bottomRight, QVector<int> roles)
@@ -65,6 +85,8 @@ void PlayerSortFilterProxyModel::sourceDataChanged(QModelIndex topLeft, QModelIn
         {
             m_selectedIndex = QModelIndex();
         }
+        emit dataChanged(m_selectedIndex, m_selectedIndex, {DataRoles::DataRole::PlayerSelection});
+        emit selectedRowChanged(m_selectedIndex.row());
     }
 }
 
