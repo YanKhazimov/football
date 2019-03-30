@@ -13,7 +13,7 @@ Rectangle {
 
     RowLayout {
         id: row
-        spacing: Sizes.featuredStats.smallMargin
+        spacing: Sizes.featuredStats.margin
         anchors {
             left: parent.left
             right: parent.right

@@ -161,8 +161,8 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
     }
     else if (role == DataRoles::DataRole::Relevance)
     {
-        int firstParticipationGlobalIndex = playerData.second.first().sourceIndex.row();
-        int gamesCounted = qMin(10, m_sourceModel->rowCount() - firstParticipationGlobalIndex);
+        //int firstParticipationGlobalIndex = playerData.second.first().sourceIndex.row();
+        int gamesCounted = 10;//qMin(10, m_sourceModel->rowCount() - firstParticipationGlobalIndex);
 
         int maxRelevancePoints = (1 + gamesCounted) * gamesCounted / 2; // 1 + 2 + ... + gamesCounted
         int relevancePoints = 0;

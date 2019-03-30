@@ -102,7 +102,6 @@ Rectangle {
                             target: ratingsTable.presenter
                             onSelectedRowChanged: {
                                 ratingsTable.selection.clear()
-                                console.debug(selectedRow)
                                 if (selectedRow !== -1)
                                     ratingsTable.selection.select(selectedRow)
                             }

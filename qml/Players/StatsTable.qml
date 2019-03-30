@@ -6,7 +6,6 @@ import "qrc:/qml/visualStyles"
 TableView {
     id: root
     property var theme: null
-    horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
     Component.onCompleted: {
         selection.select(0)
@@ -157,5 +156,7 @@ TableView {
                 anchors.bottom: parent.bottom
             }
         }
+
+        transientScrollBars: true
     }
 }

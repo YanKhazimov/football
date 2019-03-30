@@ -94,6 +94,34 @@ QHash<int, QByteArray> PlayerStatsModel::roleNames() const
     return result;
 }
 
+QVariant convertStat(QVariant stat, int role)
+{
+    if (!stat.isValid())
+        return QVariant();
+
+    if (role == DataRoles::DataRole::WinsLosses)
+    {
+        QVector<int> wdl = stat.value<QVector<int>>();
+        Q_ASSERT(wdl.size() == 3);
+        return QVariant::fromValue(QString("%1-%2-%3")
+                            .arg(QString::number(wdl[0]))
+                            .arg(QString::number(wdl[1]))
+                            .arg(QString::number(wdl[2])));
+    }
+    else if (role == DataRoles::DataRole::Progress) {
+        int progress = stat.toInt();
+        QString extraSign = progress > 0 ? "+" : "";
+        return QVariant::fromValue(extraSign + QString::number(progress));
+    }
+    else if (role == DataRoles::DataRole::Dedication || role == DataRoles::DataRole::Relevance)
+    {
+        int rounded = static_cast<int>(stat.toFloat());
+        return QVariant::fromValue(QString::number(rounded) + "%");
+    }
+
+    return stat;
+}
+
 void PlayerStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRight, QVector<int> roles)
 {
     if (roles.contains(DataRoles::DataRole::PlayerSelection))
@@ -107,7 +135,7 @@ void PlayerStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRigh
             QStandardItem* statItem = item(row, 0);
             int sourceRole = statItem->data(DataRoles::DataRole::SourceRole).toInt();
             QVariant statValue = selected ? topLeft.data(sourceRole) : QVariant();
-            statItem->setData(statValue, DataRoles::DataRole::StatValue);
+            statItem->setData(convertStat(statValue, sourceRole), DataRoles::DataRole::StatValue);
         }
 
         if (selected)
@@ -127,6 +155,9 @@ void PlayerStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRigh
 void PlayerStatsModel::resetModel()
 {
     // update selected player
+    m_selectedPlayer = nullptr;
+    m_ratingHistory.clear();
+
     int playerCount = m_sourceModel->rowCount();
     for (int p = 0; p < playerCount; ++p)
     {
@@ -142,12 +173,12 @@ void PlayerStatsModel::resetModel()
                 QStandardItem* statItem = item(row, 0);
                 int sourceRole = statItem->data(DataRoles::DataRole::SourceRole).toInt();
                 QVariant statValue = sourceIndex.data(sourceRole);
-                statItem->setData(statValue, DataRoles::DataRole::StatValue);
+                statItem->setData(convertStat(statValue, sourceRole), DataRoles::DataRole::StatValue);
             }
-
-            emit playerChanged();
 
             break;
         }
     }
+
+    emit playerChanged();
 }

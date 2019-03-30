@@ -62,7 +62,7 @@ QQC2.ApplicationWindow {
         spacing: Sizes.featuredStats.smallMargin
 
         CheckBox {
-            id: relevanceFilter
+            id: relevanceCheckBox
             style: CheckBoxStyle {
                 indicator: Rectangle {
                     width: Sizes.elementButtonSize.width
@@ -89,6 +89,7 @@ QQC2.ApplicationWindow {
             width: Sizes.elementButtonSize.width
             height: Sizes.elementButtonSize.height
             model: gamesModel.getSeasons()
+            visible: false
         }
 
         Image {

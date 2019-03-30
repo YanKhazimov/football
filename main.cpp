@@ -48,13 +48,10 @@ int main(int argc, char *argv[])
     FeaturedStatsModel featuredStatsModel;
     featuredStatsModel.setSourceModel(&sortingStatModel);
 
-    // PlayerSortFilterProxyModel - StatPresenterProxyModel - PlayerStatsModel [ - PlayerStatsTable ]
-
-    StatPresenterProxyModel statModel2;
-    statModel2.setSourceModel(&sortingStatModel);
+    // PlayerSortFilterProxyModel - PlayerStatsModel [ - PlayerStatsTable ]
 
     PlayerStatsModel playerStatsModel;
-    playerStatsModel.setSourceModel(&statModel2);
+    playerStatsModel.setSourceModel(&sortingStatModel);
 
 
     QQmlApplicationEngine engine;

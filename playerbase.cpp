@@ -92,7 +92,8 @@ Playerbase::Playerbase()
         {"Саня Таран", new Player("Саня Таран", 1800, this)},
         {"Сергей Саушкин", new Player("Сергей Саушкин", 1800, this)},
         {"Игорь Серов", new Player("Игорь Серов", 1650, this, QUrl("qrc:/img/playerImages/13128.png"))},
-        {"Денис Захаров", new Player("Денис Захаров", 1900, this)}
+        {"Денис Захаров", new Player("Денис Захаров", 1900, this)},
+        {"Дима Неймар", new Player("Дима Неймар", 1950, this)}
     };
 }
 

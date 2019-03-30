@@ -32,7 +32,7 @@ Rectangle {
         }
 
         Image {
-            source: root.player.photo
+            source: player ? player.photo : "qrc:/img/playerImages/default.png"
             Layout.preferredHeight: 128
             Layout.preferredWidth: 128
             Layout.alignment: Qt.AlignHCenter

@@ -51,11 +51,19 @@ bool PlayerSortFilterProxyModel::sortBy(int statRole)
 void PlayerSortFilterProxyModel::setFilter(bool enabled)
 {
     beginResetModel();
-    m_relevanceThreshold = enabled ? 50 : -1;
+    m_relevanceThreshold = enabled ? 35 : -1;
     invalidateFilter();
     endResetModel();
 
-    //emit dataChanged(index(0, 0), index(rowCount(), 0), { DataRoles::DataRole::RelevanceFilter });
+    for (int i = 0; i < sourceModel()->rowCount(); ++i)
+    {
+        if (sourceModel()->data(sourceModel()->index(i, 0), DataRoles::DataRole::PlayerSelection).toBool())
+        {
+            m_selectedIndex = mapFromSource(sourceModel()->index(i, 0));
+            break;
+        }
+    }
+    emit selectedRowChanged(m_selectedIndex.row());
 }
 
 Player* PlayerSortFilterProxyModel::getPlayer(int idx)

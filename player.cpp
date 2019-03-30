@@ -2,18 +2,18 @@
 
 QString Player::shorten() const
 {
-    if (m_name.isEmpty() || !m_name.chopped(1).contains(' '))
-        return m_name;
+    QStringList words = m_name.split(' ', QString::SkipEmptyParts);
 
-    return QString(m_name.at(0)) + QString(m_name.at(m_name.lastIndexOf(' ') + 1));
+    QString shortened;
+    for (const QString& word: words)
+        shortened.append(word[0]);
+
+    return shortened;
 }
 
 Player::Player(const QString &name, int initialRating, QObject* parent, const QUrl photoUrl)
     : QObject(parent), m_name(name), m_photo(photoUrl), m_initialRating(initialRating)
 {
-//    m_initialRating = 0;
-//    for(const QChar& c: m_name)
-//        m_initialRating += c.toLatin1();
 }
 
 Player::Player(const Player &p)
