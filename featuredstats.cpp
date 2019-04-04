@@ -1,6 +1,17 @@
 #include "featuredstats.h"
 #include "dataroles.h"
 
+void FeaturedStat::setLanguage(QString lang)
+{
+    if (lang == "en")
+    {
+        m_name += "f";
+    }
+    else {
+        m_name += "ф";
+    }
+}
+
 FeaturedStat::FeaturedStat(QString name, QString description, QAbstractItemModel *dataModel)
     : m_name(name), m_description(description), m_dataModel(dataModel)
 {

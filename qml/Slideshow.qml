@@ -21,7 +21,7 @@ Rectangle {
     Text {
         id: headerText
         anchors {
-            top: parent.top;
+            top: parent.top
             horizontalCenter: parent.horizontalCenter
         }
         text: root.title

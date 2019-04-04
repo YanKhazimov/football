@@ -25,6 +25,7 @@ public:
     QObjectList getValue() const;
     void updateValue();
     void resetDataModel(QAbstractItemModel* dataModel);
+    void setLanguage(QString lang);
 };
 
 class ClosestPlayersStat: public FeaturedStat

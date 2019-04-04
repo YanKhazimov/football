@@ -3,15 +3,16 @@
 
 #include <QAbstractListModel>
 #include "featuredstats.h"
+#include "language.h"
 
 class FeaturedStatsModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    FeaturedStatsModel();
+    FeaturedStatsModel(const Language& lang);
     ~FeaturedStatsModel();
-    int rowCount(const QModelIndex &parent) const override;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex& index, int role) const override;
     void setSourceModel(QAbstractItemModel* source);
 
@@ -19,6 +20,9 @@ public:
 
 private slots:
     void reset();
+
+public slots:
+    void onLanguageChanged(QString lang);
 
 private:
     QList<FeaturedStat*> m_featuredStats;

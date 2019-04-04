@@ -11,6 +11,7 @@
 #include "playersortfilterproxymodel.h"
 #include "statpresenterproxymodel.h"
 #include "featuredstatsmodel.h"
+#include "language.h"
 
 Q_DECLARE_METATYPE(PlayerStatsModel)
 Q_DECLARE_METATYPE(GlobalStatsModel)
@@ -26,6 +27,8 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<GlobalStatsModel>("com.abc.abclib", 1, 0, "GlobalStatsModel", "");
     qmlRegisterUncreatableType<PlayerStatsModel>("com.abc.abclib", 1, 0, "PlayerStatsModel", "");
     qmlRegisterUncreatableType<StatPresenterProxyModel>("com.abc.abclib", 1, 0, "GlobalStatPresenter", "");
+
+    Language language;
 
     GamesModel gm;
     gm.init("games");
@@ -45,7 +48,7 @@ int main(int argc, char *argv[])
 
     // PlayerSortFilterProxyModel - featuredStatsModel [ - SlideShow ]
 
-    FeaturedStatsModel featuredStatsModel;
+    FeaturedStatsModel featuredStatsModel(language);
     featuredStatsModel.setSourceModel(&sortingStatModel);
 
     // PlayerSortFilterProxyModel - PlayerStatsModel [ - PlayerStatsTable ]
@@ -66,6 +69,8 @@ int main(int argc, char *argv[])
 
     TeamSplitter teamSplitter(globalStatsModel);
     ctxt->setContextProperty("teamSplitter", &teamSplitter);
+
+    ctxt->setContextProperty("lang", &language);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())

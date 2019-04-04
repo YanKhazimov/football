@@ -1,11 +1,13 @@
 #include "featuredstatsmodel.h"
 #include "dataroles.h"
 
-FeaturedStatsModel::FeaturedStatsModel()
+FeaturedStatsModel::FeaturedStatsModel(const Language& lang)
     : m_source(nullptr)
 {
     m_featuredStats << new ClosestPlayersStat(m_source)
                     << new SynergyStat(m_source);
+
+    connect(&lang, &Language::languageChanged, this, &FeaturedStatsModel::onLanguageChanged);
 }
 
 FeaturedStatsModel::~FeaturedStatsModel()
@@ -38,6 +40,18 @@ void FeaturedStatsModel::reset()
         fs->updateValue();
     }
     endResetModel();
+}
+
+void FeaturedStatsModel::onLanguageChanged(QString lang)
+{
+    for (FeaturedStat* stat: m_featuredStats)
+        stat->setLanguage(lang);
+
+    emit dataChanged(index(0, 0), index(rowCount() - 1, 0),
+                     QVector<int>{
+                         DataRoles::DataRole::FeaturedStatName,
+                         DataRoles::DataRole::FeaturedStatDescription
+                     });
 }
 
 QVariant FeaturedStatsModel::data(const QModelIndex &index, int role) const

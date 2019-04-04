@@ -4,8 +4,8 @@ import "qrc:/qml/visualStyles"
 
 Rectangle {
     id: contentRoot
-    property string title: "null"
-    property string descr: "null"
+    property string title: ""
+    property string descr: ""
     property var statGroupsModel: null
     property var theme: null
 
