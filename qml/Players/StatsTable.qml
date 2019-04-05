@@ -30,7 +30,6 @@ TableView {
             font.family: Themes.fontFamily
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
-        //role: "rank"
         title: "#"
         width: root.width / 10
         resizable: false
@@ -57,7 +56,7 @@ TableView {
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
         role: "Rating"
-        title: "Rating"
+        title: lang.ratingColumn//"Rating"
         width: root.width * 3/10
         resizable: false
     }

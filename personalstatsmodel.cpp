@@ -1,9 +1,9 @@
 #include <QDebug>
-#include "playerstatsmodel.h"
+#include "personalstatsmodel.h"
 #include "dataroles.h"
 
-PlayerStatsModel::PlayerStatsModel()
-    : m_sourceModel(nullptr), m_selectedPlayer(nullptr)
+PersonalStatsModel::PersonalStatsModel(const Language &lang)
+    : m_selectedPlayer(nullptr), m_sourceModel(nullptr)
 {
     QStandardItem* item;
 
@@ -31,9 +31,11 @@ PlayerStatsModel::PlayerStatsModel()
     item->setData(QString("Dedication"), DataRoles::DataRole::StatCategory);
     item->setData(DataRoles::DataRole::Dedication, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
+
+    connect(&lang, &Language::languageChanged, this, &PersonalStatsModel::onLanguageChanged);
 }
 
-PlayerStatsModel::PlayerStatsModel(const PlayerStatsModel &model)
+PersonalStatsModel::PersonalStatsModel(const PersonalStatsModel &model)
 {
     for (int r = 0; r < model.rowCount(); ++r)
     {
@@ -41,7 +43,7 @@ PlayerStatsModel::PlayerStatsModel(const PlayerStatsModel &model)
     }
 }
 
-void PlayerStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
+void PersonalStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
     beginResetModel();
 
@@ -76,17 +78,17 @@ void PlayerStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
     endResetModel();
 }
 
-QString PlayerStatsModel::getStatCategory(int idx)
+QString PersonalStatsModel::getStatCategory(int idx)
 {
     return (idx >= rowCount()) ? "" : index(idx, 0).data(DataRoles::DataRole::StatCategory).toString();
 }
 
-int PlayerStatsModel::getStatRole(int row)
+int PersonalStatsModel::getStatRole(int row)
 {
     return index(row, 0).data(DataRoles::DataRole::SourceRole).toInt();
 }
 
-QHash<int, QByteArray> PlayerStatsModel::roleNames() const
+QHash<int, QByteArray> PersonalStatsModel::roleNames() const
 {
     QHash<int, QByteArray> result;
     result[DataRoles::DataRole::StatCategory] = "StatCategory";
@@ -122,7 +124,7 @@ QVariant convertStat(QVariant stat, int role)
     return stat;
 }
 
-void PlayerStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRight, QVector<int> roles)
+void PersonalStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRight, QVector<int> roles)
 {
     if (roles.contains(DataRoles::DataRole::PlayerSelection))
     {
@@ -152,7 +154,22 @@ void PlayerStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRigh
     }
 }
 
-void PlayerStatsModel::resetModel()
+void PersonalStatsModel::onLanguageChanged(QString lang)
+{
+    if (lang == "en")
+    {
+        QStandardItem* rowItem = item(0);
+        QString data = rowItem->data(DataRoles::DataRole::StatCategory).toString();
+        rowItem->setData(QVariant::fromValue(data + "f"), DataRoles::DataRole::StatCategory);
+    }
+    else {
+        QStandardItem* rowItem = item(0);
+        QString data = rowItem->data(DataRoles::DataRole::StatCategory).toString();
+        rowItem->setData(QVariant::fromValue(data + "ф"), DataRoles::DataRole::StatCategory);
+    }
+}
+
+void PersonalStatsModel::resetModel()
 {
     // update selected player
     m_selectedPlayer = nullptr;

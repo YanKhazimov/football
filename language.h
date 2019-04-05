@@ -8,8 +8,10 @@ class Language: public QObject
     Q_OBJECT
 
     Q_PROPERTY(QString featured_stats MEMBER m_featured_stats NOTIFY languageChanged)
+    Q_PROPERTY(QString ratingColumn MEMBER m_ratingColumn NOTIFY languageChanged)
 
     QString m_featured_stats;
+    QString m_ratingColumn;
 
     QString m_lang;
 

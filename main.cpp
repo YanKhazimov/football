@@ -5,7 +5,7 @@
 #include "gamesmodel.h"
 #include "gamefiltermodel.h"
 #include "playerbase.h"
-#include "playerstatsmodel.h"
+#include "personalstatsmodel.h"
 #include "globalstatsmodel.h"
 #include "teamsplitter.h"
 #include "playersortfilterproxymodel.h"
@@ -13,7 +13,6 @@
 #include "featuredstatsmodel.h"
 #include "language.h"
 
-Q_DECLARE_METATYPE(PlayerStatsModel)
 Q_DECLARE_METATYPE(GlobalStatsModel)
 Q_DECLARE_METATYPE(PlayerbaseQuery*)
 
@@ -25,7 +24,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterUncreatableType<Player>("com.abc.abclib", 1, 0, "Player", "");
     qmlRegisterUncreatableType<GlobalStatsModel>("com.abc.abclib", 1, 0, "GlobalStatsModel", "");
-    qmlRegisterUncreatableType<PlayerStatsModel>("com.abc.abclib", 1, 0, "PlayerStatsModel", "");
+    qmlRegisterUncreatableType<PersonalStatsModel>("com.abc.abclib", 1, 0, "PersonalStatsModel", "");
     qmlRegisterUncreatableType<StatPresenterProxyModel>("com.abc.abclib", 1, 0, "GlobalStatPresenter", "");
 
     Language language;
@@ -51,10 +50,10 @@ int main(int argc, char *argv[])
     FeaturedStatsModel featuredStatsModel(language);
     featuredStatsModel.setSourceModel(&sortingStatModel);
 
-    // PlayerSortFilterProxyModel - PlayerStatsModel [ - PlayerStatsTable ]
+    // PlayerSortFilterProxyModel - PersonalStatsModel [ - PlayerStatsTable ]
 
-    PlayerStatsModel playerStatsModel;
-    playerStatsModel.setSourceModel(&sortingStatModel);
+    PersonalStatsModel personalStatsModel(language);
+    personalStatsModel.setSourceModel(&sortingStatModel);
 
 
     QQmlApplicationEngine engine;
@@ -62,7 +61,7 @@ int main(int argc, char *argv[])
 
     ctxt->setContextProperty("gamesModel", QVariant::fromValue(&gm));
     ctxt->setContextProperty("featuredStatsModel", QVariant::fromValue(&featuredStatsModel));
-    ctxt->setContextProperty("playerStatsModel", &playerStatsModel);
+    ctxt->setContextProperty("personalStatsModel", &personalStatsModel);
     ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
     ctxt->setContextProperty("sortingStatModel", &sortingStatModel);
     ctxt->setContextProperty("statModel", &statModel);

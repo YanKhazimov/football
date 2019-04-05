@@ -41,7 +41,7 @@ Rectangle {
         PlayerStatsTable {
             id: statsTable
             visible: player
-            property PlayerStatsModel presenter: playerStatsModel
+            property PersonalStatsModel presenter: personalStatsModel
             model: presenter
 
             theme: root.theme

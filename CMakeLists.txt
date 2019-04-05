@@ -9,7 +9,7 @@ set(CMAKE_AUTORCC ON)
 set (HEADERS
     playerbase.h
     featuredstatsmodel.h
-    playerstatsmodel.h
+    personalstatsmodel.h
     gamesmodel.h
     player.h
     globalstatsmodel.h
@@ -23,7 +23,7 @@ set (HEADERS
 set (SRC
     playerbase.cpp
     featuredstatsmodel.cpp
-    playerstatsmodel.cpp
+    personalstatsmodel.cpp
     gamesmodel.cpp
     player.cpp
     globalstatsmodel.cpp
