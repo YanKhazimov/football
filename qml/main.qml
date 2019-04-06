@@ -37,7 +37,7 @@ QQC2.ApplicationWindow {
         anchors { top: window.top; horizontalCenter: parent.horizontalCenter }
         width: window.width
 
-        title: lang.featured_stats
+        title: lang.featuredStats
         theme: window.theme
 
         model: featuredStatsModel

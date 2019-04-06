@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
     PersonalStatsModel personalStatsModel(language);
     personalStatsModel.setSourceModel(&sortingStatModel);
 
+    language.set("en");
 
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();

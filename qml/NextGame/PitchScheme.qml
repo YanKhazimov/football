@@ -136,7 +136,7 @@ Rectangle {
                 }
 
                 Text {
-                    text: "Home"
+                    text: lang.home
                     color: "white"
                     font.family: Themes.fontFamily
                     anchors.centerIn: parent
@@ -202,7 +202,7 @@ Rectangle {
                 }
 
                 Text {
-                    text: "Away"
+                    text: lang.away
                     color: "white"
                     font.family: Themes.fontFamily
                     anchors.centerIn: parent

@@ -48,7 +48,7 @@ Rectangle {
                     }
                 }
 
-                model: ["Players", "Next Game", "Calendar"]
+                model: [lang.playersTab, lang.nextGameTab, lang.calendarTab]
                 ContentTab {
                     name: modelData
                     Layout.topMargin: index === 0 ? height : 0

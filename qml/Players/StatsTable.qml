@@ -43,7 +43,7 @@ TableView {
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
         //role: "Name"
-        title: "Player"
+        title: lang.playerColumn
         width: root.width * 6/10
         resizable: false
         movable: false
@@ -56,7 +56,7 @@ TableView {
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
         role: "Rating"
-        title: lang.ratingColumn//"Rating"
+        title: lang.ratingColumn
         width: root.width * 3/10
         resizable: false
     }
@@ -68,7 +68,7 @@ TableView {
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
         role: "WinsLosses"
-        title: "W-D-L"
+        title: lang.wdlColumn
         width: root.width * 3/10
         resizable: false
         visible: false
@@ -81,7 +81,7 @@ TableView {
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
         role: "Progress"
-        title: "Progress"
+        title: lang.progressColumn
         width: root.width * 3/10
         resizable: false
         visible: false
@@ -94,7 +94,7 @@ TableView {
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
         role: "Relevance"
-        title: "Relevance"
+        title: lang.relevanceColumn
         width: root.width * 3/10
         resizable: false
         visible: false
@@ -107,7 +107,7 @@ TableView {
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
         role: "Dedication"
-        title: "Dedication"
+        title: lang.dedicationColumn
         width: root.width * 3/10
         resizable: false
         visible: false
