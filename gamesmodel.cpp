@@ -1,5 +1,7 @@
 #include "gamesmodel.h"
 #include <fstream>
+#include <QFile>
+#include <QTextStream>
 
 Game::Game(QDate date, QVector<PlayerRef> hometeam, QVector<PlayerRef> awayteam, QPair<int, int> score)
     : m_date(date), m_hometeam(hometeam), m_awayteam(awayteam), m_score(score)
@@ -40,6 +42,34 @@ QStringList GamesModel::getSeasons() const
     return seasons;
 }
 
+void GamesModel::saveGames()
+{
+    QFile file(m_gamesFilename);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream stream(&file);
+        stream.setCodec("UTF-8");
+
+        for (auto game: m_games)
+        {
+            stream << game->getDate().toString(Qt::SystemLocaleShortDate);
+
+            QPair<int, int> score = game->getScore();
+            stream << '\n' << score.first;
+            for (auto player: game->getHometeam())
+                stream << '\t' << player.toUtf8();
+
+            stream << '\n' << score.second;
+            for (auto player: game->getAwayteam())
+                stream << '\t' << player.toUtf8();
+
+            stream << '\n';
+        }
+
+        file.close();
+    }
+}
+
 GamesModel::GamesModel()
 {
 }
@@ -48,28 +78,6 @@ GamesModel::~GamesModel()
 {
     for (auto g: m_games)
         delete g;
-}
-
-bool GamesModel::init()
-{
-    beginResetModel();
-    m_games << new Game(QDate(2018, 12, 21), {"player A"}, {"player D"}, {15, 15})
-            << new Game(QDate(2018, 12, 22), {"player A"}, {"player E"}, {15, 15})
-            << new Game(QDate(2018, 12, 23), {"player A"}, {"player E"}, {15, 15})
-            << new Game(QDate(2018, 12, 24), {"player A"}, {"player E"}, {15, 15})
-            << new Game(QDate(2018, 12, 25), {"player A"}, {"player E"}, {15, 15})
-            << new Game(QDate(2018, 12, 26), {"player A"}, {"player E"}, {15, 15})
-            << new Game(QDate(2018, 12, 27), {"player A"}, {"player E"}, {15, 15})
-            << new Game(QDate(2018, 12, 28), {"player A"}, {"player E"}, {15, 15})
-            << new Game(QDate(2018, 12, 29), {"player A"}, {"player E"}, {15, 15})
-            << new Game(QDate(2018, 12, 30), {"player A"}, {"player E"}, {15, 15})
-            << new Game(QDate(2018, 12, 31), {"player A"}, {"player E"}, {15, 15})
-            << new Game(QDate(2019, 1, 1),
-    {"player A", "player BBB", "player G", "player H", "player I", "player J", "player K"}, {"player F"}, {30, 1})
-            << new Game(QDate::currentDate(), {"player A", "player BBB"}, {"player C", "player L"}, {10, 10});
-    endResetModel();
-
-    return true;
 }
 
 bool GamesModel::init(QString gamesFilename)
@@ -89,6 +97,8 @@ bool GamesModel::init(QString gamesFilename)
                             qHomeTokens, qAwayTokens, score);
     }
     input.close();
+
+    m_gamesFilename = gamesFilename;
 
     endResetModel();
 
@@ -147,11 +157,12 @@ void GamesModel::addGame(QDate date,
     int row = 0;
     for (; row < rowCount(); ++row)
     {
-        if (m_games[row]->getDate() > QDate(2000, 1, 1))
+        if (m_games[row]->getDate() > date)
             break;
     }
 
     beginInsertRows(QModelIndex(), row, row);
     m_games.insert(row, new Game(date, hometeam.toVector(), awayteam.toVector(), {homeScore, awayScore}));
+    saveGames();
     endInsertRows();
 }

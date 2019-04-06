@@ -31,7 +31,6 @@ class GamesModel : public QAbstractListModel //?
 public:
     GamesModel();
     ~GamesModel();
-    bool init();
     bool init(QString gamesFilename);
 
     Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -40,9 +39,11 @@ public:
     Q_INVOKABLE bool isDateBusy(const QDate &date) const;
     Q_INVOKABLE void addGame(QDate date, QStringList hometeam, int homeScore, QStringList awayteam, int awayScore);
     Q_INVOKABLE QStringList getSeasons() const;
+    void saveGames();
 
 private:
     QList<Game*> m_games;
+    QString m_gamesFilename;
 };
 
 #endif // GAMESMODEL_H

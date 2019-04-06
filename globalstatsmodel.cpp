@@ -223,15 +223,15 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
         for (const PlayerGameStats& game: playerData.second)
         {
             int scoreDiff = game.sourceIndex.data(DataRoles::DataRole::ScoreDiff).toInt();
-            if (game.resultSign * scoreDiff > 0)
+            if (game.resultSign > 0)
             {
                 // add a win
-                collectSynergy(game.sourceIndex, DataRoles::DataRole::Hometeam, 0);
+                collectSynergy(game.sourceIndex, scoreDiff > 0 ? DataRoles::DataRole::Hometeam : DataRoles::DataRole::Awayteam, 0);
             }
-            else if (game.resultSign * scoreDiff < 0)
+            else if (game.resultSign < 0)
             {
                 // add a loss
-                collectSynergy(game.sourceIndex, DataRoles::DataRole::Awayteam, 2);
+                collectSynergy(game.sourceIndex, scoreDiff > 0 ? DataRoles::DataRole::Awayteam : DataRoles::DataRole::Hometeam, 2);
             }
             else
             {

@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QTextCodec>
 
 #include "gamesmodel.h"
 #include "gamefiltermodel.h"
@@ -28,6 +29,9 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<StatPresenterProxyModel>("com.abc.abclib", 1, 0, "GlobalStatPresenter", "");
 
     Language language;
+
+    QTextCodec *codec = QTextCodec::codecForName("UTF8");
+    QTextCodec::setCodecForLocale(codec);
 
     GamesModel gm;
     gm.init("games");
