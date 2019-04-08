@@ -8,30 +8,31 @@ PersonalStatsModel::PersonalStatsModel(const Language &lang)
     QStandardItem* item;
 
     item = new QStandardItem;
-    item->setData(QString("Rating"), DataRoles::DataRole::StatCategory);
+    //item->setData(QString("Rating"), DataRoles::DataRole::StatCategory);
     item->setData(DataRoles::DataRole::Rating, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
     item = new QStandardItem;
-    item->setData(QString("WinsLosses"), DataRoles::DataRole::StatCategory);
+    //item->setData(QString("WinsLosses"), DataRoles::DataRole::StatCategory);
     item->setData(DataRoles::DataRole::WinsLosses, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
     item = new QStandardItem;
-    item->setData(QString("Progress"), DataRoles::DataRole::StatCategory);
+    //item->setData(QString("Progress"), DataRoles::DataRole::StatCategory);
     item->setData(DataRoles::DataRole::Progress, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
     item = new QStandardItem;
-    item->setData(QString("Relevance"), DataRoles::DataRole::StatCategory);
+    //item->setData(QString("Relevance"), DataRoles::DataRole::StatCategory);
     item->setData(DataRoles::DataRole::Relevance, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
     item = new QStandardItem;
-    item->setData(QString("Dedication"), DataRoles::DataRole::StatCategory);
+    //item->setData(QString("Dedication"), DataRoles::DataRole::StatCategory);
     item->setData(DataRoles::DataRole::Dedication, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
+    onLanguageChanged("ru");
     connect(&lang, &Language::languageChanged, this, &PersonalStatsModel::onLanguageChanged);
 }
 
@@ -156,17 +157,18 @@ void PersonalStatsModel::onDataChanged(QModelIndex topLeft, QModelIndex bottomRi
 
 void PersonalStatsModel::onLanguageChanged(QString lang)
 {
-    if (lang == "en")
-    {
-        QStandardItem* rowItem = item(0);
-        QString data = rowItem->data(DataRoles::DataRole::StatCategory).toString();
-        rowItem->setData(QVariant::fromValue(data + "f"), DataRoles::DataRole::StatCategory);
-    }
-    else {
-        QStandardItem* rowItem = item(0);
-        QString data = rowItem->data(DataRoles::DataRole::StatCategory).toString();
-        rowItem->setData(QVariant::fromValue(data + "ф"), DataRoles::DataRole::StatCategory);
-    }
+    //Language* dict = qobject_cast<Language*>(sender());
+
+    item(0)->setData(QVariant::fromValue(Language::dict.value("ratingColumn").value(lang)),
+                     DataRoles::DataRole::StatCategory);
+    item(1)->setData(QVariant::fromValue(Language::dict.value("wdlColumn").value(lang)),
+                     DataRoles::DataRole::StatCategory);
+    item(2)->setData(QVariant::fromValue(Language::dict.value("progressColumn").value(lang)),
+                     DataRoles::DataRole::StatCategory);
+    item(3)->setData(QVariant::fromValue(Language::dict.value("relevanceColumn").value(lang)),
+                     DataRoles::DataRole::StatCategory);
+    item(4)->setData(QVariant::fromValue(Language::dict.value("dedicationColumn").value(lang)),
+                     DataRoles::DataRole::StatCategory);
 }
 
 void PersonalStatsModel::resetModel()

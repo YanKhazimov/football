@@ -15,11 +15,12 @@ TableView {
     }
 
     function replaceColumn(statCategory) {
-        var removedColumn
+        console.debug("cat", statCategory)
         for (var columnIdx = 2; columnIdx < columnCount; ++columnIdx)
         {
             var column = getColumn(columnIdx)
             column.visible = (column.role === statCategory)
+            console.debug("role", column.role)
         }
     }
 
@@ -55,7 +56,7 @@ TableView {
             font.family: Themes.fontFamily
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
-        role: "Rating"
+        role: lang.ratingColumn
         title: lang.ratingColumn
         width: root.width * 3/10
         resizable: false
@@ -67,7 +68,7 @@ TableView {
             font.family: Themes.fontFamily
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
-        role: "WinsLosses"
+        role: lang.wdlColumn
         title: lang.wdlColumn
         width: root.width * 3/10
         resizable: false
@@ -80,7 +81,7 @@ TableView {
             font.family: Themes.fontFamily
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
-        role: "Progress"
+        role: lang.progressColumn
         title: lang.progressColumn
         width: root.width * 3/10
         resizable: false
@@ -93,7 +94,7 @@ TableView {
             font.family: Themes.fontFamily
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
-        role: "Relevance"
+        role: lang.relevanceColumn
         title: lang.relevanceColumn
         width: root.width * 3/10
         resizable: false
@@ -106,7 +107,7 @@ TableView {
             font.family: Themes.fontFamily
             color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
         }
-        role: "Dedication"
+        role: lang.dedicationColumn
         title: lang.dedicationColumn
         width: root.width * 3/10
         resizable: false

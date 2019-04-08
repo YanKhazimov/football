@@ -36,10 +36,11 @@ class Language: public QObject
 
     //QString m_lang;
 
-    static const QMap<QString, QMap<QString, QString>> dict;
 
 public:
     Q_INVOKABLE void set(QString str);
+
+    static const QMap<QString, QMap<QString, QString>> dict;
 
 signals:
     void languageChanged(QString str);
