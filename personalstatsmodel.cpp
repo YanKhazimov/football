@@ -8,31 +8,26 @@ PersonalStatsModel::PersonalStatsModel(const Language &lang)
     QStandardItem* item;
 
     item = new QStandardItem;
-    //item->setData(QString("Rating"), DataRoles::DataRole::StatCategory);
     item->setData(DataRoles::DataRole::Rating, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
     item = new QStandardItem;
-    //item->setData(QString("WinsLosses"), DataRoles::DataRole::StatCategory);
     item->setData(DataRoles::DataRole::WinsLosses, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
     item = new QStandardItem;
-    //item->setData(QString("Progress"), DataRoles::DataRole::StatCategory);
     item->setData(DataRoles::DataRole::Progress, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
     item = new QStandardItem;
-    //item->setData(QString("Relevance"), DataRoles::DataRole::StatCategory);
     item->setData(DataRoles::DataRole::Relevance, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
     item = new QStandardItem;
-    //item->setData(QString("Dedication"), DataRoles::DataRole::StatCategory);
     item->setData(DataRoles::DataRole::Dedication, DataRoles::DataRole::SourceRole);
     this->appendRow(item);
 
-    onLanguageChanged("ru");
+    onLanguageChanged(lang.get());
     connect(&lang, &Language::languageChanged, this, &PersonalStatsModel::onLanguageChanged);
 }
 
@@ -53,13 +48,8 @@ void PersonalStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
         disconnect(m_sourceModel, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
                    this, SLOT(onDataChanged(QModelIndex,QModelIndex,QVector<int>)));
 
-//        disconnect(m_sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-//                   this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
-
         disconnect(m_sourceModel, SIGNAL(modelReset()), this, SLOT(resetModel()));
     }
-
-    //QAbstractProxyModel::setSourceModel(sourceModel);
 
     if (sourceModel)
     {
@@ -67,9 +57,6 @@ void PersonalStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
 
         connect(m_sourceModel, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
                       this, SLOT(onDataChanged(QModelIndex,QModelIndex,QVector<int>)));
-
-//        connect(m_sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-//                      this, SLOT(onRowsInserted(QModelIndex,int,int)));
 
         connect(m_sourceModel, SIGNAL(modelReset()), this, SLOT(resetModel()));
     }

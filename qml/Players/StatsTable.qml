@@ -15,12 +15,10 @@ TableView {
     }
 
     function replaceColumn(statCategory) {
-        console.debug("cat", statCategory)
         for (var columnIdx = 2; columnIdx < columnCount; ++columnIdx)
         {
             var column = getColumn(columnIdx)
             column.visible = (column.role === statCategory)
-            console.debug("role", column.role)
         }
     }
 
@@ -60,6 +58,7 @@ TableView {
         title: lang.ratingColumn
         width: root.width * 3/10
         resizable: false
+        visible: false
     }
     TableViewColumn {
         delegate: Text {

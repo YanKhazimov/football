@@ -8,6 +8,8 @@ class Language: public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString lang READ get NOTIFY languageChanged)
+
     Q_PROPERTY(QString featuredStats MEMBER m_featuredStats NOTIFY languageChanged)
     Q_PROPERTY(QString ratingColumn MEMBER m_ratingColumn NOTIFY languageChanged)
     Q_PROPERTY(QString playerColumn MEMBER m_playerColumn NOTIFY languageChanged)
@@ -34,11 +36,11 @@ class Language: public QObject
     QString m_nextGameTab;
     QString m_calendarTab;
 
-    //QString m_lang;
-
+    QString m_lang = "ru";
 
 public:
     Q_INVOKABLE void set(QString str);
+    QString get() const;
 
     static const QMap<QString, QMap<QString, QString>> dict;
 

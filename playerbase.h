@@ -67,8 +67,6 @@ public:
     PlayerbaseQuery(Playerbase& base,
                     Query rule, QString title = "1", QString description = "11");
     ~PlayerbaseQuery();
-
-    //Q_INVOKABLE QObjectList getQueryResult();
 };
 
 #endif // QUERY_H

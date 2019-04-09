@@ -26,11 +26,6 @@ PlayerbaseQuery::~PlayerbaseQuery()
     }
 }
 
-//QObjectList PlayerbaseQuery::getQueryResult()
-//{
-//    return m_queryResultItems;
-//}
-
 QueryResultItem::QueryResultItem()
 {
 }
@@ -93,7 +88,7 @@ Playerbase::Playerbase()
         {"Сергей Саушкин", new Player("Сергей Саушкин", 1800, this)},
         {"Игорь Серов", new Player("Игорь Серов", 1650, this, QUrl("qrc:/img/playerImages/13128.png"))},
         {"Денис Захаров", new Player("Денис Захаров", 1900, this)},
-        {"Дима Неймар", new Player("Дима Неймар", 1950, this)}
+        {"Дима", new Player("Дима", 1950, this)}
     };
 }
 

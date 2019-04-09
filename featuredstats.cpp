@@ -1,17 +1,6 @@
 #include "featuredstats.h"
 #include "dataroles.h"
 
-void FeaturedStat::setLanguage(QString lang)
-{
-    if (lang == "en")
-    {
-        m_name += "f";
-    }
-    else {
-        m_name += "ф";
-    }
-}
-
 FeaturedStat::FeaturedStat(QString name, QString description, QAbstractItemModel *dataModel)
     : m_name(name), m_description(description), m_dataModel(dataModel)
 {
@@ -135,6 +124,12 @@ void ClosestPlayersStat::calculate()
     }
 }
 
+void ClosestPlayersStat::setLanguage(const QString &lang)
+{
+    m_name = Language::dict.value("rivalriesToWatch").value(lang);
+    m_description = Language::dict.value("closestRatedPlayers").value(lang);
+}
+
 SynergyStat::SynergyStat(QAbstractItemModel *dataModel)
     : FeaturedStat("STRONGEST SYNERGY", "Highest W/L ratio together", dataModel)
 {
@@ -182,4 +177,10 @@ void SynergyStat::calculate()
         QString groupStat = QString::number(static_cast<int>(iter->first * 100)) + "%";
         m_queryResultItems.append(new QueryResultItem(groupStat, group));
     }
+}
+
+void SynergyStat::setLanguage(const QString &lang)
+{
+    m_name = Language::dict.value("strongestSynergy").value(lang);
+    m_description = Language::dict.value("highestWLRatioTogether").value(lang);
 }

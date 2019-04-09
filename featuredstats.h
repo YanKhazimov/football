@@ -3,6 +3,7 @@
 
 #include <QAbstractItemModel>
 #include "playerbase.h"
+#include "language.h"
 
 class FeaturedStat
 {
@@ -25,7 +26,7 @@ public:
     QObjectList getValue() const;
     void updateValue();
     void resetDataModel(QAbstractItemModel* dataModel);
-    void setLanguage(QString lang);
+    virtual void setLanguage(const QString& lang) = 0;
 };
 
 class ClosestPlayersStat: public FeaturedStat
@@ -33,6 +34,7 @@ class ClosestPlayersStat: public FeaturedStat
 public:
     ClosestPlayersStat(QAbstractItemModel *dataModel);
     void calculate() override;
+    virtual void setLanguage(const QString& lang) Q_DECL_OVERRIDE;
 };
 
 class SynergyStat: public FeaturedStat
@@ -40,6 +42,7 @@ class SynergyStat: public FeaturedStat
 public:
     SynergyStat(QAbstractItemModel *dataModel);
     void calculate() override;
+    virtual void setLanguage(const QString& lang) Q_DECL_OVERRIDE;
 };
 
 #endif // FEATUREDSTATS_H

@@ -89,7 +89,6 @@ QQC2.ApplicationWindow {
             width: Sizes.elementButtonSize.width
             height: Sizes.elementButtonSize.height
             model: gamesModel.getSeasons()
-            visible: false
         }
 
         Image {
@@ -98,6 +97,7 @@ QQC2.ApplicationWindow {
             width: Sizes.elementButtonSize.width
             height: Sizes.elementButtonSize.height
             antialiasing: true
+            visible: false
         }
 
         ThemeSwitcher {
