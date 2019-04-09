@@ -94,6 +94,7 @@ bool GlobalStatsModel::setSeasonFilter(QString filter)
     m_minDate.setDate(year, 1, 1);
     m_maxDate.setDate(year, 12, 31);
     resetData();
+    endResetModel();
 
     m_selectedPlayer = selectedPlayerCopy;
     if (m_playersData.count(selectedPlayerCopy))
@@ -102,7 +103,6 @@ bool GlobalStatsModel::setSeasonFilter(QString filter)
         emit dataChanged(selectedIndex, selectedIndex, {DataRoles::DataRole::PlayerSelection});
     }
 
-    endResetModel();
     return true;
 }
 

@@ -19,7 +19,7 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
-            lang.set(themeIndex % 2 === 0 ? "en" : "ru")
+            //lang.set(themeIndex % 2 === 0 ? "en" : "ru")
             themeIndex = (themeIndex + 1) % Themes.themes.length
             theme = Themes.themes[themeIndex]
         }
