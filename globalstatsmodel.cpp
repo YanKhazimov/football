@@ -1,4 +1,5 @@
 #include "globalstatsmodel.h"
+#include "language.h"
 #include <QDate>
 #include <QDebug>
 #include <math.h>
@@ -68,7 +69,7 @@ bool GlobalStatsModel::setSeasonFilter(QString filter)
     PlayerRef selectedPlayerCopy = m_selectedPlayer;
     QModelIndex selectedIndex = getIndexByRef(selectedPlayerCopy);
 
-    if (filter == "All")
+    if (Language::dict.value("all").values().contains(filter))
     {
         beginResetModel();
         m_minDate.setDate(2000, 0, 0);

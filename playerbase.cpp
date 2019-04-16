@@ -62,7 +62,7 @@ QueryResultItem &QueryResultItem::operator=(const QueryResultItem &other)
 Playerbase::Playerbase()
 {
     m_base = {
-        {"Ян Хазимов", new Player("Ян Хазимов", 2189, this)},
+        {"Ян Хазимов", new Player("Ян Хазимов", 2189, this, QUrl("qrc:/img/playerImages/1.png"))},
         {"Александр Гоносков", new Player("Александр Гоносков", 1972, this)},
         {"Сема Сологубов", new Player("Сема Сологубов", 1920, this)},
         {"Тима", new Player("Тима", 1891, this)},

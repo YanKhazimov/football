@@ -30,12 +30,12 @@ QDate Game::getDate() const
 
 QStringList GamesModel::getSeasons() const
 {
-    QStringList seasons { "All" };
+    QStringList seasons;
 
     for (Game* game: m_games)
     {
         QString season = QString::number(game->getDate().year());
-        if (season != seasons.last())
+        if (seasons.isEmpty() || season != seasons.last())
             seasons.append(season);
     }
 
@@ -68,10 +68,6 @@ void GamesModel::saveGames()
 
         file.close();
     }
-}
-
-GamesModel::GamesModel()
-{
 }
 
 GamesModel::~GamesModel()

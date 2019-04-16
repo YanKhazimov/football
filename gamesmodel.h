@@ -29,7 +29,7 @@ class GamesModel : public QAbstractListModel //?
     Q_OBJECT
 
 public:
-    GamesModel();
+    GamesModel() = default;
     ~GamesModel();
     bool init(QString gamesFilename);
 

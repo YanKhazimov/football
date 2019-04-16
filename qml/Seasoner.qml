@@ -3,8 +3,13 @@ import "qrc:/qml/visualStyles"
 
 Rectangle {
     property int curIndex: 0
-    property var model: ["All"]
+    property var model
     color: "transparent"
+
+    Component.onCompleted: {
+        model = [lang.all].concat(gamesModel.getSeasons())
+        globalStatsModel.setSeasonFilter(model[curIndex])
+    }
 
     Image {
         source: "qrc:/img/season.png"
@@ -13,7 +18,6 @@ Rectangle {
     }
     MouseArea {
         anchors.fill: parent
-        Component.onCompleted: globalStatsModel.setSeasonFilter(model[curIndex])
         onClicked: {
             curIndex = (curIndex + 1) % model.length
             globalStatsModel.setSeasonFilter(model[curIndex])

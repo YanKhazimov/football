@@ -76,7 +76,7 @@ Rectangle {
                     anchors.centerIn: parent
                     textFormat: TextEdit.RichText
                     readOnly: true
-                    text: okButton.active ? "" : "Date<br/>busy"
+                    text: okButton.active ? "" : lang.dateBusy
                     font.family: Themes.fontFamily
                 }
             }

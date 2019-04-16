@@ -63,5 +63,6 @@
         <file>qml/Seasoner.qml</file>
         <file>img/season.png</file>
         <file>img/phil.jpg</file>
+        <file>img/playerImages/1.png</file>
     </qresource>
 </RCC>
