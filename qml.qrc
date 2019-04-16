@@ -64,5 +64,6 @@
         <file>img/season.png</file>
         <file>img/phil.jpg</file>
         <file>img/playerImages/1.png</file>
+        <file>img/lang_ru.png</file>
     </qresource>
 </RCC>

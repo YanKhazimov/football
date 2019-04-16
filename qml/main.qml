@@ -93,11 +93,15 @@ QQC2.ApplicationWindow {
 
         Image {
             id: languageSwitcher
-            source: "qrc:/img/lang_en.png"
+            source: "qrc:/img/lang_" + lang.lang + ".png"
             width: Sizes.elementButtonSize.width
             height: Sizes.elementButtonSize.height
             antialiasing: true
-            visible: false
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: lang.setNext()
+            }
         }
 
         ThemeSwitcher {

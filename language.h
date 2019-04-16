@@ -44,6 +44,7 @@ class Language: public QObject
 
 public:
     Q_INVOKABLE void set(QString str);
+    Q_INVOKABLE void setNext();
     QString get() const;
 
     static const QMap<QString, QMap<QString, QString>> dict;

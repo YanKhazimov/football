@@ -2,7 +2,7 @@
 
 const QMap<QString, QMap<QString, QString>> Language::dict = QMap<QString, QMap<QString, QString>>
 {
-    { "featuredStats", { { "en", "FEATURED STATS" }, { "ru", "ВЫБОР РЕДАКЦИИ" } } },
+    { "featuredStats", { { "en", "FEATURED STATS" }, { "ru", "ТРЕКЕР" } } },
     { "rivalriesToWatch", { { "en", "RIVALRIES TO WATCH" }, { "ru", "НОС К НОСУ" } } },
     { "closestRatedPlayers", { { "en", "Closest-rated players" }, { "ru", "Ближайшие по рейтингу" } } },
     { "strongestSynergy", { { "en", "STRONGEST SYNERGY" }, { "ru", "КРЕПКАЯ СВЯЗКА" } } },
@@ -42,6 +42,11 @@ void Language::set(QString str)
     m_all = dict["all"][m_lang];
 
     emit languageChanged(m_lang);
+}
+
+void Language::setNext()
+{
+    set(m_lang == "en" ? "ru" : "en");
 }
 
 QString Language::get() const

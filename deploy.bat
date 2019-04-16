@@ -19,6 +19,7 @@ xcopy /Y "%BIN%\%APPNAME%" "%PKG%\"
 
 xcopy /Y "%EXTRADLLS%\*.dll" "%PKG%\"
 xcopy /Y "%PROJ%\games" "%PKG%\"
+xcopy /Y "%PROJ%\config" "%PKG%\"
 
 for %%d in %REMDLLS% do del /Q "%PKG%\%%d"
 for %%d in %REMDIRS% do rd /S/Q "%PKG%\%%d"
