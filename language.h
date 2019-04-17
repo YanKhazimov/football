@@ -24,6 +24,7 @@ class Language: public QObject
     Q_PROPERTY(QString calendarTab MEMBER m_calendarTab NOTIFY languageChanged)
     Q_PROPERTY(QString dateBusy MEMBER m_dateBusy NOTIFY languageChanged)
     Q_PROPERTY(QString all MEMBER m_all NOTIFY languageChanged)
+    Q_PROPERTY(QString languageChangeWarning MEMBER m_languageChangeWarning NOTIFY languageChanged)
 
     QString m_featuredStats;
     QString m_ratingColumn;
@@ -39,12 +40,14 @@ class Language: public QObject
     QString m_calendarTab;
     QString m_dateBusy;
     QString m_all;
+    QString m_languageChangeWarning;
 
     QString m_lang = "ru";
 
 public:
     Q_INVOKABLE void set(QString str);
     Q_INVOKABLE void setNext();
+    Q_INVOKABLE QString getNext();
     QString get() const;
 
     static const QMap<QString, QMap<QString, QString>> dict;

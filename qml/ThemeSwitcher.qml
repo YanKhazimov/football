@@ -2,7 +2,7 @@ import QtQuick 2.0
 import "qrc:/qml/visualStyles"
 
 Rectangle {
-    property int themeIndex: 0
+    property int themeIndex: config.value("theme")
     property var theme: Themes.themes[themeIndex]
 
     radius: width
@@ -22,6 +22,7 @@ Rectangle {
             //lang.set(themeIndex % 2 === 0 ? "en" : "ru")
             themeIndex = (themeIndex + 1) % Themes.themes.length
             theme = Themes.themes[themeIndex]
+            config.set("theme", themeIndex)
         }
     }
 }

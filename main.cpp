@@ -3,8 +3,6 @@
 #include <QQmlContext>
 #include <QTextCodec>
 
-#include <fstream>
-
 #include "gamesmodel.h"
 #include "gamefiltermodel.h"
 #include "playerbase.h"
@@ -15,26 +13,10 @@
 #include "statpresenterproxymodel.h"
 #include "featuredstatsmodel.h"
 #include "language.h"
+#include "config.h"
 
 Q_DECLARE_METATYPE(GlobalStatsModel)
 Q_DECLARE_METATYPE(PlayerbaseQuery*)
-
-QMap<QString, QString> readConfig()
-{
-    QMap<QString, QString> config;
-    std::ifstream input("config");
-    std::string line;
-    while (getline(input, line))
-    {
-        size_t pos = line.find_first_of('=');
-        if (pos != std::string::npos)
-        {
-            config[QString::fromStdString(line.substr(0, pos))] = QString::fromStdString(line.substr(pos + 1));
-        }
-    }
-    input.close();
-    return config;
-}
 
 int main(int argc, char *argv[])
 {
@@ -52,7 +34,8 @@ int main(int argc, char *argv[])
     QTextCodec *codec = QTextCodec::codecForName("UTF8");
     QTextCodec::setCodecForLocale(codec);
 
-    QMap<QString, QString> config = readConfig();
+    Config config;
+    config.load("config");
 
     GamesModel gm;
     gm.init("games");
@@ -96,6 +79,7 @@ int main(int argc, char *argv[])
     ctxt->setContextProperty("teamSplitter", &teamSplitter);
 
     ctxt->setContextProperty("lang", &language);
+    ctxt->setContextProperty("config", &config);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())

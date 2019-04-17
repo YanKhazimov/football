@@ -19,7 +19,8 @@ const QMap<QString, QMap<QString, QString>> Language::dict = QMap<QString, QMap<
     { "nextGameTab", { { "en", "Next Game" }, { "ru", "След. игра" } } },
     { "calendarTab", { { "en", "Calendar" }, { "ru", "Календарь" } } },
     { "dateBusy", { { "en", "Date<br/>busy" }, { "ru", "Есть<br/>игра" } } },
-    { "all", { { "en", "All" }, { "ru", "Все" } } }
+    { "all", { { "en", "All" }, { "ru", "Все" } } },
+    { "languageChangeWarning", { { "en", "Changes will apply after the app is restarted" }, { "ru", "Изменения вступят в силу после рестарта приложения" } } }
 };
 
 void Language::set(QString str)
@@ -40,6 +41,7 @@ void Language::set(QString str)
     m_calendarTab = dict["calendarTab"][m_lang];
     m_dateBusy = dict["dateBusy"][m_lang];
     m_all = dict["all"][m_lang];
+    m_languageChangeWarning = dict["languageChangeWarning"][m_lang];
 
     emit languageChanged(m_lang);
 }
@@ -47,6 +49,11 @@ void Language::set(QString str)
 void Language::setNext()
 {
     set(m_lang == "en" ? "ru" : "en");
+}
+
+QString Language::getNext()
+{
+    return m_lang == "en" ? "ru" : "en";
 }
 
 QString Language::get() const

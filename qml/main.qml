@@ -1,7 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-import QtQuick.Controls 2.0 as QQC2
+import QtQuick.Controls 2.12 as QQC2
 import QtQuick.Window 2.0
 import com.abc.abclib 1.0
 import QtQuick.Layouts 1.3
@@ -91,17 +91,36 @@ QQC2.ApplicationWindow {
             model: gamesModel.getSeasons()
         }
 
-        Image {
-            id: languageSwitcher
-            source: "qrc:/img/lang_" + lang.lang + ".png"
-            width: Sizes.elementButtonSize.width
-            height: Sizes.elementButtonSize.height
-            antialiasing: true
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                onClicked: lang.setNext()
+        Rectangle{
+            width: Sizes.elementButtonSize.width * 2
+            height: Sizes.elementButtonSize.height * 2
+            radius: width/2
+            //color: "transparent"
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: theme.primaryFillColor }
+                GradientStop { position: 0.5; color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.primaryFillColor }
+                GradientStop { position: 1.0; color: theme.primaryFillColor }
             }
+            Image {
+                id: languageSwitcher
+                source: "qrc:/img/lang_" + lang.lang + ".png"
+                anchors.centerIn: parent
+                width: Sizes.elementButtonSize.width
+                height: Sizes.elementButtonSize.height
+                antialiasing: true
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: {//lang.setNext()
+                        config.set("lang", lang.getNext())
+                        languageSwitcher.source = "qrc:/img/lang_" + lang.getNext() + ".png"
+                        popup.open()
+                    }
+                }
+            }
+            border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "transparent"
+            border.width: Sizes.borderWidth
         }
 
         ThemeSwitcher {
@@ -109,6 +128,22 @@ QQC2.ApplicationWindow {
             width: Sizes.elementButtonSize.width
             height: Sizes.elementButtonSize.height
             onThemeChanged: window.theme = theme
+        }
+    }
+
+    QQC2.Popup {
+        id: popup
+        anchors.centerIn: parent
+        width: warningText.contentWidth + 2 * Sizes.featuredStats.margin
+        height: warningText.contentHeight + 2 * Sizes.featuredStats.margin
+        modal: true
+        focus: true
+        closePolicy: QQC2.Popup.CloseOnEscape | QQC2.Popup.CloseOnReleaseOutside
+
+        Text {
+            id: warningText
+            text: lang.languageChangeWarning
+            anchors.centerIn: parent
         }
     }
 

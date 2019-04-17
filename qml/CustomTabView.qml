@@ -48,7 +48,7 @@ Rectangle {
                     }
                 }
 
-                model: [lang.playersTab, lang.nextGameTab, lang.calendarTab]
+                model: [lang.playersTab, lang.nextGameTab, lang.calendarTab, "Rewards"]
                 ContentTab {
                     name: modelData
                     Layout.topMargin: index === 0 ? height : 0
@@ -63,6 +63,7 @@ Rectangle {
                         content.currentIndex = model.index
                     }
                     enabled: model.index < 2
+                    visible: model.index < 3
                 }
 
                 Component.onCompleted: itemAt(content.currentIndex).extend(false)
@@ -154,6 +155,9 @@ Rectangle {
                             }
                         }
                     }
+                }
+                Tab {
+                    Rectangle { color: "blue" }
                 }
                 Tab {
                     Rectangle { color: "blue" }

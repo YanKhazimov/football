@@ -5,6 +5,8 @@ Rectangle {
     property int curIndex: 0
     property var model
     color: "transparent"
+    border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "transparent"
+    border.width: Sizes.borderWidth
 
     Component.onCompleted: {
         model = [lang.all].concat(gamesModel.getSeasons())
@@ -17,7 +19,9 @@ Rectangle {
         antialiasing: true
     }
     MouseArea {
+        id: mouseArea
         anchors.fill: parent
+        hoverEnabled: true
         onClicked: {
             curIndex = (curIndex + 1) % model.length
             globalStatsModel.setSeasonFilter(model[curIndex])

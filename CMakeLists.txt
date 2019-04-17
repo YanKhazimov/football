@@ -18,6 +18,7 @@ set (HEADERS
     playersortfilterproxymodel.h
     statpresenterproxymodel.h
     language.h
+    config.h
     featuredstats.h)
 
 set (SRC
@@ -31,6 +32,7 @@ set (SRC
     playersortfilterproxymodel.cpp
     statpresenterproxymodel.cpp
     language.cpp
+    config.cpp
     featuredstats.cpp)
 
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)
