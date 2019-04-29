@@ -14,6 +14,7 @@
 #include "featuredstatsmodel.h"
 #include "language.h"
 #include "config.h"
+#include "syncmanager.h"
 
 Q_DECLARE_METATYPE(GlobalStatsModel)
 Q_DECLARE_METATYPE(PlayerbaseQuery*)
@@ -38,7 +39,7 @@ int main(int argc, char *argv[])
     config.load("config");
 
     GamesModel gm;
-    gm.init("games");
+    gm.init();
 
     // GamesModel - GlobalStatsModel - PlayerSortFilterProxyModel - StatPresenterProxyModel [ - StatTable ]
 
@@ -65,6 +66,8 @@ int main(int argc, char *argv[])
 
     language.set(config.value("lang"));
 
+    SyncManager updater(gm, sortingStatModel, language);
+
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();
 
@@ -80,6 +83,7 @@ int main(int argc, char *argv[])
 
     ctxt->setContextProperty("lang", &language);
     ctxt->setContextProperty("config", &config);
+    ctxt->setContextProperty("updater", &updater);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())

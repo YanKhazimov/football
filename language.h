@@ -29,6 +29,9 @@ class Language: public QObject
     Q_PROPERTY(QString splitVerb MEMBER m_splitVerb NOTIFY languageChanged)
     Q_PROPERTY(QString benchAll MEMBER m_benchAll NOTIFY languageChanged)
     Q_PROPERTY(QString saveGame MEMBER m_saveGame NOTIFY languageChanged)
+    Q_PROPERTY(QString updated MEMBER m_updated NOTIFY languageChanged)
+    Q_PROPERTY(QString upToDate MEMBER m_upToDate NOTIFY languageChanged)
+    Q_PROPERTY(QString updateFail MEMBER m_updateFail NOTIFY languageChanged)
 
     QString m_featuredStats;
     QString m_ratingColumn;
@@ -49,6 +52,9 @@ class Language: public QObject
     QString m_splitVerb;
     QString m_benchAll;
     QString m_saveGame;
+    QString m_updated;
+    QString m_upToDate;
+    QString m_updateFail;
 
     QString m_lang = "ru";
 

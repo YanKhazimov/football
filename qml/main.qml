@@ -21,7 +21,6 @@ QQC2.ApplicationWindow {
     Component.onCompleted: {
         setX(Screen.width / 2 - width / 2);
         setY(Screen.height / 2 - height / 2);
-        //setX(0);
     }
 
     minimumHeight: featuredStats.height + contents.height
@@ -61,6 +60,40 @@ QQC2.ApplicationWindow {
         }
         spacing: Sizes.featuredStats.smallMargin
 
+        Image {
+            id: refresher
+            source: "qrc:/img/refresh.png"
+            width: Sizes.elementButtonSize.width
+            height: Sizes.elementButtonSize.height
+            antialiasing: true
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    refresher.source = "qrc:/img/wait.png"
+                    rotationAnimation.running = true
+                    updater.update()
+                }
+            }
+            PropertyAnimation {
+                id: rotationAnimation
+                duration: 1000
+                target: refresher
+                property: "rotation"
+                from: 0
+                to: 360
+                loops: 10
+            }
+        }
+        Connections {
+            target: updater
+            onUpdateFinished: {
+                updatePopupText.text = message
+                updatePopup.open()
+                refresher.source = "qrc:/img/refresh.png"
+                rotationAnimation.running = false
+            }
+        }
+
         CheckBox {
             id: relevanceCheckBox
             style: CheckBoxStyle {
@@ -92,15 +125,15 @@ QQC2.ApplicationWindow {
         }
 
         Rectangle{
-            width: Sizes.elementButtonSize.width * 2
-            height: Sizes.elementButtonSize.height * 2
+            width: Sizes.elementButtonSize.width// * 2
+            height: Sizes.elementButtonSize.height// * 2
             radius: width/2
-            //color: "transparent"
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: theme.primaryFillColor }
-                GradientStop { position: 0.5; color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.primaryFillColor }
-                GradientStop { position: 1.0; color: theme.primaryFillColor }
-            }
+            color: "transparent"
+            //gradient: Gradient {
+//                GradientStop { position: 0.0; color: theme.primaryFillColor }
+//                GradientStop { position: 0.5; color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.primaryFillColor }
+//                GradientStop { position: 1.0; color: theme.primaryFillColor }
+//            }
             Image {
                 id: languageSwitcher
                 source: "qrc:/img/lang_" + lang.lang + ".png"
@@ -119,8 +152,8 @@ QQC2.ApplicationWindow {
                     }
                 }
             }
-            border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "transparent"
-            border.width: Sizes.borderWidth
+//            border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "transparent"
+//            border.width: Sizes.borderWidth
         }
 
         ThemeSwitcher {
@@ -143,6 +176,22 @@ QQC2.ApplicationWindow {
         Text {
             id: warningText
             text: lang.languageChangeWarning
+            anchors.centerIn: parent
+        }
+    }
+
+    QQC2.Popup {
+        id: updatePopup
+        anchors.centerIn: parent
+        width: warningText.contentWidth + 2 * Sizes.featuredStats.margin
+        height: warningText.contentHeight + 2 * Sizes.featuredStats.margin
+        modal: true
+        focus: true
+        closePolicy: QQC2.Popup.CloseOnEscape | QQC2.Popup.CloseOnReleaseOutside
+
+        Text {
+            id: updatePopupText
+            text: ""
             anchors.centerIn: parent
         }
     }

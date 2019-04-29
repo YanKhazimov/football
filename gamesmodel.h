@@ -31,7 +31,7 @@ class GamesModel : public QAbstractListModel //?
 public:
     GamesModel() = default;
     ~GamesModel();
-    bool init(QString gamesFilename);
+    Q_INVOKABLE bool init();
 
     Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     Q_INVOKABLE virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;

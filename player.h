@@ -24,6 +24,7 @@ public:
     Player(const QString& name, int initialRating, QObject* parent = nullptr, const QUrl photoUrl = m_defaultPhoto);
     Player(const Player& p);
     Player& operator =(const Player& p);
+    bool operator ==(const Player& p);
 
     int getInitialRating() const;
 };

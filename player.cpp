@@ -30,6 +30,13 @@ Player &Player::operator =(const Player &p)
     return *this;
 }
 
+bool Player::operator ==(const Player &p)
+{
+    return m_name == p.m_name &&
+            m_photo == p.m_photo &&
+            m_initialRating == p.m_initialRating;
+}
+
 int Player::getInitialRating() const
 {
     return m_initialRating;

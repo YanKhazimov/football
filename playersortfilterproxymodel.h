@@ -19,6 +19,8 @@ public:
     Q_INVOKABLE Player* getPlayer(int idx);
     Q_INVOKABLE int getPlayerRating(QString name);
 
+    int getSelectedRow() const;
+
 signals:
     void selectedRowChanged(int selectedRow);
 

@@ -65,5 +65,7 @@
         <file>img/phil.jpg</file>
         <file>img/playerImages/1.png</file>
         <file>img/lang_ru.png</file>
+        <file>img/refresh.png</file>
+        <file>img/wait.png</file>
     </qresource>
 </RCC>

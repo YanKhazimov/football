@@ -19,6 +19,7 @@ set (HEADERS
     statpresenterproxymodel.h
     language.h
     config.h
+    syncmanager.h
     featuredstats.h)
 
 set (SRC
@@ -33,6 +34,7 @@ set (SRC
     statpresenterproxymodel.cpp
     language.cpp
     config.cpp
+    syncmanager.cpp
     featuredstats.cpp)
 
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)

@@ -76,11 +76,17 @@ GamesModel::~GamesModel()
         delete g;
 }
 
-bool GamesModel::init(QString gamesFilename)
+bool GamesModel::init()
 {
+    m_gamesFilename = "games";
+
     beginResetModel();
 
-    std::ifstream input(gamesFilename.toStdString().c_str());
+    for (auto g: m_games)
+        delete g;
+    m_games.clear();
+
+    std::ifstream input(m_gamesFilename.toStdString().c_str());
     std::string dateLine, homeLine, awayLine;
     while (getline(input, dateLine) && getline(input, homeLine) && getline(input, awayLine))
     {
@@ -93,8 +99,6 @@ bool GamesModel::init(QString gamesFilename)
                             qHomeTokens, qAwayTokens, score);
     }
     input.close();
-
-    m_gamesFilename = gamesFilename;
 
     endResetModel();
 

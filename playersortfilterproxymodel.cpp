@@ -81,6 +81,11 @@ int PlayerSortFilterProxyModel::getPlayerRating(QString name)
     return 0;
 }
 
+int PlayerSortFilterProxyModel::getSelectedRow() const
+{
+    return m_selectedIndex.row();
+}
+
 void PlayerSortFilterProxyModel::sourceDataChanged(QModelIndex topLeft, QModelIndex bottomRight, QVector<int> roles)
 {
     if (roles.contains(DataRoles::DataRole::PlayerSelection))

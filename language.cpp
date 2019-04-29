@@ -24,7 +24,10 @@ const QMap<QString, QMap<QString, QString>> Language::dict = QMap<QString, QMap<
     { "splitVerb", { { "en", "Split" }, { "ru", "Поделить" } } },
     { "splitNoun", { { "en", "Split" }, { "ru", "Состав" } } },
     { "benchAll", { { "en", "Bench All" }, { "ru", "Сбросить" } } },
-    { "saveGame", { { "en", "Save Game" }, { "ru", "Сохранить" } } }
+    { "saveGame", { { "en", "Save Game" }, { "ru", "Сохранить" } } },
+    { "updated", { { "en", "Data updated" }, { "ru", "Данные обновлены" } } },
+    { "upToDate", { { "en", "Data up-to-date" }, { "ru", "Нет обновлений" } } },
+    { "updateFail", { { "en", "Cannot update data" }, { "ru", "Не удалось обновить данные" } } }
 };
 
 void Language::set(QString str)
@@ -50,6 +53,9 @@ void Language::set(QString str)
     m_splitNoun = dict["splitNoun"][m_lang];
     m_benchAll = dict["benchAll"][m_lang];
     m_saveGame = dict["saveGame"][m_lang];
+    m_updated = dict["updated"][m_lang];
+    m_upToDate = dict["upToDate"][m_lang];
+    m_updateFail = dict["updateFail"][m_lang];
 
     emit languageChanged(m_lang);
 }
