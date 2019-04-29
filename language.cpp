@@ -20,7 +20,11 @@ const QMap<QString, QMap<QString, QString>> Language::dict = QMap<QString, QMap<
     { "calendarTab", { { "en", "Calendar" }, { "ru", "Календарь" } } },
     { "dateBusy", { { "en", "Date<br/>busy" }, { "ru", "Есть<br/>игра" } } },
     { "all", { { "en", "All" }, { "ru", "Все" } } },
-    { "languageChangeWarning", { { "en", "Changes will apply after the app is restarted" }, { "ru", "Изменения вступят в силу после рестарта приложения" } } }
+    { "languageChangeWarning", { { "en", "Changes will apply after the app is restarted" }, { "ru", "Изменения вступят в силу после рестарта приложения" } } },
+    { "splitVerb", { { "en", "Split" }, { "ru", "Поделить" } } },
+    { "splitNoun", { { "en", "Split" }, { "ru", "Состав" } } },
+    { "benchAll", { { "en", "Bench All" }, { "ru", "Сбросить" } } },
+    { "saveGame", { { "en", "Save Game" }, { "ru", "Сохранить" } } }
 };
 
 void Language::set(QString str)
@@ -42,6 +46,10 @@ void Language::set(QString str)
     m_dateBusy = dict["dateBusy"][m_lang];
     m_all = dict["all"][m_lang];
     m_languageChangeWarning = dict["languageChangeWarning"][m_lang];
+    m_splitVerb = dict["splitVerb"][m_lang];
+    m_splitNoun = dict["splitNoun"][m_lang];
+    m_benchAll = dict["benchAll"][m_lang];
+    m_saveGame = dict["saveGame"][m_lang];
 
     emit languageChanged(m_lang);
 }

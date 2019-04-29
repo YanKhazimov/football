@@ -11,6 +11,7 @@ Rectangle {
     property var theme: null
     property point pitchCenterCoords: Qt.point(pitchCenterArea.x + pitchCenterArea.width/2,
                                                bench.height + pitchCenterArea.y + pitchCenterArea.height/2)
+
     property real teamAngleDiff: Math.PI / 10 // should depend on handle size
     property real noTeamAngleDiff: Math.PI * 2/10
     property real pitchCenterRadius: pitchCenterArea.width / 2
@@ -18,10 +19,18 @@ Rectangle {
     property int benchSpacing: Sizes.featuredStats.smallMargin / 2
 
     property var zoneShapes: [bench, pitchLeftHalf, pitchRightHalf, pitchCenterArea]
-    property int homeTotal: 0
-    property int awayTotal: 0
+    property int homeDiff: 0
+    property int awayDiff: 0
 
     property int benchLength: 0
+
+    function getBenchCapacity() {
+        return Math.floor(bench.getCapacity())
+    }
+
+    function getBenchPlayerSpace() {
+        return benchSpacing + Sizes.playerHandleWidth
+    }
 
     function calculatePosition(zone, idx, count) {
         return zoneShapes[zone].calculatePosition(idx, count)
@@ -40,6 +49,7 @@ Rectangle {
 
     signal dragEnter(int zone)
     signal dragExit(int zone)
+    signal benchScrolled(int offset)
 
     property int benchHeight: bench.height
 
@@ -47,14 +57,27 @@ Rectangle {
         id: bench
         width: parent.width
         height: Sizes.playerHandleWidth + Sizes.playerHandleRatingHeight + 2 * Sizes.featuredStats.smallMargin
-        color: "grey"
 
         function calculatePosition(idx, count) {
-            var x = benchImg.x + benchImg.width + Sizes.playerHandleWidth/2
-                    + Sizes.featuredStats.smallMargin
+            var x = benchImg.x + benchImg.width + Sizes.featuredStats.smallMargin
+                    + Sizes.playerHandleWidth/2
                     + idx * (benchSpacing + Sizes.playerHandleWidth)
             var y = height / 2
             return mapToItem(pitchScheme, x, y)
+        }
+
+        function getCapacity() {
+            var playersSpace = width - (benchImg.x + benchImg.width + 2 * Sizes.featuredStats.smallMargin)
+            var capacity = playersSpace / (benchSpacing + Sizes.playerHandleWidth)
+            if (playersSpace % (benchSpacing + Sizes.playerHandleWidth) >= Sizes.playerHandleWidth)
+                ++capacity
+            return capacity
+        }
+
+        ColoredImage {
+            source: "qrc:/img/bg.jpg"
+            anchors.fill: parent
+            color: Qt.rgba(0.2, 0.2, 0.2, 0.7)
         }
 
         DropArea {
@@ -62,6 +85,18 @@ Rectangle {
             anchors.fill: parent
             onEntered: pitchScheme.dragEnter(PitchZones.bench)
             onExited: pitchScheme.dragExit(PitchZones.bench)
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            propagateComposedEvents: true
+            hoverEnabled: true
+            onWheel: {
+                if ((wheel.buttons & Qt.LeftButton) == 0)
+                {
+                    benchScrolled(wheel.angleDelta.y / 120)
+                }
+            }
         }
 
         Image {
@@ -149,7 +184,7 @@ Rectangle {
                     horizontalCenter: homeShirt.horizontalCenter
                 }
 
-                text: homeTotal
+                text: homeDiff
                 color: "white"
                 font.family: Themes.fontFamily
                 font.bold: true
@@ -215,7 +250,7 @@ Rectangle {
                     horizontalCenter: awayShirt.horizontalCenter
                 }
 
-                text: awayTotal
+                text: awayDiff
                 color: "white"
                 font.family: Themes.fontFamily
                 font.bold: true

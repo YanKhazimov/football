@@ -6,6 +6,12 @@ TeamSplitter::TeamSplitter(const GlobalStatsModel& gsmodel)
 {
 }
 
+QString TeamSplitter::hash(QStringList team)
+{
+    team.sort();
+    return team.join('|');
+}
+
 void TeamSplitter::pick(int picksToGo, QStringList home, const QStringList& away, QStringList unsorted, int pickFrom)
 {
     if (picksToGo > 0)
@@ -19,23 +25,28 @@ void TeamSplitter::pick(int picksToGo, QStringList home, const QStringList& away
     }
     else
     {
-        m_splitVariants.append(QVariant::fromValue(QStringList(home + away + unsorted))); // TODO: exclude mirror variants
+        if (!m_hashes.contains(hash(home)))
+        {
+            m_splitVariants.append(QVariant::fromValue(QStringList(home + away + unsorted)));
+            m_hashes[hash(home)];
+            m_hashes[hash(away + unsorted)];
+        }
     }
 }
 
 void TeamSplitter::split(QStringList home, QStringList away, QStringList unsorted, int maxResults)
 {
     m_splitVariants.clear();
+    m_hashes.clear();
 
     int picksToGo = (home.size() + away.size() + unsorted.size()) / 2 - home.size();
-
     pick(picksToGo, home, away, unsorted);
 
     auto rosterComparator = [&] (QVariant variant1, QVariant variant2) -> bool
     {
         QStringList list1 = variant1.value<QStringList>();
         QStringList list2 = variant2.value<QStringList>();
-        Q_ASSERT(list1.size() == list1.size());
+        Q_ASSERT(list1.size() == list2.size());
 
         int diff1 = 0, diff2 = 0;
         for (int i = 0; i < list1.size() / 2; ++i)
@@ -55,4 +66,6 @@ void TeamSplitter::split(QStringList home, QStringList away, QStringList unsorte
 
     qSort(m_splitVariants.begin(), m_splitVariants.end(), rosterComparator);
     m_splitVariants.erase(qMin(m_splitVariants.begin() + maxResults, m_splitVariants.end()), m_splitVariants.end());
+
+    emit variantsChanged();
 }

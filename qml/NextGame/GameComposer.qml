@@ -11,10 +11,18 @@ Rectangle {
     property var theme: null
     property var allPlayersModel: null
     property var zoneModels: []
+    property real benchScrollOffset: 0
+    property int splitIndex: 0
 
     Component.onCompleted: showControlPanel()
 
-    onAllPlayersModelChanged: {
+    function resetSplits() {
+        teamSplitter.splitVariants = []
+        splitIndex = 0
+        controlPanel.splitText = lang.splitVerb
+    }
+
+    function reloadModel() {
         var startingModel = []
         for (var i = 0; i < allPlayersModel.rowCount(); ++i)
         {
@@ -23,6 +31,24 @@ Rectangle {
                 startingModel.push(player.name)
         }
         zoneModels = [ startingModel, [], [], [] ]
+
+        benchScrollOffset = 0
+
+        adjustFormation(PitchZones.bench)
+        adjustFormation(PitchZones.leftHalf)
+        adjustFormation(PitchZones.rightHalf)
+        adjustFormation(PitchZones.center)
+
+        updateTotals()
+
+        resetSplits()
+    }
+
+    onAllPlayersModelChanged: reloadModel()
+
+    Connections {
+        target: allPlayersModel
+        onModelReset: reloadModel()
     }
 
     function benchAll() {
@@ -34,6 +60,8 @@ Rectangle {
         adjustFormation(PitchZones.leftHalf)
         adjustFormation(PitchZones.rightHalf)
         adjustFormation(PitchZones.center)
+
+        resetSplits()
     }
 
     function adjustFormation(zone, newSize) {
@@ -47,6 +75,13 @@ Rectangle {
             if (indexInZone !== -1)
             {
                 var dropPosition = scheme.calculatePosition(zone, indexInZone, newSize)
+
+                if (zone === PitchZones.bench)
+                {
+                    dropPosition.x += benchScrollOffset * scheme.getBenchPlayerSpace()
+                    var benchPosition = indexInZone + benchScrollOffset
+                    playerHandles.itemAt(i).visible = (benchPosition >= 0 && benchPosition <= scheme.getBenchCapacity() - 1)
+                }
 
                 playerHandles.itemAt(i).x = dropPosition.x - playerHandles.itemAt(i).width/2
                 playerHandles.itemAt(i).y = dropPosition.y - playerHandles.itemAt(i).height/2
@@ -74,7 +109,13 @@ Rectangle {
                 var offset = Qt.point(0, -Sizes.playerHandleRatingHeight/2)
                 showHint(zone, zoneModels[zone].length, zoneModels[zone].length + 1, offset)
 
-                updateTotals(zone, allPlayersModel.getPlayerRating(dragInfo.name))
+                var extraHomeDiff
+                if (zone == PitchZones.leftHalf)
+                    extraHomeDiff = allPlayersModel.getPlayerRating(dragInfo.name)
+                else if (zone == PitchZones.rightHalf)
+                    extraHomeDiff = -allPlayersModel.getPlayerRating(dragInfo.name)
+
+                updateTotals(extraHomeDiff)
             }
         }
 
@@ -88,18 +129,37 @@ Rectangle {
             hideHint()
             adjustFormation(zone, zoneModels[zone].length)
 
-            updateTotals(zone, 0)
+            updateTotals()
+        }
+
+        onBenchScrolled: {
+            if (offset > 0 && benchScrollOffset + offset <= 0 ||
+                    offset < 0 && benchScrollOffset + offset + zoneModels[PitchZones.bench].length >= getBenchCapacity())
+            {
+                benchScrollOffset += offset
+                adjustFormation(PitchZones.bench)
+            }
         }
     }
 
     function split() {
-        teamSplitter.split(zoneModels[PitchZones.leftHalf],
+        var splitVariant
+        if (teamSplitter.splitVariants.length === 0)
+        {
+            teamSplitter.split(zoneModels[PitchZones.leftHalf],
                            zoneModels[PitchZones.rightHalf],
                            zoneModels[PitchZones.center],
                            5)
 
-        console.log("teamSplitter.bestSplit", teamSplitter.splitVariants[0])
-        var splitVariant = teamSplitter.splitVariants[0]
+            splitVariant = teamSplitter.splitVariants[0]
+        }
+        else
+        {
+            splitIndex = (splitIndex + 1) % teamSplitter.splitVariants.length
+            splitVariant = teamSplitter.splitVariants[splitIndex]
+        }
+
+        splitVariantIndicators.selectedIndex = splitIndex
 
         zoneModels[PitchZones.leftHalf] = splitVariant.splice(0, splitVariant.length/2)
         zoneModels[PitchZones.rightHalf] = splitVariant.splice(0, splitVariant.length) //???
@@ -109,8 +169,11 @@ Rectangle {
         adjustFormation(PitchZones.rightHalf)
         adjustFormation(PitchZones.center)
 
-        updateTotals(PitchZones.leftHalf)
-        updateTotals(PitchZones.rightHalf)
+        updateTotals()
+
+        controlPanel.splitText = (splitVariant.length === 0) ?
+                    lang.splitVerb :
+                    "%1 %2/%3".arg(lang.splitNoun).arg(splitIndex + 1).arg(teamSplitter.splitVariants.length)
     }
 
     ColoredImage {
@@ -177,14 +240,18 @@ Rectangle {
     }
 
     function registerDrop(playerName) {
-        if (dragInfo.reciever === -1)
-            dragInfo.reciever = dragInfo.sender
-
         console.log("dropping", dragInfo.name, dragInfo.sender, dragInfo.reciever)
 
+        if (dragInfo.reciever === -1)
+            dragInfo.reciever = dragInfo.sender
         var index = zoneModels[dragInfo.reciever].indexOf(playerName)
         if (index === -1)
             zoneModels[dragInfo.reciever].push(playerName)
+
+        if (dragInfo.reciever !== dragInfo.sender)
+        {
+            resetSplits()
+        }
     }
 
     Repeater {
@@ -207,7 +274,8 @@ Rectangle {
                     Drag.drop()
 
                     registerDrop(player.name)
-                    updateTotals(dragInfo.reciever, 0)
+                    if (dragInfo.reciever == PitchZones.leftHalf || dragInfo.reciever == PitchZones.rightHalf)
+                        updateTotals()
                     adjustFormation(dragInfo.reciever, zoneModels[dragInfo.reciever].length)
                     scheme.hideHint()
 
@@ -217,24 +285,22 @@ Rectangle {
         }
     }
 
-    function updateTotals(zone, offset) {
-        if (offset === undefined)
-            offset = 0
+    function updateTotals(extraHomeDiff) {
+        if (extraHomeDiff === undefined)
+            extraHomeDiff = 0
 
-        if (zone === PitchZones.leftHalf)
-        {
-            scheme.homeTotal = offset
-            zoneModels[PitchZones.leftHalf].forEach(function(element){
-                scheme.homeTotal += allPlayersModel.getPlayerRating(element)
-            })
-        }
-        else if (zone === PitchZones.rightHalf)
-        {
-            scheme.awayTotal = offset
-            zoneModels[PitchZones.rightHalf].forEach(function(element){
-                scheme.awayTotal += allPlayersModel.getPlayerRating(element)
-            })
-        }
+        var homeDiff = extraHomeDiff
+
+        zoneModels[PitchZones.leftHalf].forEach(function(element){
+            homeDiff += allPlayersModel.getPlayerRating(element)
+        })
+
+        zoneModels[PitchZones.rightHalf].forEach(function(element){
+            homeDiff -= allPlayersModel.getPlayerRating(element)
+        })
+
+        scheme.homeDiff = homeDiff
+        scheme.awayDiff = -homeDiff
     }
 
     MouseArea {
@@ -259,6 +325,19 @@ Rectangle {
         visible: false
         onGameAdded: benchAll()
         z: 2
+    }
+
+    Repeater {
+        id: splitVariantIndicators
+        model: teamSplitter.splitVariants.length
+        property int selectedIndex: 0
+        delegate: Rectangle {
+            height: 2
+            width: teamSplitter.splitVariants.length < 2 ? 0 : ((Sizes.elementButtonSize.width * 2  - 2 * (teamSplitter.splitVariants.length - 1)) / teamSplitter.splitVariants.length)
+            color: model.index === splitVariantIndicators.selectedIndex ? theme.secondaryFillColor : theme.textColor
+            x: controlPanel.x + Sizes.elementButtonSize.width / 2 + model.index * (width + 2)
+            y: controlPanel.y + Sizes.elementButtonSize.height + Sizes.featuredStats.smallMargin + Sizes.elementButtonSize.height - 7
+        }
     }
 
     TeamControlPanel {
