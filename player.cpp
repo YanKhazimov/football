@@ -42,4 +42,4 @@ int Player::getInitialRating() const
     return m_initialRating;
 }
 
-const QUrl Player::m_defaultPhoto("qrc:/img/playerImages/default.png");
+const QUrl Player::defaultPhotoUrl("qrc:/img/playerImages/default.png");

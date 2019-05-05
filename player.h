@@ -16,17 +16,16 @@ class Player : public QObject
     QUrl m_photo;
     int m_initialRating;
 
-    static const QUrl m_defaultPhoto;
-
     QString shorten() const;
 
 public:
-    Player(const QString& name, int initialRating, QObject* parent = nullptr, const QUrl photoUrl = m_defaultPhoto);
+    Player(const QString& name, int initialRating, QObject* parent = nullptr, const QUrl photoUrl = defaultPhotoUrl);
     Player(const Player& p);
     Player& operator =(const Player& p);
     bool operator ==(const Player& p);
 
     int getInitialRating() const;
+    static const QUrl defaultPhotoUrl;
 };
 
 Q_DECLARE_METATYPE(Player*)

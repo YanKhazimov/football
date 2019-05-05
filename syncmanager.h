@@ -10,6 +10,7 @@
 
 #include "gamesmodel.h"
 #include "playersortfilterproxymodel.h"
+#include "globalstatsmodel.h"
 #include "language.h"
 
 class Downloader: public QObject
@@ -20,29 +21,38 @@ public slots:
     void sendDownloadRequest();
 
 public:
-    Downloader(QObject *parent = 0);
+    Downloader(QUrl url, QObject *parent = 0);
 
 signals:
     void resultReady(QNetworkReply *reply);
 
 private:
     QNetworkAccessManager m_networkAccessManager;
+    QUrl m_url;
 };
 
 class SyncManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit SyncManager(GamesModel& gm, PlayerSortFilterProxyModel& ssm, const Language &lang, QObject *parent = 0);
+    explicit SyncManager(GamesModel& gm, PlayerSortFilterProxyModel& ssm, GlobalStatsModel& gsm, const Language &lang, QObject *parent = 0);
     Q_INVOKABLE void update();
 
 private slots:
     void handleResults(QNetworkReply* pReply);
 
 private:
-    GamesModel &gamesModel;
-    PlayerSortFilterProxyModel &sortingStatModel;
-    const Language& language;
+    GamesModel &m_gamesModel;
+    PlayerSortFilterProxyModel &m_sortingStatModel;
+    GlobalStatsModel &m_globalStatsModel;
+    const Language& m_language;
+    bool m_playersDownloaded, m_gamesDownloaded;
+    QByteArray m_downloadedGamesData, m_downloadedPlayersData;
+    QByteArray m_localGamesData, m_localPlayersData;
+    const QUrl m_gamesUrl, m_playersUrl;
+
+    void readLocalData();
+    void applyGames();
 
 signals:
     void updateFinished(QString message);
