@@ -153,11 +153,14 @@ void SynergyStat::calculate()
             if (synergy.count(jName) > 0)
             {
                 const WDL& ijWDL = synergy[jName];
-                float synergy = (ijWDL[0] + static_cast<float>(ijWDL[1]) / 2) /
-                        (ijWDL[0] + ijWDL[1] + ijWDL[2]);
-                Player* iPlayer = iIndex.data(DataRoles::DataRole::Player).value<Player*>();
-                Player* jPlayer = jIndex.data(DataRoles::DataRole::Player).value<Player*>();
-                groupsSynergy.insert(std::make_pair(synergy, qMakePair(iPlayer, jPlayer)));
+                int gamesTogether = ijWDL[0] + ijWDL[1] + ijWDL[2];
+                if (gamesTogether > 2)
+                {
+                    float synergy = (ijWDL[0] + static_cast<float>(ijWDL[1]) / 2) / gamesTogether;
+                    Player* iPlayer = iIndex.data(DataRoles::DataRole::Player).value<Player*>();
+                    Player* jPlayer = jIndex.data(DataRoles::DataRole::Player).value<Player*>();
+                    groupsSynergy.insert(std::make_pair(synergy, qMakePair(iPlayer, jPlayer)));
+                }
             }
         }
     }

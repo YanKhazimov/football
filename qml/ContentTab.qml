@@ -72,8 +72,8 @@ Rectangle {
         source: "qrc:/img/lock.png"
         visible: !root.enabled
         anchors {
-            left: text.right
-            leftMargin: Sizes.featuredStats.smallMargin
+            right: parent.right
+            rightMargin: Sizes.featuredStats.smallMargin
             verticalCenter: parent.verticalCenter
         }
         height: parent.height/2

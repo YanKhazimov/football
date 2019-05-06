@@ -22,6 +22,7 @@ class Language: public QObject
     Q_PROPERTY(QString playersTab MEMBER m_playersTab NOTIFY languageChanged)
     Q_PROPERTY(QString nextGameTab MEMBER m_nextGameTab NOTIFY languageChanged)
     Q_PROPERTY(QString calendarTab MEMBER m_calendarTab NOTIFY languageChanged)
+    Q_PROPERTY(QString rewardsTab MEMBER m_rewardsTab NOTIFY languageChanged)
     Q_PROPERTY(QString dateBusy MEMBER m_dateBusy NOTIFY languageChanged)
     Q_PROPERTY(QString all MEMBER m_all NOTIFY languageChanged)
     Q_PROPERTY(QString languageChangeWarning MEMBER m_languageChangeWarning NOTIFY languageChanged)
@@ -45,6 +46,7 @@ class Language: public QObject
     QString m_playersTab;
     QString m_nextGameTab;
     QString m_calendarTab;
+    QString m_rewardsTab;
     QString m_dateBusy;
     QString m_all;
     QString m_languageChangeWarning;
