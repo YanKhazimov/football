@@ -10,7 +10,7 @@
 
 #include "gamesmodel.h"
 #include "playersortfilterproxymodel.h"
-#include "globalstatsmodel.h"
+#include "playerbase.h"
 #include "language.h"
 
 class Downloader: public QObject
@@ -35,7 +35,7 @@ class SyncManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit SyncManager(GamesModel& gm, PlayerSortFilterProxyModel& ssm, GlobalStatsModel& gsm, const Language &lang, QObject *parent = 0);
+    explicit SyncManager(GamesModel& gm, PlayerSortFilterProxyModel& ssm, const Language &lang, Playerbase* pb, QObject *parent = 0);
     Q_INVOKABLE void update();
 
 private slots:
@@ -44,8 +44,8 @@ private slots:
 private:
     GamesModel &m_gamesModel;
     PlayerSortFilterProxyModel &m_sortingStatModel;
-    GlobalStatsModel &m_globalStatsModel;
     const Language& m_language;
+    Playerbase* m_playerbase;
     bool m_playersDownloaded, m_gamesDownloaded;
     QByteArray m_downloadedGamesData, m_downloadedPlayersData;
     QByteArray m_localGamesData, m_localPlayersData;

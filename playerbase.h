@@ -16,6 +16,7 @@ public:
     ~Playerbase();
     Player *getPlayer(PlayerRef id) const;
     QList<PlayerRef> listAllPlayers() const;
+    void init();
 };
 
 class PlayerStat : public QObject

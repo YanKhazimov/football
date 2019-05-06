@@ -2,8 +2,8 @@
 
 #include <QFile>
 
-SyncManager::SyncManager(GamesModel &gm, PlayerSortFilterProxyModel &ssm, GlobalStatsModel &gsm, const Language& lang, QObject *parent)
-    : QObject(parent), m_gamesModel(gm), m_sortingStatModel(ssm), m_globalStatsModel(gsm), m_language(lang),
+SyncManager::SyncManager(GamesModel &gm, PlayerSortFilterProxyModel &ssm, const Language& lang, Playerbase *pb, QObject *parent)
+    : QObject(parent), m_gamesModel(gm), m_sortingStatModel(ssm), m_language(lang), m_playerbase(pb),
       m_playersDownloaded(false), m_gamesDownloaded(false),
       m_gamesUrl("https://dl.dropboxusercontent.com/s/fapzda1e3o5pby3/games?dl=0"),
       m_playersUrl("https://dl.dropboxusercontent.com/s/wfr30z1c3muqehb/players?dl=0")
@@ -78,7 +78,7 @@ void SyncManager::handleResults(QNetworkReply* pReply)
             file.write(m_downloadedPlayersData);
             file.close();
         }
-        m_globalStatsModel.setPlayerbase(Playerbase());
+        m_playerbase->init();
     }
 
     if (m_downloadedGamesData != m_localGamesData)
@@ -89,8 +89,9 @@ void SyncManager::handleResults(QNetworkReply* pReply)
             file.write(m_downloadedGamesData);
             file.close();
         }
-        applyGames();
     }
+
+    applyGames();
 
     emit updateFinished(Language::dict.value("updated").value(m_language.get()));
 }

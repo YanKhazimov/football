@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 
     language.set(config.value("lang"));
 
-    SyncManager updater(gm, sortingStatModel, language);
+    SyncManager updater(gm, sortingStatModel, language, &playerbase);
 
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();
