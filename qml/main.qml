@@ -67,7 +67,9 @@ QQC2.ApplicationWindow {
             height: Sizes.elementButtonSize.height
             antialiasing: true
             MouseArea {
+                id: refresherMouseArea
                 anchors.fill: parent
+                hoverEnabled: true
                 onClicked: {
                     refresher.source = "qrc:/img/wait.png"
                     rotationAnimation.running = true
@@ -83,6 +85,11 @@ QQC2.ApplicationWindow {
                 to: 360
                 loops: 10
             }
+
+            QQC2.ToolTip.delay: 500
+            QQC2.ToolTip.timeout: 3000
+            QQC2.ToolTip.visible: refresherMouseArea.containsMouse
+            QQC2.ToolTip.text: lang.getText("updateData")
         }
         Connections {
             target: updater
@@ -116,6 +123,21 @@ QQC2.ApplicationWindow {
                 sortingStatModel.setFilter(checked)
             }
             onClicked: sortingStatModel.setFilter(checked)
+
+            MouseArea {
+                id: relevanceMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: {
+                    relevanceCheckBox.checked = !relevanceCheckBox.checked
+                    sortingStatModel.setFilter(relevanceCheckBox.checked)
+                }
+            }
+
+            QQC2.ToolTip.delay: 500
+            QQC2.ToolTip.timeout: 3000
+            QQC2.ToolTip.visible: relevanceMouseArea.containsMouse
+            QQC2.ToolTip.text: lang.getText("switchRelevance")
         }
 
         Seasoner {
@@ -142,7 +164,7 @@ QQC2.ApplicationWindow {
                 height: Sizes.elementButtonSize.height
                 antialiasing: true
                 MouseArea {
-                    id: mouseArea
+                    id: languageMouseArea
                     anchors.fill: parent
                     hoverEnabled: true
                     onClicked: {//lang.setNext()
@@ -151,6 +173,11 @@ QQC2.ApplicationWindow {
                         popup.open()
                     }
                 }
+
+                QQC2.ToolTip.delay: 500
+                QQC2.ToolTip.timeout: 3000
+                QQC2.ToolTip.visible: languageMouseArea.containsMouse
+                QQC2.ToolTip.text: lang.getText("changeLanguage")
             }
 //            border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "transparent"
 //            border.width: Sizes.borderWidth

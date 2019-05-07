@@ -33,6 +33,11 @@ class Language: public QObject
     Q_PROPERTY(QString updated MEMBER m_updated NOTIFY languageChanged)
     Q_PROPERTY(QString upToDate MEMBER m_upToDate NOTIFY languageChanged)
     Q_PROPERTY(QString updateFail MEMBER m_updateFail NOTIFY languageChanged)
+    Q_PROPERTY(QString updateData MEMBER m_updateData NOTIFY languageChanged)
+    Q_PROPERTY(QString switchRelevance MEMBER m_switchRelevance NOTIFY languageChanged)
+    Q_PROPERTY(QString changeSeason MEMBER m_changeSeason NOTIFY languageChanged)
+    Q_PROPERTY(QString changeLanguage MEMBER m_changeLanguage NOTIFY languageChanged)
+    Q_PROPERTY(QString changeTheme MEMBER m_changeTheme NOTIFY languageChanged)
 
     QString m_featuredStats;
     QString m_ratingColumn;
@@ -57,6 +62,11 @@ class Language: public QObject
     QString m_updated;
     QString m_upToDate;
     QString m_updateFail;
+    QString m_updateData;
+    QString m_switchRelevance;
+    QString m_changeSeason;
+    QString m_changeLanguage;
+    QString m_changeTheme;
 
     QString m_lang = "ru";
 
@@ -65,6 +75,8 @@ public:
     Q_INVOKABLE void setNext();
     Q_INVOKABLE QString getNext();
     QString get() const;
+
+    Q_INVOKABLE QString getText(QString propertyName);
 
     static const QMap<QString, QMap<QString, QString>> dict;
 

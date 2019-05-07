@@ -66,6 +66,7 @@ Rectangle {
         color: theme.textColor
         font.pixelSize: Sizes.fontPixelSize
         font.family: Themes.fontFamily
+        font.bold: root.selected
     }
 
     ColoredImage {
@@ -73,7 +74,7 @@ Rectangle {
         visible: !root.enabled
         anchors {
             right: parent.right
-            rightMargin: Sizes.featuredStats.smallMargin
+            rightMargin: Sizes.featuredStats.smallMargin / 2
             verticalCenter: parent.verticalCenter
         }
         height: parent.height/2

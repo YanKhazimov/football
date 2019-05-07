@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick.Controls 2.12
 import "qrc:/qml/visualStyles"
 
 Rectangle {
@@ -25,4 +26,9 @@ Rectangle {
             config.set("theme", themeIndex)
         }
     }
+
+    ToolTip.delay: 500
+    ToolTip.timeout: 3000
+    ToolTip.visible: mouseArea.containsMouse
+    ToolTip.text: lang.getText("changeTheme")
 }

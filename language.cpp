@@ -28,7 +28,12 @@ const QMap<QString, QMap<QString, QString>> Language::dict = QMap<QString, QMap<
     { "saveGame", { { "en", "Save Game" }, { "ru", "Сохранить" } } },
     { "updated", { { "en", "Data updated" }, { "ru", "Данные обновлены" } } },
     { "upToDate", { { "en", "Data up-to-date" }, { "ru", "Нет обновлений" } } },
-    { "updateFail", { { "en", "Cannot update data" }, { "ru", "Не удалось обновить данные" } } }
+    { "updateFail", { { "en", "Cannot update data" }, { "ru", "Не удалось обновить данные" } } },
+    { "updateData", { { "en", "Update data" }, { "ru", "Обновить данные" } } },
+    { "switchRelevance", { { "en", "Relevant/All" }, { "ru", "Полный/актуальный список" } } },
+    { "changeSeason", { { "en", "Change season" }, { "ru", "Сменить сезон" } } },
+    { "changeLanguage", { { "en", "Change language" }, { "ru", "Сменить язык" } } },
+    { "changeTheme", { { "en", "Change pallette" }, { "ru", "Сменить скин" } } }
 };
 
 void Language::set(QString str)
@@ -58,6 +63,11 @@ void Language::set(QString str)
     m_updated = dict["updated"][m_lang];
     m_upToDate = dict["upToDate"][m_lang];
     m_updateFail = dict["updateFail"][m_lang];
+    m_updateFail = dict["updateData"][m_lang];
+    m_updateFail = dict["switchRelevance"][m_lang];
+    m_updateFail = dict["changeSeason"][m_lang];
+    m_updateFail = dict["changeLanguage"][m_lang];
+    m_updateFail = dict["changeTheme"][m_lang];
 
     emit languageChanged(m_lang);
 }
@@ -75,4 +85,9 @@ QString Language::getNext()
 QString Language::get() const
 {
     return m_lang;
+}
+
+QString Language::getText(QString propertyName)
+{
+    return dict.value(propertyName).value(m_lang);
 }

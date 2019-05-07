@@ -1,12 +1,11 @@
 import QtQuick 2.0
+import QtQuick.Controls 2.12
 import "qrc:/qml/visualStyles"
 
 Rectangle {
     property int curIndex: 0
     property var model
     color: "transparent"
-    border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "transparent"
-    border.width: Sizes.borderWidth
 
     Component.onCompleted: {
         model = [lang.all].concat(gamesModel.getSeasons())
@@ -38,4 +37,9 @@ Rectangle {
         font.bold: true
         font.pixelSize: 10
     }
+
+    ToolTip.delay: 500
+    ToolTip.timeout: 3000
+    ToolTip.visible: mouseArea.containsMouse
+    ToolTip.text: lang.getText("changeSeason")
 }

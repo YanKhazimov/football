@@ -43,7 +43,7 @@ TableView {
         }
         //role: "Name"
         title: lang.playerColumn
-        width: root.width * 6/10
+        width: root.width * 5/10
         resizable: false
         movable: false
     }
@@ -56,7 +56,7 @@ TableView {
         }
         role: lang.ratingColumn
         title: lang.ratingColumn
-        width: root.width * 3/10
+        width: root.width * 4/10
         resizable: false
         visible: false
     }
@@ -69,7 +69,7 @@ TableView {
         }
         role: lang.wdlColumn
         title: lang.wdlColumn
-        width: root.width * 3/10
+        width: root.width * 4/10
         resizable: false
         visible: false
     }
@@ -82,7 +82,7 @@ TableView {
         }
         role: lang.progressColumn
         title: lang.progressColumn
-        width: root.width * 3/10
+        width: root.width * 4/10
         resizable: false
         visible: false
     }
@@ -95,7 +95,7 @@ TableView {
         }
         role: lang.relevanceColumn
         title: lang.relevanceColumn
-        width: root.width * 3/10
+        width: root.width * 4/10
         resizable: false
         visible: false
     }
@@ -108,7 +108,7 @@ TableView {
         }
         role: lang.dedicationColumn
         title: lang.dedicationColumn
-        width: root.width * 3/10
+        width: root.width * 4/10
         resizable: false
         visible: false
     }
