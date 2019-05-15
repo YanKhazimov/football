@@ -5,6 +5,7 @@ FeaturedStatsModel::FeaturedStatsModel(const Language& lang)
     : m_source(nullptr)
 {
     m_featuredStats << new ClosestPlayersStat(m_source)
+                    << new StreakStat(m_source)
                     << new SynergyStat(m_source);
 
     connect(&lang, &Language::languageChanged, this, &FeaturedStatsModel::onLanguageChanged);

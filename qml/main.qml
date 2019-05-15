@@ -24,7 +24,7 @@ QQC2.ApplicationWindow {
     }
 
     minimumHeight: featuredStats.height + contents.height
-    minimumWidth: 600//featuredStats.minWidth
+    minimumWidth: width
 
     maximumHeight: height
     maximumWidth: width

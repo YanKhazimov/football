@@ -105,7 +105,7 @@ Rectangle {
           var startX = mapX(0, root.points.length)
           var startY = mapY(root.points[0].y, minY[__value], maxY[__value])
           ctx.moveTo(startX, startY)
-          ctx.ellipse(startX - r, startY - r, 2 * r, 2 * r)
+          //ctx.ellipse(startX - r, startY - r, 2 * r, 2 * r)
           ctx.moveTo(startX, startY)
 
           for(var i = 1; i < root.points.length; i++)
@@ -113,7 +113,7 @@ Rectangle {
               var x = mapX(i, root.points.length)
               var y = mapY(root.points[i].y, minY[__value], maxY[__value])
               ctx.lineTo(x, y)
-              ctx.ellipse(x - r, y - r, 2 * r, 2 * r)
+              //ctx.ellipse(x - r, y - r, 2 * r, 2 * r)
               ctx.moveTo(x, y)
           }
           ctx.stroke();

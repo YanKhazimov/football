@@ -154,7 +154,7 @@ void SynergyStat::calculate()
             {
                 const WDL& ijWDL = synergy[jName];
                 int gamesTogether = ijWDL[0] + ijWDL[1] + ijWDL[2];
-                if (gamesTogether > 2)
+                if (gamesTogether > 4)
                 {
                     float synergy = (ijWDL[0] + static_cast<float>(ijWDL[1]) / 2) / gamesTogether;
                     Player* iPlayer = iIndex.data(DataRoles::DataRole::Player).value<Player*>();
@@ -186,4 +186,47 @@ void SynergyStat::setLanguage(const QString &lang)
 {
     m_name = Language::dict.value("strongestSynergy").value(lang);
     m_description = Language::dict.value("highestWLRatioTogether").value(lang);
+}
+
+StreakStat::StreakStat(QAbstractItemModel *dataModel)
+    : FeaturedStat("ON FIRE", "Longest win streaks", dataModel)
+{
+}
+
+void StreakStat::calculate()
+{
+    std::map<int, QList<Player*>> playersByCurrentStreak;
+    for (int i = 0; i < m_dataModel->rowCount(); ++i)
+    {
+        QModelIndex playerIndex = m_dataModel->index(i, 0);
+        Player* playerPtr = playerIndex.data(DataRoles::DataRole::Player).value<Player*>();
+        playersByCurrentStreak[playerIndex.data(DataRoles::DataRole::CurrentStreak).toInt()].append(playerPtr);
+    }
+
+    int playersShown = 0;
+
+    auto fits = [&playersShown](int additionalSize) {
+        return (playersShown + additionalSize) <= 9;
+    };
+
+    std::map<int, QList<Player*>>::reverse_iterator reverseIter; // higher streaks shown first
+    for (reverseIter = playersByCurrentStreak.rbegin();
+         reverseIter != playersByCurrentStreak.rend() &&
+         fits(reverseIter->second.size()) &&
+         reverseIter->first > 0;
+         ++reverseIter)
+    {
+        QObjectList group;
+        for (Player* p: reverseIter->second)
+            group << new PlayerStat(p, "");
+
+        m_queryResultItems.append(new QueryResultItem(QString::number(reverseIter->first), group));
+        playersShown += reverseIter->second.size();
+    }
+}
+
+void StreakStat::setLanguage(const QString &lang)
+{
+    m_name = Language::dict.value("onFire").value(lang);
+    m_description = Language::dict.value("longestActiveWinStreaks").value(lang);
 }

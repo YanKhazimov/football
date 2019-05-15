@@ -45,4 +45,12 @@ public:
     virtual void setLanguage(const QString& lang) Q_DECL_OVERRIDE;
 };
 
+class StreakStat: public FeaturedStat
+{
+public:
+    StreakStat(QAbstractItemModel *dataModel);
+    void calculate() override;
+    virtual void setLanguage(const QString& lang) Q_DECL_OVERRIDE;
+};
+
 #endif // FEATUREDSTATS_H

@@ -24,6 +24,10 @@ Rectangle {
 
     property int benchLength: 0
 
+    function signed(number) {
+        return (number > 0) ? ("+" + number) : number
+    }
+
     function getBenchCapacity() {
         return Math.floor(bench.getCapacity())
     }
@@ -184,7 +188,7 @@ Rectangle {
                     horizontalCenter: homeShirt.horizontalCenter
                 }
 
-                text: homeDiff
+                text: signed(homeDiff)
                 color: "white"
                 font.family: Themes.fontFamily
                 font.bold: true
@@ -250,7 +254,7 @@ Rectangle {
                     horizontalCenter: awayShirt.horizontalCenter
                 }
 
-                text: awayDiff
+                text: signed(awayDiff)
                 color: "white"
                 font.family: Themes.fontFamily
                 font.bold: true

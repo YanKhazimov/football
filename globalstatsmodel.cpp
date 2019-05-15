@@ -148,6 +148,20 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
 
         return QVariant::fromValue(QVector<int>{ wins, draws, losses });
     }
+    else if (role == DataRoles::DataRole::CurrentStreak)
+    {
+        if (playerData.second.empty())
+            return QVariant::fromValue(0);
+
+        int i = playerData.second.size() - 1;
+        const int& win = playerData.second[i].resultSign;
+        int result = 1;
+        for (--i; i >= 0 && playerData.second[i].resultSign == win; --i)
+        {
+            ++result;
+        }
+        return QVariant::fromValue(result * win);
+    }
     else if (role == DataRoles::DataRole::Progress)
     {
         int initialRating = m_seasonStartingRating[playerData.first];

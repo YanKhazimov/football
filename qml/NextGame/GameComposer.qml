@@ -176,56 +176,6 @@ Rectangle {
                     "%1 %2/%3".arg(lang.splitNoun).arg(splitIndex + 1).arg(teamSplitter.splitVariants.length)
     }
 
-    ColoredImage {
-        visible: false
-        id: splitButton
-        width: 4 * Sizes.elementButtonSize.width
-        height: 4 * Sizes.elementButtonSize.height
-        x: scheme.pitchCenterCoords.x - width/2
-        y: scheme.pitchCenterCoords.y - height/2
-        source: "qrc:/img/balance.png"
-        color: mouseArea.containsMouse ? theme.secondaryFillColor : "white"
-
-//        SequentialAnimation {
-//            id: anm
-//            running: false
-//            NumberAnimation { target: splitButton; property: "rotation"; to: 45; duration: 125 }
-//            NumberAnimation { target: splitButton; property: "rotation"; to: -45; duration: 250 }
-//            NumberAnimation { target: splitButton; property: "rotation"; to: 0; duration: 125 }
-
-        PropertyAnimation {
-            id: rotationAnimation
-            duration: 500
-            target: splitButton
-            property: "rotation"
-            from: 0
-            to: 720
-        }
-
-        function animateSplit() {
-            rotationAnimation.stopped.connect(function oneTimeSplit() {
-                root.split()
-                rotationAnimation.stopped.disconnect(oneTimeSplit) // wow
-            })
-
-            rotationAnimation.start()
-        }
-
-        MouseArea {
-            id: mouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            onClicked: {
-                if (zoneModels[PitchZones.center].length > 0)
-                    parent.animateSplit()
-                console.log("zoneModels[PitchZones.bench]", zoneModels[PitchZones.bench])
-                console.log("zoneModels[PitchZones.leftHalf]", zoneModels[PitchZones.leftHalf])
-                console.log("zoneModels[PitchZones.rightHalf]", zoneModels[PitchZones.rightHalf])
-                console.log("zoneModels[PitchZones.center]", zoneModels[PitchZones.center])
-            }
-        }
-    }
-
     QtObject {
         id: dragInfo
         property string name: ""
@@ -240,7 +190,7 @@ Rectangle {
     }
 
     function registerDrop(playerName) {
-        console.log("dropping", dragInfo.name, dragInfo.sender, dragInfo.reciever)
+        console.debug("dropping", dragInfo.name, dragInfo.sender, dragInfo.reciever)
 
         if (dragInfo.reciever === -1)
             dragInfo.reciever = dragInfo.sender
