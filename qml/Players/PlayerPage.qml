@@ -36,7 +36,7 @@ Rectangle {
             Layout.preferredHeight: 128
             Layout.preferredWidth: 128
             Layout.alignment: Qt.AlignHCenter
-            color: root.theme.secondaryColor
+            color: player ? "transparent" : root.theme.secondaryColor
         }
 
         PlayerStatsTable {

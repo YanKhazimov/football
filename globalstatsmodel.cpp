@@ -384,7 +384,7 @@ void GlobalStatsModel::resetData()
     };
 
     auto deduceRating = [](const PlayerRef& player) -> int {
-        return player.mid(2, 4).toInt();
+        return player.mid(player.size() - 4, 4).toInt();
     };
 
     for (int i = 0; i < m_sourceModel->rowCount(); ++i)
