@@ -7,7 +7,7 @@ Rectangle {
     property var theme: Themes.themes[themeIndex]
 
     radius: width
-    border.color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.primaryFillColor
+    border.color: mouseArea.containsMouse ? theme.highlightColor : theme.primaryColor
     border.width: Sizes.borderWidth
 
     Image {

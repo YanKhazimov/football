@@ -152,9 +152,9 @@ QQC2.ApplicationWindow {
             radius: width/2
             color: "transparent"
             //gradient: Gradient {
-//                GradientStop { position: 0.0; color: theme.primaryFillColor }
-//                GradientStop { position: 0.5; color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.primaryFillColor }
-//                GradientStop { position: 1.0; color: theme.primaryFillColor }
+//                GradientStop { position: 0.0; color: theme.primaryColor }
+//                GradientStop { position: 0.5; color: mouseArea.containsMouse ? theme.highlightColor : theme.primaryColor }
+//                GradientStop { position: 1.0; color: theme.primaryColor }
 //            }
             Image {
                 id: languageSwitcher
@@ -179,7 +179,7 @@ QQC2.ApplicationWindow {
                 QQC2.ToolTip.visible: languageMouseArea.containsMouse
                 QQC2.ToolTip.text: lang.getText("changeLanguage")
             }
-//            border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "transparent"
+//            border.color: mouseArea.containsMouse ? theme.highlightColor : "transparent"
 //            border.width: Sizes.borderWidth
         }
 

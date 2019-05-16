@@ -9,7 +9,7 @@ Rectangle {
     property var statGroupsModel: null
     property var theme: null
 
-    color: theme.primaryFillColor
+    color: theme.primaryColor
 
     RowLayout {
         id: row
@@ -36,7 +36,7 @@ Rectangle {
                     id: statTitle
                     Layout.alignment: Qt.AlignHCenter
                     text: contentRoot.title
-                    color: theme.textColor
+                    color: theme.secondaryColor
                     font.family: Themes.fontFamily
                     font.pointSize: 16
                     font.bold: true
@@ -47,7 +47,7 @@ Rectangle {
                     text: contentRoot.descr
                     font.family: Themes.fontFamily
                     font.pointSize: 14
-                    color: theme.textColor
+                    color: theme.secondaryColor
                 }
             }
         }

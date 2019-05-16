@@ -47,14 +47,14 @@ Item {
                                 width: Math.min(Sizes.featuredStats.iconWidth,
                                                 root.maxFittingImageWidth)
                                 height: width
-                                backColor: theme.primaryFillColor
-                                textColor: theme.textColor
+                                backColor: theme.primaryColor
+                                textColor: theme.secondaryColor
                             }
 
                             Text {
                                 text: modelData.statValue
                                 anchors.horizontalCenter: playerImg.horizontalCenter
-                                color: theme.textColor
+                                color: theme.secondaryColor
                                 font.family: Themes.fontFamily
                             }
                         }
@@ -63,7 +63,7 @@ Item {
                 Text {
                     text: modelData.groupStatValue
                     anchors.horizontalCenter: statGroup.horizontalCenter
-                    color: theme.textColor
+                    color: theme.secondaryColor
                     font.family: Themes.fontFamily
                 }
             }

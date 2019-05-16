@@ -1,7 +1,7 @@
 set CURDIR=%cd%
 set QTBIN=D:\Qt\5.12.1\mingw73_64\bin
-set BIN=D:\GitRepos\football\build-football-Desktop_Qt_5_12_1_MinGW_64_bit-Release
-set APPNAME=untitled.exe
+set BIN=D:\GitRepos\football\build-football-Qt_5_12_1_MinGW_64_bit_197311-Release
+set APPNAME=Razdevalka.exe
 set PROJ=D:\GitRepos\football\football
 set PKG=C:\Users\Yan\Desktop\Package
 set EXTRADLLS=D:\GitRepos\football\football\extraDLLs
@@ -19,6 +19,7 @@ xcopy /Y "%BIN%\%APPNAME%" "%PKG%\"
 
 xcopy /Y "%EXTRADLLS%\*.dll" "%PKG%\"
 xcopy /Y "%PROJ%\games" "%PKG%\"
+xcopy /Y "%PROJ%\players" "%PKG%\"
 xcopy /Y "%PROJ%\config" "%PKG%\"
 
 for %%d in %REMDLLS% do del /Q "%PKG%\%%d"

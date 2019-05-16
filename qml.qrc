@@ -67,5 +67,8 @@
         <file>img/lang_ru.png</file>
         <file>img/refresh.png</file>
         <file>img/wait.png</file>
+        <file>img/defaultphoto.png</file>
+        <file>img/l.png</file>
+        <file>img/r.png</file>
     </qresource>
 </RCC>

@@ -22,13 +22,13 @@ Column {
             contentItem: Text {
                 text: control.text
                 font.family: Themes.fontFamily
-                color: theme.textColor
+                color: theme.secondaryColor
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
             background: Rectangle {
-                color: theme.primaryFillColor
-                border.color: control.hovered ? theme.highlightColor : theme.secondaryFillColor
+                color: theme.primaryColor
+                border.color: control.hovered ? theme.secondaryColor : theme.highlightColor
                 border.width: Sizes.borderWidth
                 radius: width/2
             }

@@ -11,8 +11,8 @@ Rectangle {
     readonly property int __idx: 1
 
     height: 100
-    color: theme.primaryFillColor
-    border.color: theme.secondaryFillColor
+    color: theme.primaryColor
+    border.color: theme.highlightColor
     border.width: Sizes.borderWidth
 
     function updatePoints(ratingValues) {
@@ -101,7 +101,7 @@ Rectangle {
           var maxY = root.max()
           var minY = root.min()
 
-          ctx.strokeStyle = root.theme.textColor;
+          ctx.strokeStyle = root.theme.secondaryColor;
           var startX = mapX(0, root.points.length)
           var startY = mapY(root.points[0].y, minY[__value], maxY[__value])
           ctx.moveTo(startX, startY)
@@ -123,7 +123,7 @@ Rectangle {
     Text {
         id: maxMark
         text: max()[__value]
-        color: root.theme.textColor
+        color: root.theme.secondaryColor
         anchors {
             bottom: canvas.top
             bottomMargin: {
@@ -139,7 +139,7 @@ Rectangle {
     Text {
         id: minMark
         text: min()[__value]
-        color: root.theme.textColor
+        color: root.theme.secondaryColor
         anchors {
             top: canvas.bottom
             left: canvas.left

@@ -27,7 +27,7 @@ TableView {
             text: model.index + 1
             horizontalAlignment: Text.AlignHCenter
             font.family: Themes.fontFamily
-            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+            color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         title: "#"
         width: root.width / 10
@@ -39,7 +39,7 @@ TableView {
             text: model.PlayerName
             horizontalAlignment: Text.AlignHCenter
             font.family: Themes.fontFamily
-            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+            color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         //role: "Name"
         title: lang.playerColumn
@@ -52,7 +52,7 @@ TableView {
             text: model.Rating
             horizontalAlignment: Text.AlignHCenter
             font.family: Themes.fontFamily
-            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+            color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.ratingColumn
         title: lang.ratingColumn
@@ -65,7 +65,7 @@ TableView {
             text: model.WinsLosses
             horizontalAlignment: Text.AlignHCenter
             font.family: Themes.fontFamily
-            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+            color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.wdlColumn
         title: lang.wdlColumn
@@ -78,7 +78,7 @@ TableView {
             text: model.Progress
             horizontalAlignment: Text.AlignHCenter
             font.family: Themes.fontFamily
-            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+            color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.progressColumn
         title: lang.progressColumn
@@ -91,7 +91,7 @@ TableView {
             text: model.Relevance
             horizontalAlignment: Text.AlignHCenter
             font.family: Themes.fontFamily
-            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+            color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.relevanceColumn
         title: lang.relevanceColumn
@@ -104,7 +104,7 @@ TableView {
             text: model.Dedication
             horizontalAlignment: Text.AlignHCenter
             font.family: Themes.fontFamily
-            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+            color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.dedicationColumn
         title: lang.dedicationColumn
@@ -117,7 +117,7 @@ TableView {
         Text {
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            color: styleData.selected ? root.theme.textColor : root.theme.primaryFillColor
+            color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
             text: styleData.value
             font.family: Themes.fontFamily
             font.pixelSize: 12
@@ -126,16 +126,16 @@ TableView {
 
     style: TableViewStyle {
         rowDelegate: Rectangle {
-            color: styleData.selected ? root.theme.secondaryFillColor : "white"
+            color: styleData.selected ? root.theme.highlightColor : root.theme.secondaryColor
             radius: height
         }
 
-        backgroundColor: root.theme.primaryFillColor
+        backgroundColor: root.theme.primaryColor
 
         headerDelegate: Rectangle {
             height: textItem.implicitHeight * 1.2
             width: textItem.implicitWidth
-            color: root.theme.primaryFillColor
+            color: root.theme.primaryColor
             Text {
                 id: textItem
                 anchors.fill: parent
@@ -145,17 +145,19 @@ TableView {
                 font.family: Themes.fontFamily
                 font.pixelSize: 16
                 font.bold: true
-                color: root.theme.textColor
+                color: root.theme.secondaryColor
                 renderType: Text.NativeRendering
             }
             Rectangle {
                 height: 1
                 width: parent.width
-                color: root.theme.textColor
+                color: root.theme.secondaryColor
                 anchors.bottom: parent.bottom
             }
         }
 
         transientScrollBars: true
     }
+
+    horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 }

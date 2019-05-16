@@ -7,7 +7,7 @@ import ".."
 
 Rectangle {
     id: root
-    color: theme.primaryFillColor
+    color: theme.primaryColor
     property var theme: null
     property Player player: statsTable.presenter.selectedPlayer
     property var table: statsTable
@@ -27,15 +27,16 @@ Rectangle {
             text: player ? player.name : "No player selected"
             font.family: Themes.fontFamily
             font.pixelSize: Sizes.fontPixelSize
-            color: root.theme.textColor
+            color: root.theme.secondaryColor
             Layout.alignment: Qt.AlignHCenter
         }
 
-        Image {
-            source: player ? player.photo : "qrc:/img/playerImages/default.png"
+        ColoredImage {
+            source: player ? player.photo : "qrc:/img/defaultphoto.png"
             Layout.preferredHeight: 128
             Layout.preferredWidth: 128
             Layout.alignment: Qt.AlignHCenter
+            color: root.theme.secondaryColor
         }
 
         PlayerStatsTable {
@@ -73,6 +74,8 @@ Rectangle {
                 target: statsTable.presenter
                 onPlayerChanged: chart.updatePoints(statsTable.presenter.ratingHistory)
             }
+
+            onThemeChanged: updatePoints(statsTable.presenter.ratingHistory)
         }
     }
 }

@@ -25,7 +25,7 @@ Item {
         width: Sizes.elementButtonSize.width
         height: Sizes.elementButtonSize.height
         source: root.img
-        color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.highlightColor
+        color: mouseArea.containsMouse ? theme.highlightColor : theme.secondaryColor
     }
 
     MouseArea {

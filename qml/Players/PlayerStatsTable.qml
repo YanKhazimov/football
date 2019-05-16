@@ -24,16 +24,16 @@ TableView {
             source: "qrc:/img/menuarrow.png"
             visible: root.currentRow === model.index
             fillMode: Image.PreserveAspectFit
-            color: theme.secondaryFillColor
+            color: theme.highlightColor
         }
         width: root.width / 10
     }
 
     TableViewColumn {
         delegate: Text {
-            text: model.StatCategory + ":"
+            text: model.StatCategory + " :"
             horizontalAlignment: Text.AlignRight
-            color: styleData.selected ? theme.secondaryFillColor : theme.textColor
+            color: styleData.selected ? theme.highlightColor : theme.secondaryColor
             font.bold: styleData.selected
             font.pixelSize: 14
             font.family: Themes.fontFamily
@@ -45,7 +45,7 @@ TableView {
         delegate: Text {
             text: model.StatValue === undefined ? "" : model.StatValue
             horizontalAlignment: Text.AlignHCenter
-            color: styleData.selected ? theme.secondaryFillColor : theme.textColor
+            color: styleData.selected ? theme.highlightColor : theme.secondaryColor
             font.bold: styleData.selected
             font.pixelSize: 14
             font.family: Themes.fontFamily
@@ -55,7 +55,7 @@ TableView {
 
     style: TableViewStyle {
         rowDelegate: Rectangle {
-            color: /*styleData.pressed ? "red" :*/ "transparent"
+            color: "transparent"
             height: Sizes.fontPixelSize
         }
 

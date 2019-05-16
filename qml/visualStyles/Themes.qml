@@ -5,32 +5,22 @@ import QtQuick 2.0
 
 QtObject {
     readonly property string fontFamily: "URW Bookman L"
-    readonly property color dropHighlightColor: "blue"
 
     readonly property var themes: [
         {
-            "primaryFillColor": "#000020",
-            "secondaryFillColor": "dodgerblue",
-            "highlightColor": "white",
-            "textColor": "white"
+            "primaryColor": "#000020",
+            "highlightColor": "dodgerblue",
+            "secondaryColor": "white"
         },
         { // Цветовая палитра №1735
-            "primaryFillColor": "#868d99",
-            "secondaryFillColor": "#f5cc5a",
-            "highlightColor": "#fefefe",
-            "textColor": "#2e2528"
-        },
-        { // Цветовая палитра №2814
-            "primaryFillColor": "#e64b55",
-            "secondaryFillColor": "#b7aaa3",
-            "highlightColor": "#f98e8e",
-            "textColor": "#ede4d4"
+            "primaryColor": "#868d99",
+            "highlightColor": "#f5cc5a",
+            "secondaryColor": "#2e2528"
         },
         { // Цветовая палитра №3768
-            "primaryFillColor": "#005b7c",
-            "secondaryFillColor": "#01bcc6",
-            "highlightColor": "#d5d1ca",
-            "textColor": "#efefee"
+            "primaryColor": "#005b7c",
+            "highlightColor": "#01bcc6",
+            "secondaryColor": "#efefee"
         }
     ]
 }

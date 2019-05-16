@@ -298,7 +298,7 @@ Rectangle {
         visible: false
         color: "transparent"
         border.width: Sizes.borderWidth
-        border.color: theme.secondaryFillColor
+        border.color: theme.highlightColor
 
         Rectangle {
             id: rating
@@ -309,7 +309,7 @@ Rectangle {
             radius: height / 4
             color: "transparent"
             border.width: Sizes.borderWidth
-            border.color: theme.secondaryFillColor
+            border.color: theme.highlightColor
         }
     }
 }

@@ -39,8 +39,8 @@ Rectangle {
 
     height: 32
     width: defaultWidth
-    color: theme.primaryFillColor
-    border.color: (mouseArea.containsMouse && !selected) ? theme.highlightColor : theme.secondaryFillColor
+    color: theme.primaryColor
+    border.color: (mouseArea.containsMouse && !selected) ? theme.secondaryColor : theme.highlightColor
     border.width: Sizes.borderWidth
 
     Behavior on width {
@@ -63,7 +63,7 @@ Rectangle {
         id: text
         anchors.centerIn: parent
         text: root.name
-        color: theme.textColor
+        color: theme.secondaryColor
         font.pixelSize: Sizes.fontPixelSize
         font.family: Themes.fontFamily
         font.bold: root.selected

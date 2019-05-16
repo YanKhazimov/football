@@ -17,8 +17,8 @@ Rectangle {
         id: pic
         player: root.player
         theme: root.theme
-        textColor: mouseArea.containsMouse ? theme.secondaryFillColor : theme.primaryFillColor
-        border.color: mouseArea.containsMouse ? theme.secondaryFillColor : "transparent"
+        textColor: mouseArea.containsMouse ? theme.highlightColor : theme.primaryColor
+        border.color: mouseArea.containsMouse ? theme.highlightColor : "transparent"
         tooltipMouseArea: mouseArea
     }
     Rectangle {
@@ -34,7 +34,7 @@ Rectangle {
             font.family: Themes.fontFamily
             font.bold: true
             anchors.centerIn: parent
-            color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.primaryFillColor
+            color: mouseArea.containsMouse ? theme.highlightColor : theme.primaryColor
         }
     }
     MouseArea {

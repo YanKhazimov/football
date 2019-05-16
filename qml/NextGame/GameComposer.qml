@@ -284,7 +284,7 @@ Rectangle {
         delegate: Rectangle {
             height: 2
             width: teamSplitter.splitVariants.length < 2 ? 0 : ((Sizes.elementButtonSize.width * 2  - 2 * (teamSplitter.splitVariants.length - 1)) / teamSplitter.splitVariants.length)
-            color: model.index === splitVariantIndicators.selectedIndex ? theme.secondaryFillColor : theme.textColor
+            color: model.index === splitVariantIndicators.selectedIndex ? theme.highlightColor : theme.secondaryColor
             x: controlPanel.x + Sizes.elementButtonSize.width / 2 + model.index * (width + 2)
             y: controlPanel.y + Sizes.elementButtonSize.height + Sizes.featuredStats.smallMargin + Sizes.elementButtonSize.height - 7
         }

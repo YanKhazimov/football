@@ -10,9 +10,9 @@ Rectangle {
     property var model: null
     width: parent.width
     height: 2 + headerText.height + separator.height + 10 + playPause.height + getContentHeight() + 10 + 2
-    color: theme.primaryFillColor
+    color: theme.primaryColor
     border.width: Sizes.borderWidth
-    border.color: theme.secondaryFillColor
+    border.color: theme.highlightColor
 
     function getContentHeight() {
         return Sizes.featuredStats.iconHeight + Sizes.fontPixelSize + Sizes.fontPixelSize
@@ -25,7 +25,7 @@ Rectangle {
             horizontalCenter: parent.horizontalCenter
         }
         text: root.title
-        color: root.theme.textColor
+        color: root.theme.secondaryColor
         font.family: Themes.fontFamily
         font.pixelSize: Sizes.fontPixelSize
         font.bold: true
@@ -40,7 +40,7 @@ Rectangle {
             right: parent.right
             rightMargin: Sizes.borderWidth + Sizes.featuredStats.margin
         }
-        color: theme.secondaryFillColor
+        color: theme.highlightColor
         height: Sizes.borderWidth
     }
 
@@ -61,7 +61,7 @@ Rectangle {
                 bottom: parent.bottom
                 bottomMargin: Sizes.featuredStats.smallMargin
             }
-            img: "qrc:/img/l.svg"
+            img: "qrc:/img/l.png"
             theme: root.theme
         }
 
@@ -74,7 +74,7 @@ Rectangle {
                 bottom: parent.bottom
                 bottomMargin: Sizes.featuredStats.smallMargin
             }
-            img: "qrc:/img/r.svg"
+            img: "qrc:/img/r.png"
             theme: root.theme
         }
 
@@ -88,7 +88,7 @@ Rectangle {
                 horizontalCenter: parent.horizontalCenter
             }
             source: slideFlickTimer.running ? "qrc:/img/pause.png" : "qrc:/img/play.png"
-            color: mouseArea.containsMouse ? theme.secondaryFillColor : theme.highlightColor
+            color: mouseArea.containsMouse ? theme.highlightColor : theme.secondaryColor
 
             MouseArea {
                 id: mouseArea

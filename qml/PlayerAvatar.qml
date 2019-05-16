@@ -11,7 +11,7 @@ Rectangle {
     property var tooltipMouseArea: ma
 
     function hasPhoto() {
-        return (player !== null) && (player.photo != "qrc:/img/playerImages/default.png")
+        return (player !== null) && (player.photo != "qrc:/img/defaultphoto.png")
     }
 
     id: pic

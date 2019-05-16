@@ -11,10 +11,13 @@ GlobalStatsModel::GlobalStatsModel(const Playerbase* base)
 
 GlobalStatsModel::GlobalStatsModel(const GlobalStatsModel &model)
 {
-//    for (int r = 0; r < model.rowCount(); ++r)
-//    {
-//        this->appendRow(model.item(r));
-//    }
+    m_base = model.m_base;
+    m_sourceModel = model.m_sourceModel;
+    m_playersData = model.m_playersData;
+    m_seasonStartingRating = model.m_seasonStartingRating;
+    m_selectedPlayer = model.m_selectedPlayer;
+    m_minDate = model.m_minDate;
+    m_maxDate = model.m_maxDate;
 }
 
 void GlobalStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
@@ -23,9 +26,6 @@ void GlobalStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
 
     if (m_sourceModel)
     {
-//        disconnect(sourceModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
-//                   this, SLOT(sourceDataChanged(QModelIndex,QModelIndex,QVector<int>)));
-
         disconnect(m_sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
                    this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
 
@@ -37,9 +37,6 @@ void GlobalStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
     if (sourceModel)
     {
         m_sourceModel = sourceModel;
-
-//        connect(sourceModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
-//                      this, SLOT(sourceDataChanged(QModelIndex,QModelIndex,QVector<int>)));
 
         connect(m_sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
                       this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
@@ -72,7 +69,7 @@ bool GlobalStatsModel::setSeasonFilter(QString filter)
     if (Language::dict.value("all").values().contains(filter))
     {
         beginResetModel();
-        m_minDate.setDate(2000, 0, 0);
+        m_minDate.setDate(2000, 1, 1);
         m_maxDate = QDate::currentDate();
         resetData();
         endResetModel();
@@ -170,13 +167,33 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
     }
     else if (role == DataRoles::DataRole::Dedication)
     {
-        int firstParticipationGlobalIndex = playerData.second.first().sourceIndex.row();
-        float percentage = 100.f * playerData.second.size() / (m_sourceModel->rowCount() - firstParticipationGlobalIndex);
+        int firstParticipationGlobalIndex = m_sourceModel->rowCount();
+        for (int i = 0; i < m_sourceModel->rowCount(); ++i)
+        {
+            QModelIndex idx = m_sourceModel->index(i, 0);
+            if (idx.data(DataRoles::DataRole::Hometeam).value<QVector<PlayerRef>>().contains(playerData.first) ||
+                    idx.data(DataRoles::DataRole::Awayteam).value<QVector<PlayerRef>>().contains(playerData.first))
+            {
+                firstParticipationGlobalIndex = i;
+                break;
+            }
+        }
+        if (firstParticipationGlobalIndex == m_sourceModel->rowCount())
+            return QVariant::fromValue(0);
+
+        int seasonGames = 0;
+        for (int i = 0; i < m_sourceModel->rowCount(); ++i)
+        {
+            QDate gameDate = m_sourceModel->index(i, 0).data(DataRoles::DataRole::GameDate).value<QDate>();
+            if (m_minDate <= gameDate && gameDate <= m_maxDate // a current season game
+                    && firstParticipationGlobalIndex <= i) // player has played
+                ++seasonGames;
+        }
+        float percentage = 100.f * playerData.second.size() / seasonGames;
         return QVariant::fromValue(percentage);
     }
     else if (role == DataRoles::DataRole::Relevance)
     {
-        //int firstParticipationGlobalIndex = playerData.second.first().sourceIndex.row();
         int gamesCounted = 10;//qMin(10, m_sourceModel->rowCount() - firstParticipationGlobalIndex);
 
         int maxRelevancePoints = (1 + gamesCounted) * gamesCounted / 2; // 1 + 2 + ... + gamesCounted
@@ -327,7 +344,7 @@ int getHomeRatingChange(int scoreDiff, int totalRating1, int totalRating2)
     if (scoreDiff == 0)
         return 0;
 
-    double coeff = 8.f;
+    double coeff = 8.0;
     double winnersRatingSum = static_cast<double>(scoreDiff > 0 ? totalRating1 : totalRating2);
     double losersRatingSum = static_cast<double>(scoreDiff > 0 ? totalRating2 : totalRating1);
     double chances = pow(10.0, losersRatingSum/1000.0) /
@@ -341,7 +358,6 @@ int getHomeRatingChange(int scoreDiff, int totalRating1, int totalRating2)
                 totalRating1 / totalRating2 - 1;
     float expectedScoreDiff = handicap * 1000 / 3;
 
-    int res;
     if (expectedScoreDiff * scoreDiff > 0)
     {
         //res =
@@ -440,7 +456,7 @@ QModelIndex GlobalStatsModel::getIndexByRef(const PlayerRef &ref)
 {
     std::map<PlayerRef, QVector<PlayerGameStats>>::const_iterator playerIter = m_playersData.find(ref);
     std::map<PlayerRef, QVector<PlayerGameStats>>::const_iterator begin = m_playersData.begin();
-    return playerIter == m_playersData.end() ? QModelIndex() : index(std::distance(begin, playerIter), 0);
+    return playerIter == m_playersData.end() ? QModelIndex() : index(static_cast<int>(std::distance(begin, playerIter)), 0);
 }
 
 GlobalStatsModel::PlayerGameStats::PlayerGameStats(int rating, int sign, QModelIndex srcIdx)

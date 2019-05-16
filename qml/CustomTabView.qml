@@ -11,17 +11,24 @@ import com.abc.abclib 1.0
 Rectangle {
     id: root
     property var theme: null
-    color: root.theme.primaryFillColor
+    color: root.theme.primaryColor
 
 //    TiledBackground {
 //        sourceImg: "qrc:/img/ball.png"
-//        baseColor: theme.primaryFillColor
+//        baseColor: theme.primaryColor
 //    }
 
-    Image {
+    ColoredImage {
         id: bg
-        source: "qrc:/img/corner.jpg"
         anchors.fill: parent
+        source: "qrc:/img/corner.jpg"
+        color: {
+            var hex = theme.primaryColor
+            var r = "0x" + hex[1] + hex[2]
+            var g = "0x" + hex[3] + hex[4]
+            var b = "0x" + hex[5] + hex[6]
+            return Qt.rgba(r, g, b, 0.2)
+        }
     }
 
     RowLayout {
@@ -71,7 +78,7 @@ Rectangle {
         }
 
         Rectangle {
-            color: root.theme.secondaryFillColor
+            color: root.theme.highlightColor
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.topMargin: Sizes.featuredStats.smallMargin
