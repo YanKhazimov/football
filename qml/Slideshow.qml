@@ -146,9 +146,9 @@ Rectangle {
 
             Timer {
                 id: slideFlickTimer
-                interval: 5000
+                interval: 10000
                 repeat: true
-                running: false
+                running: true
 
                 onTriggered: listView.incrementCurrentIndex()
             }

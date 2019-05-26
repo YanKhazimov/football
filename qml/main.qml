@@ -119,7 +119,7 @@ QQC2.ApplicationWindow {
                 }
             }
             Component.onCompleted: {
-                checked = true
+                checked = false//true
                 sortingStatModel.setFilter(checked)
             }
             onClicked: sortingStatModel.setFilter(checked)

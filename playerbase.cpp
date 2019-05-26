@@ -91,17 +91,16 @@ void Playerbase::init()
             delete m_base.value(p);
 
        QTextStream in(&inputFile);
-       QString line, name;
+       QString name; int initialRating; QUrl photo; QStringList playerData;
        while (!in.atEnd())
        {
-          line = in.readLine();
-          name = line.mid(0, line.indexOf('\t'));
+           playerData = in.readLine().split('\t', QString::SplitBehavior::SkipEmptyParts);
 
-          //QUrl personalUrl("file:///" + QGuiApplication::applicationDirPath() + "/" + photoFilenameByName(name) + ".png");
-          //QUrl personalUrl("./" + photoFilenameByName(name) + ".png");
+           name = playerData[0];
+           initialRating = playerData[1].toInt();
+           photo = playerData.size() > 2 ? QUrl("qrc:/img/playerImages/" + playerData[2] + ".png") : Player::defaultPhotoUrl;
 
-          m_base[name] = new Player(name, line.mid(line.indexOf('\t')).toInt(), this,
-                                    /*personalUrl.isValid() ? personalUrl :*/ Player::defaultPhotoUrl);
+           m_base[name] = new Player(name, initialRating, this, photo);
        }
        inputFile.close();
     }

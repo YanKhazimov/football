@@ -8,7 +8,7 @@ const QMap<QString, QMap<QString, QString>> Language::dict = QMap<QString, QMap<
     { "strongestSynergy", { { "en", "STRONGEST SYNERGY" }, { "ru", "КРЕПКАЯ СВЯЗКА" } } },
     { "highestWLRatioTogether", { { "en", "Highest W/L ratio together" }, { "ru", "Лучший % побед вместе" } } },
     { "onFire", { { "en", "ON FIRE" }, { "ru", "На ходу" } } },
-    { "longestActiveWinStreaks", { { "en", "Longest active win streaks" }, { "ru", "Максимум побед подряд" } } },
+    { "longestActiveWinStreaks", { { "en", "Longest active win streaks" }, { "ru", "Текущая серия побед" } } },
     { "ratingColumn", { { "en", "Rating" }, { "ru", "Рейтинг" } } },
     { "playerColumn", { { "en", "Player" }, { "ru", "Игрок" } } },
     { "wdlColumn", { { "en", "W-D-L" }, { "ru", "В-Н-П" } } },

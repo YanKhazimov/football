@@ -69,5 +69,8 @@
         <file>img/defaultphoto.png</file>
         <file>img/l.png</file>
         <file>img/r.png</file>
+        <file>img/playerImages/1605.png</file>
+        <file>img/playerImages/3647.png</file>
+        <file>img/playerImages/238424.png</file>
     </qresource>
 </RCC>
