@@ -78,7 +78,7 @@ GamesModel::~GamesModel()
 
 bool GamesModel::init()
 {
-    m_gamesFilename = "games";
+    m_gamesFilename = "data/games";
 
     beginResetModel();
 
@@ -95,7 +95,7 @@ bool GamesModel::init()
 
         QPair<int, int> score (qHomeTokens.takeFirst().toInt(), qAwayTokens.takeFirst().toInt());
 
-        m_games << new Game(QDate::fromString(QString::fromStdString(dateLine), Qt::SystemLocaleShortDate),
+        m_games << new Game(QDate::fromString(QString::fromStdString(dateLine), "M/d/yyyy"),
                             qHomeTokens, qAwayTokens, score);
     }
     input.close();

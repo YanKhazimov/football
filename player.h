@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <QAbstractListModel>
+#include <QObject>
 #include <QUrl>
 
 class Player : public QObject
@@ -9,7 +9,7 @@ class Player : public QObject
     Q_OBJECT
 
     Q_PROPERTY(QString name MEMBER m_name CONSTANT)
-    Q_PROPERTY(QUrl photo MEMBER m_photo CONSTANT)
+    Q_PROPERTY(QUrl photo MEMBER m_photo NOTIFY photoChanged)
     Q_PROPERTY(QString shortened READ shorten CONSTANT)
 
     QString m_name;
@@ -26,6 +26,9 @@ public:
 
     int getInitialRating() const;
     static const QUrl defaultPhotoUrl;
+
+signals:
+    void photoChanged();
 };
 
 Q_DECLARE_METATYPE(Player*)

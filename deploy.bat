@@ -18,8 +18,7 @@ xcopy /Y "%BIN%\%APPNAME%" "%PKG%\"
 "%QTBIN%\windeployqt.exe" "%PKG%\%APPNAME%" --release --qmldir "%PROJ%\qml"
 
 xcopy /Y "%EXTRADLLS%\*.dll" "%PKG%\"
-xcopy /Y "%PROJ%\games" "%PKG%\"
-xcopy /Y "%PROJ%\players" "%PKG%\"
+xcopy /Y "%PROJ%\data\*" "%PKG%\data\"
 xcopy /Y "%PROJ%\config" "%PKG%\"
 
 for %%d in %REMDLLS% do del /Q "%PKG%\%%d"

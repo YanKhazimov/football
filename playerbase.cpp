@@ -2,18 +2,11 @@
 #include <memory>
 #include <QFile>
 #include <QTextStream>
+#include <QDir>
 
 PlayerbaseQuery::PlayerbaseQuery(Playerbase& base, Query rule, QString title, QString description)
     : m_name(title), m_description(description)
 {
-    QList<PlayerRef> players = base.listAllPlayers();
-    int i = 0;
-    for (auto p = players.constBegin(); p != players.constEnd() && i < rule; ++i, ++p)
-    {
-        m_queryResultItems.push_back(new QueryResultItem("g" + QString::number(i),
-        {new PlayerStat(base.getPlayer(*p), QString::number(10 + i)),
-         new PlayerStat(base.getPlayer(*p), QString::number(20 + i))}));
-    }
 }
 
 PlayerbaseQuery::~PlayerbaseQuery()
@@ -82,9 +75,22 @@ QList<PlayerRef> Playerbase::listAllPlayers() const
     return m_base.keys();
 }
 
+QUrl Playerbase::getPhotoUrl(const QStringList& playerData)
+{
+    if (playerData.size() < 3)
+        return Player::defaultPhotoUrl;
+
+    QString localFilepath = QDir::currentPath() + "/data/" + playerData[2];
+
+    if (!QFileInfo::exists(localFilepath))
+        return Player::defaultPhotoUrl;
+
+    return QUrl("file:///" + localFilepath);
+}
+
 void Playerbase::init()
 {
-    QFile inputFile("players");
+    QFile inputFile("data/players");
     if (inputFile.open(QIODevice::ReadOnly))
     {
         for (auto p: m_base.keys())
@@ -98,7 +104,7 @@ void Playerbase::init()
 
            name = playerData[0];
            initialRating = playerData[1].toInt();
-           photo = playerData.size() > 2 ? QUrl("qrc:/img/playerImages/" + playerData[2] + ".png") : Player::defaultPhotoUrl;
+           photo = getPhotoUrl(playerData);
 
            m_base[name] = new Player(name, initialRating, this, photo);
        }

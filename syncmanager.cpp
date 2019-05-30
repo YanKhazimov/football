@@ -1,17 +1,24 @@
 #include "syncmanager.h"
 
 #include <QFile>
+#include <QDir>
 
 SyncManager::SyncManager(GamesModel &gm, PlayerSortFilterProxyModel &ssm, const Language& lang, Playerbase *pb, QObject *parent)
     : QObject(parent), m_gamesModel(gm), m_sortingStatModel(ssm), m_language(lang), m_playerbase(pb),
-      m_playersDownloaded(false), m_gamesDownloaded(false),
-      m_gamesUrl("https://dl.dropboxusercontent.com/s/fapzda1e3o5pby3/games?dl=0"),
-      m_playersUrl("https://dl.dropboxusercontent.com/s/wfr30z1c3muqehb/players?dl=0")
+      m_gamesUrl("https://dl.dropboxusercontent.com/s/fapzda1e3o5pby3/games"),
+      m_playersUrl("https://dl.dropboxusercontent.com/s/wfr30z1c3muqehb/players")
 {
 }
 
 void SyncManager::update()
 {
+    m_upToDate = true;
+    m_updateError = false;
+
+    m_downloadsToDo.clear();
+    m_downloadsToDo.append(m_gamesUrl);
+    m_downloadsToDo.append(m_playersUrl);
+
     Downloader *gamesDownloader = new Downloader(m_gamesUrl);
     QThread* gamesLoadingThread = new QThread();
     gamesDownloader->moveToThread(gamesLoadingThread);
@@ -37,79 +44,95 @@ void SyncManager::handleResults(QNetworkReply* pReply)
 {
     if (pReply->error() || pReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 200)
     {
-        emit updateFinished(Language::dict.value("updateFail").value(m_language.get()));
+        m_updateError = true;
+        emit updateFinished(Language::dict.value("updateFail").value(m_language.get())
+                            + " : " + pReply->url().fileName());
         pReply->deleteLater();
         return;
     }
 
+    QByteArray downloadedData = pReply->readAll();
+    QString localFilename;
     if (pReply->url() == m_gamesUrl)
     {
-        m_downloadedGamesData = pReply->readAll();
-        pReply->deleteLater();
-        m_gamesDownloaded = true;
-        if (!m_playersDownloaded)
-            return;
+        localFilename = QDir::currentPath() + "/data/games";
     }
     else if (pReply->url() == m_playersUrl)
     {
-        m_downloadedPlayersData = pReply->readAll();
-        pReply->deleteLater();
-        m_playersDownloaded = true;
-        if (!m_gamesDownloaded)
-            return;
+        localFilename = QDir::currentPath() + "/data/players";
+
+        if (downloadedData != readLocalData(localFilename))
+        {
+            QTextStream in(downloadedData);
+            QStringList playerData;
+            while (!in.atEnd())
+            {
+                playerData = in.readLine().split('\t', QString::SplitBehavior::SkipEmptyParts);
+
+                if (playerData.size() < 3)
+                    continue;
+
+                QUrl url("https://dl.dropboxusercontent.com/s/" + playerData[2] + "/" + playerData[2]);
+                m_downloadsToDo.append(url);
+                Downloader *photoDownloader = new Downloader(url);
+                QThread* photoLoadingThread = new QThread();
+                photoDownloader->moveToThread(photoLoadingThread);
+                QObject::connect(photoLoadingThread, &QThread::started, photoDownloader, &Downloader::sendDownloadRequest);
+                QObject::connect(photoDownloader, &Downloader::resultReady, this, &SyncManager::handleResults);
+                QObject::connect(photoDownloader, &Downloader::resultReady, photoLoadingThread, &QThread::quit);
+                QObject::connect(photoDownloader, &Downloader::resultReady, photoDownloader, &Downloader::deleteLater);
+                QObject::connect(photoLoadingThread, &QThread::finished, photoLoadingThread, &QThread::deleteLater);
+                photoLoadingThread->start();
+            }
+        }
+    }
+    else
+    {
+        localFilename = QDir::currentPath() + "/data/" + pReply->url().fileName();
     }
 
-    // downloaded all, start updating
-    m_gamesDownloaded = m_playersDownloaded = false;
+    bool sameData = downloadedData == readLocalData(localFilename);
+    if (!sameData)
+        writeLocalData(localFilename, downloadedData);
 
-    readLocalData();
+    m_upToDate = m_upToDate && sameData;
 
-    if (m_downloadedGamesData == m_localGamesData && m_downloadedPlayersData == m_localPlayersData)
+    pReply->deleteLater();
+    m_downloadsToDo.removeOne(pReply->url());
+    if (!m_downloadsToDo.empty())
+        return;
+    if (m_upToDate && !m_updateError)
     {
         emit updateFinished(Language::dict.value("upToDate").value(m_language.get()));
         return;
     }
 
-    if (m_downloadedPlayersData != m_localPlayersData)
-    {
-        QFile file("players");
-        if (file.open(QIODevice::WriteOnly))
-        {
-            file.write(m_downloadedPlayersData);
-            file.close();
-        }
-        m_playerbase->init();
-    }
-
-    if (m_downloadedGamesData != m_localGamesData)
-    {
-        QFile file("games");
-        if (file.open(QIODevice::WriteOnly))
-        {
-            file.write(m_downloadedGamesData);
-            file.close();
-        }
-    }
-
+    m_playerbase->init();
     applyGames();
 
     emit updateFinished(Language::dict.value("updated").value(m_language.get()));
 }
 
-void SyncManager::readLocalData()
+QByteArray SyncManager::readLocalData(QString file)
 {
-    QFile gamesFile("games");
+    QByteArray data;
+    QFile gamesFile(file);
     if (gamesFile.open(QIODevice::ReadOnly))
     {
-        m_localGamesData = gamesFile.readAll();
+        data = gamesFile.readAll();
         gamesFile.close();
     }
 
-    QFile playersFile("players");
-    if (playersFile.open(QIODevice::ReadOnly))
+    return data;
+}
+
+void SyncManager::writeLocalData(QString filename, const QByteArray &data)
+{
+    QFile file(filename);
+    if (file.open(QIODevice::WriteOnly))
     {
-        m_localPlayersData = playersFile.readAll();
-        playersFile.close();
+        file.write(data);
+        file.close();
     }
 }
 

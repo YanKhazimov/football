@@ -11,6 +11,7 @@ class Playerbase: public QObject
     Q_OBJECT
     QMap<PlayerRef, Player*> m_base;
 
+    QUrl getPhotoUrl(const QStringList& playerData);
 public:
     Playerbase();
     ~Playerbase();

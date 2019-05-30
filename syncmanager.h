@@ -46,13 +46,16 @@ private:
     PlayerSortFilterProxyModel &m_sortingStatModel;
     const Language& m_language;
     Playerbase* m_playerbase;
-    bool m_playersDownloaded, m_gamesDownloaded;
     QByteArray m_downloadedGamesData, m_downloadedPlayersData;
     QByteArray m_localGamesData, m_localPlayersData;
     const QUrl m_gamesUrl, m_playersUrl;
+    QList<QUrl> m_downloadsToDo;
 
-    void readLocalData();
+    QByteArray readLocalData(QString file);
+    void writeLocalData(QString filename, const QByteArray& data);
     void applyGames();
+
+    bool m_upToDate, m_updateError;
 
 signals:
     void updateFinished(QString message);
