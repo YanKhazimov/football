@@ -15,6 +15,7 @@ for /F "delims=" %%i in ('dir /b') do (rd "%%i" /S/Q || del "%%i" /S/Q)
 cd /D %CURDIR%
 
 xcopy /Y "%BIN%\%APPNAME%" "%PKG%\"
+"%PROJ%\rcedit-x64.exe" "%PKG%\%APPNAME%" --set-icon "%PROJ%\img\ball3d.ico"
 "%QTBIN%\windeployqt.exe" "%PKG%\%APPNAME%" --release --qmldir "%PROJ%\qml"
 
 xcopy /Y "%EXTRADLLS%\*.dll" "%PKG%\"
