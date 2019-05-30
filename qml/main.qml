@@ -86,7 +86,7 @@ QQC2.ApplicationWindow {
                 loops: 10
             }
 
-            QQC2.ToolTip.delay: 500
+            QQC2.ToolTip.delay: 100
             QQC2.ToolTip.timeout: 3000
             QQC2.ToolTip.visible: refresherMouseArea.containsMouse
             QQC2.ToolTip.text: lang.getText("updateData")
@@ -134,7 +134,7 @@ QQC2.ApplicationWindow {
                 }
             }
 
-            QQC2.ToolTip.delay: 500
+            QQC2.ToolTip.delay: 100
             QQC2.ToolTip.timeout: 3000
             QQC2.ToolTip.visible: relevanceMouseArea.containsMouse
             QQC2.ToolTip.text: lang.getText("switchRelevance")
@@ -174,7 +174,7 @@ QQC2.ApplicationWindow {
                     }
                 }
 
-                QQC2.ToolTip.delay: 500
+                QQC2.ToolTip.delay: 100
                 QQC2.ToolTip.timeout: 3000
                 QQC2.ToolTip.visible: languageMouseArea.containsMouse
                 QQC2.ToolTip.text: lang.getText("changeLanguage")

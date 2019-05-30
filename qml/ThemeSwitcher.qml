@@ -27,7 +27,7 @@ Rectangle {
         }
     }
 
-    ToolTip.delay: 500
+    ToolTip.delay: 100
     ToolTip.timeout: 3000
     ToolTip.visible: mouseArea.containsMouse
     ToolTip.text: lang.getText("changeTheme")

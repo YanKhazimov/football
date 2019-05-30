@@ -39,6 +39,6 @@ set (SRC
 
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 
-add_executable(${PROJECT_NAME} "main.cpp" "qml.qrc" ${SRC})
+add_executable(${PROJECT_NAME} WIN32 "main.cpp" "qml.qrc" ${SRC})
 
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Quick)

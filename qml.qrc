@@ -6,10 +6,8 @@
         <file>qml/Players/StatsTable.qml</file>
         <file>qml/Players/PlayerPage.qml</file>
         <file>img/ball.png</file>
-        <file>img/l.svg</file>
         <file>img/pause.png</file>
         <file>img/play.png</file>
-        <file>img/r.svg</file>
         <file>qml/visualStyles/qmldir</file>
         <file>qml/visualStyles/Sizes.qml</file>
         <file>qml/visualStyles/Themes.qml</file>
