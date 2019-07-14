@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     GlobalStatsModel globalStatsModel(&playerbase);
     globalStatsModel.setSourceModel(&gm);
 
-    PlayerSortFilterProxyModel sortingStatModel;
+    PlayerSortFilterProxyModel sortingStatModel(DataRoles::DataRole::Rating);
     sortingStatModel.setSourceModel(&globalStatsModel);
 
     StatPresenterProxyModel statModel;
@@ -79,14 +79,14 @@ int main(int argc, char *argv[])
         seasonModel.setSeasonFilter(QString::number(QDate::currentDate().year()));
     });
 
-    PlayerSortFilterProxyModel progressAwardSortingModel, dedicationAwardSortingModel;
+    PlayerSortFilterProxyModel progressAwardSortingModel(DataRoles::DataRole::Progress);
     progressAwardSortingModel.setSourceModel(&seasonModel);
+    PlayerSortFilterProxyModel dedicationAwardSortingModel(DataRoles::DataRole::Dedication);
     dedicationAwardSortingModel.setSourceModel(&seasonModel);
 
     StatPresenterProxyModel progressAwardPresenterModel, dedicationAwardPresenterModel;
     progressAwardPresenterModel.setSourceModel(&progressAwardSortingModel);
     dedicationAwardPresenterModel.setSourceModel(&dedicationAwardSortingModel);
-
 
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();

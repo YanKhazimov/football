@@ -30,12 +30,12 @@ public:
     bool operator ==(const Award& award);
     bool operator !=(const Award& award);
 
-    Q_INVOKABLE QString getDescription();
     Q_INVOKABLE QString getImageSource();
 
     int getSeason();
     QString getRank();
     QString getCategory();
+    QString getScore();
     Player* getPlayer();
 };
 

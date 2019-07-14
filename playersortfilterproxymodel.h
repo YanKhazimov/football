@@ -2,6 +2,7 @@
 #define PLAYERSORTFILTERMODEL_H
 
 #include <QSortFilterProxyModel>
+#include "dataroles.h"
 #include "player.h"
 
 class PlayerSortFilterProxyModel: public QSortFilterProxyModel
@@ -9,7 +10,7 @@ class PlayerSortFilterProxyModel: public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    PlayerSortFilterProxyModel(QObject *parent = nullptr);
+    PlayerSortFilterProxyModel(const DataRoles::DataRole sortingRole, QObject *parent = nullptr);
 
     virtual void setSourceModel(QAbstractItemModel *source) Q_DECL_OVERRIDE;
 

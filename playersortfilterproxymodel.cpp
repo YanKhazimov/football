@@ -1,10 +1,9 @@
 #include "playersortfilterproxymodel.h"
-#include "dataroles.h"
 
-PlayerSortFilterProxyModel::PlayerSortFilterProxyModel(QObject* parent)
+PlayerSortFilterProxyModel::PlayerSortFilterProxyModel(const DataRoles::DataRole sortingRole, QObject* parent)
     : QSortFilterProxyModel(parent)
 {
-    setSortRole(DataRoles::DataRole::Rating);
+    setSortRole(sortingRole);
 }
 
 void PlayerSortFilterProxyModel::setSourceModel(QAbstractItemModel *source)

@@ -24,11 +24,6 @@ bool Award::operator !=(const Award &award)
     return !(*this == award);
 }
 
-QString Award::getDescription()
-{
-    return QString("%1 %2 - %3").arg(m_season).arg(m_category).arg(m_rank.toUpper());
-}
-
 QString Award::getImageSource()
 {
     return QString("qrc:/img/medal_%1_%2.png").arg(m_category.toLower()).arg(m_rank.toLower());
@@ -47,6 +42,11 @@ QString Award::getRank()
 QString Award::getCategory()
 {
     return m_category;
+}
+
+QString Award::getScore()
+{
+    return m_score;
 }
 
 Player *Award::getPlayer()

@@ -1,7 +1,6 @@
 #include "globalstatsmodel.h"
 #include "language.h"
 #include <QDate>
-#include <QDebug>
 #include <math.h>
 
 GlobalStatsModel::GlobalStatsModel(const Playerbase* base)
@@ -217,7 +216,7 @@ QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
             QVector<PlayerRef> participants =
                     gameIndex.data(DataRoles::DataRole::Hometeam).value<QVector<PlayerRef>>() +
                     gameIndex.data(DataRoles::DataRole::Awayteam).value<QVector<PlayerRef>>();
-            if (qFind(participants, playerData.first) != participants.end())
+            if (participants.contains(playerData.first))
                 relevancePoints += i + 1 - firstCountedGameIndex;
         }
 
@@ -438,7 +437,7 @@ void GlobalStatsModel::resetData()
             if (m_minDate <= gameDate)
                 m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(scoreDiff), sourceGameIndex));
         }
-        for (PlayerRef playerRef: awayteam)
+        for (const QString &playerRef: awayteam)
         {
             if (!m_base->getPlayer(playerRef))
                 continue;
