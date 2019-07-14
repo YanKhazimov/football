@@ -1,13 +1,14 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
+import QtQuick.Controls 2.12 as QQC2
 import com.abc.abclib 1.0
 import "qrc:/qml/visualStyles"
 import ".."
 
 Rectangle {
     id: root
-    color: theme.primaryColor
+    color: "transparent"
     property var theme: null
     property Player player: statsTable.presenter.selectedPlayer
     property var table: statsTable
@@ -15,46 +16,96 @@ Rectangle {
 
     ColumnLayout {
         id: column
-        spacing: player ? 5 : Sizes.featuredStats.margin
-        anchors {
-            left: parent.left
-            right: parent.right
-            verticalCenter: parent.verticalCenter
-        }
+        spacing: Sizes.featuredStats.smallMargin
+        anchors.fill: parent
 
-        Text {
-            id: name
-            text: player ? player.name : "No player selected"
-            font.family: Themes.fontFamily
-            font.pixelSize: Sizes.fontPixelSize
-            color: root.theme.secondaryColor
+        Rectangle {
+            id: playerCard
+            border.color: theme.highlightColor
+            border.width: 2
+            color: theme.primaryColor
             Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: parent.width / 2
+            Layout.minimumHeight: parent.height / 3
+            Layout.fillHeight: true
+            Layout.leftMargin: Sizes.featuredStats.smallMargin
+            Layout.rightMargin: Sizes.featuredStats.smallMargin
+            Layout.topMargin: Sizes.featuredStats.smallMargin
+
+            ColumnLayout {
+                id: playerCardLayout
+                anchors.centerIn: parent
+
+                Text {
+                    id: name
+                    text: player ? player.name : "No player selected"
+                    font.family: Themes.fontFamily
+                    font.pixelSize: Sizes.fontPixelSize
+                    color: root.theme.secondaryColor
+                    Layout.alignment: Qt.AlignHCenter
+                }
+
+                RowLayout {
+                    Layout.alignment: Qt.AlignHCenter
+
+                    ColoredImage {
+                        source: player ? player.photo : "qrc:/img/defaultphoto.png"
+                        width: 128
+                        height: 128
+                        Layout.alignment: Qt.AlignVCenter
+                        color: player ? "transparent" : root.theme.secondaryColor
+                    }
+
+                    Column {
+                        Layout.alignment: Qt.AlignVCenter
+                        Repeater {
+                            model: globalStatsModel.getAwards([], [], [], [player.name])
+                            delegate: Image {
+                                source: modelData.getImageSource()
+                                height: 32
+                                width: 32
+                                MouseArea {
+                                    id: imgMouseArea
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                }
+
+                                QQC2.ToolTip.delay: 100
+                                QQC2.ToolTip.timeout: 3000
+                                QQC2.ToolTip.visible: imgMouseArea.containsMouse
+                                QQC2.ToolTip.text: modelData.getDescription()//lang.getText("updateData")
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-        ColoredImage {
-            source: player ? player.photo : "qrc:/img/defaultphoto.png"
-            Layout.preferredHeight: 128
-            Layout.preferredWidth: 128
-            Layout.alignment: Qt.AlignHCenter
-            color: player ? "transparent" : root.theme.secondaryColor
-        }
-
-        PlayerStatsTable {
-            id: statsTable
+        Rectangle {
             visible: player
-            property PersonalStatsModel presenter: personalStatsModel
-            model: presenter
+            border.color: theme.highlightColor
+            border.width: 2
+            color: theme.primaryColor
+            Layout.alignment: Qt.AlignHCenter
+            Layout.leftMargin: Sizes.featuredStats.smallMargin
+            Layout.rightMargin: Sizes.featuredStats.smallMargin
+            Layout.preferredWidth: parent.width * 3 / 4
+            Layout.minimumHeight: Sizes.fontPixelSize * statsTable.presenter.length
+            Layout.fillHeight: true
 
-            theme: root.theme
+            PlayerStatsTable {
+                id: statsTable
+                property PersonalStatsModel presenter: personalStatsModel
+                model: presenter
+                anchors.fill: parent
+                theme: root.theme
 
-            Layout.fillWidth: true
-            Layout.maximumHeight: Sizes.fontPixelSize * model.length
-
-            Connections {
-                target: statsTable.selection
-                onSelectionChanged: {
-                    var category = statsTable.model.getStatCategory(statsTable.currentRow)
-                    root.selectedStatChanged(category)
+                Connections {
+                    target: statsTable.selection
+                    onSelectionChanged: {
+                        var category = statsTable.model.getStatCategory(statsTable.currentRow)
+                        root.selectedStatChanged(category)
+                    }
                 }
             }
         }
@@ -63,9 +114,11 @@ Rectangle {
             id: chart
             visible: player
             Layout.fillWidth: true
+            Layout.preferredHeight: width / 3
             Layout.fillHeight: true
             Layout.leftMargin: Sizes.featuredStats.smallMargin
             Layout.rightMargin: Sizes.featuredStats.smallMargin
+            Layout.bottomMargin: Sizes.featuredStats.smallMargin
 
             theme: root.theme
             points: []

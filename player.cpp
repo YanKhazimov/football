@@ -42,4 +42,9 @@ int Player::getInitialRating() const
     return m_initialRating;
 }
 
+QString Player::getName() const
+{
+    return m_name;
+}
+
 const QUrl Player::defaultPhotoUrl("qrc:/img/defaultphoto.png");

@@ -27,6 +27,8 @@ public:
     int getInitialRating() const;
     static const QUrl defaultPhotoUrl;
 
+    Q_INVOKABLE QString getName() const;
+
 signals:
     void photoChanged();
 };

@@ -118,7 +118,7 @@ TableView {
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
-            text: styleData.value
+            text: styleData.value.toString()
             font.family: Themes.fontFamily
             font.pixelSize: 12
         }
@@ -127,7 +127,11 @@ TableView {
     style: TableViewStyle {
         rowDelegate: Rectangle {
             color: styleData.selected ? root.theme.highlightColor : root.theme.secondaryColor
-            radius: height
+            Rectangle {
+                height: 1
+                color: root.theme.primaryColor
+                anchors { bottom: parent.top; left: parent.left; right: parent.right }
+            }
         }
 
         backgroundColor: root.theme.primaryColor

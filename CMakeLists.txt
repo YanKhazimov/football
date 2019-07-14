@@ -20,6 +20,7 @@ set (HEADERS
     language.h
     config.h
     syncmanager.h
+    award.h
     featuredstats.h)
 
 set (SRC
@@ -35,6 +36,7 @@ set (SRC
     language.cpp
     config.cpp
     syncmanager.cpp
+    award.cpp
     featuredstats.cpp)
 
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)

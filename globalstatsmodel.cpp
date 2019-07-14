@@ -18,6 +18,7 @@ GlobalStatsModel::GlobalStatsModel(const GlobalStatsModel &model)
     m_selectedPlayer = model.m_selectedPlayer;
     m_minDate = model.m_minDate;
     m_maxDate = model.m_maxDate;
+    m_awards = model.m_awards;
 }
 
 void GlobalStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
@@ -44,7 +45,11 @@ void GlobalStatsModel::setSourceModel(QAbstractItemModel *sourceModel)
         connect(m_sourceModel, SIGNAL(modelReset()), this, SLOT(resetModel()));
     }
 
+    int firstSeason = m_sourceModel->index(0, 0).data(DataRoles::DataRole::GameDate).toDate().year();
+    m_minDate.setDate(firstSeason, 1, 1);
+    m_maxDate = QDate::currentDate();
     resetData();
+    resetAwards();
 
     endResetModel();
 }
@@ -69,7 +74,8 @@ bool GlobalStatsModel::setSeasonFilter(QString filter)
     if (Language::dict.value("all").values().contains(filter))
     {
         beginResetModel();
-        m_minDate.setDate(2000, 1, 1);
+        int firstSeason = m_sourceModel->index(0, 0).data(DataRoles::DataRole::GameDate).toDate().year();
+        m_minDate.setDate(firstSeason, 1, 1);
         m_maxDate = QDate::currentDate();
         resetData();
         endResetModel();
@@ -102,6 +108,12 @@ bool GlobalStatsModel::setSeasonFilter(QString filter)
     }
 
     return true;
+}
+
+QVariant GlobalStatsModel::getAwards(const QStringList &categoryFilter, const QStringList &rankFilter,
+                                      const QList<int> &seasonFilter, const QStringList &playerFilter)
+{
+    return m_awards.filter(rankFilter, seasonFilter, categoryFilter, playerFilter);
 }
 
 QVariant GlobalStatsModel::data(const QModelIndex &index, int role) const
@@ -331,6 +343,7 @@ void GlobalStatsModel::resetModel()
 
     beginResetModel();
     resetData();
+    resetAwards();
     endResetModel();
 }
 
@@ -370,6 +383,7 @@ void GlobalStatsModel::resetData()
     m_playersData.clear();
     m_seasonStartingRating.clear();
     m_selectedPlayer.clear();
+
     QModelIndex selectedIndex = getIndexByRef(m_selectedPlayer);
     emit dataChanged(selectedIndex, selectedIndex, {DataRoles::DataRole::PlayerSelection});
 
@@ -435,6 +449,101 @@ void GlobalStatsModel::resetData()
                 m_playersData[playerRef].push_back(PlayerGameStats(currentRatings[playerRef], sign(-scoreDiff), sourceGameIndex));
         }
     }
+}
+
+void GlobalStatsModel::resetSeasonAwards(int season)
+{
+    if (season >= QDate::currentDate().year())
+        return; // awards only for completed seasons
+
+    QMap<DataRoles::DataRole, QString> roleStrings {
+        {DataRoles::DataRole::Progress, "Progress"},
+        {DataRoles::DataRole::Dedication, "Dedication"}
+    };
+
+    for (DataRoles::DataRole role: roleStrings.keys())
+    {
+        std::map<QVariant, QStringList> sortedByCategory;
+        for (int i = 0; i < rowCount(); ++i)
+        {
+            QString playerName = index(i, 0).data(DataRoles::DataRole::PlayerName).toString();
+
+            if (m_playersData.count(playerName) > 0 && m_playersData.at(playerName).size() < 5)
+                continue; // not awarding players with <5 games in the season
+
+            QVariant score = index(i, 0).data(role);
+            if (score.type() == QMetaType::Float)
+            {
+                score = QVariant::fromValue(static_cast<int>(score.toFloat()));
+            }
+            sortedByCategory[score].append(playerName);
+        }
+
+        std::map<QVariant, QStringList>::reverse_iterator iter = sortedByCategory.rbegin();
+        int medalsGiven = 0;
+
+        QStringList ranks {"GOLD", "SILVER", "BRONZE"};
+        for (QStringList::iterator rank = ranks.begin(); rank != ranks.end(); )
+        {
+            if (iter == sortedByCategory.rend() || medalsGiven >= 3)
+                break;
+
+            QString roleRepresentation;
+            if (role == DataRoles::DataRole::Progress) {
+                int progress = iter->first.toInt();
+                QString extraSign = progress > 0 ? "+" : "";
+                roleRepresentation = extraSign + QString::number(progress);
+            }
+            else if (role == DataRoles::DataRole::Dedication)
+            {
+                roleRepresentation = QString::number(iter->first.toInt()) + "%";
+            }
+
+            for (QString playerName: iter->second)
+            {
+                m_awards.add(Award(season, roleStrings.value(role), *rank, m_base->getPlayer(playerName), roleRepresentation));
+            }
+
+            medalsGiven += iter->second.size();
+            rank += iter->second.size();
+            ++iter;
+        }
+    }
+}
+
+void GlobalStatsModel::resetAwards()
+{
+    m_awards.clear();
+
+    std::map<PlayerRef, QVector<PlayerGameStats>> backupData = m_playersData;
+    QMap<PlayerRef, int> startingRatingBackup = m_seasonStartingRating;
+    QDate minBackup = m_minDate, maxBackup = m_maxDate;
+
+    for (int season = minBackup.year(); season <= maxBackup.year(); ++season)
+    {
+        m_minDate.setDate(season, 1, 1);
+        m_maxDate.setDate(season, 12, 31);
+
+        m_playersData.clear();
+        for (auto playerData: backupData)
+        {
+            for (auto game: playerData.second)
+            {
+                if (game.sourceIndex.data(DataRoles::DataRole::GameDate).toDate().year() == season)
+                    m_playersData[playerData.first].append(game);
+            }
+        }
+
+        resetSeasonAwards(season);
+
+        for (auto playerData: m_playersData)
+            m_seasonStartingRating[playerData.first] = playerData.second.last().changedRating;
+    }
+
+    m_playersData = backupData;
+    m_seasonStartingRating = startingRatingBackup;
+    m_minDate = minBackup;
+    m_maxDate = maxBackup;
 }
 
 std::pair<PlayerRef, QVector<GlobalStatsModel::PlayerGameStats> > GlobalStatsModel::getPlayerData(const QModelIndex &index) const

@@ -6,7 +6,6 @@ import "qrc:/qml/visualStyles"
 
 Rectangle {
     id: root
-    anchors.fill: parent
 
     property var theme: null
     property var allPlayersModel: null

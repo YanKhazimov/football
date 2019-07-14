@@ -58,5 +58,13 @@
         <file>img/defaultphoto.png</file>
         <file>img/l.png</file>
         <file>img/r.png</file>
+        <file>qml/Awards/CompletedSeasonAwards.qml</file>
+        <file>qml/Awards/CurrentSeasonAwardRace.qml</file>
+        <file>img/medal_dedication_bronze.png</file>
+        <file>img/medal_dedication_gold.png</file>
+        <file>img/medal_dedication_silver.png</file>
+        <file>img/medal_progress_bronze.png</file>
+        <file>img/medal_progress_gold.png</file>
+        <file>img/medal_progress_silver.png</file>
     </qresource>
 </RCC>

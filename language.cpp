@@ -35,7 +35,10 @@ const QMap<QString, QMap<QString, QString>> Language::dict = QMap<QString, QMap<
     { "switchRelevance", { { "en", "Relevant/All" }, { "ru", "Полный/актуальный список" } } },
     { "changeSeason", { { "en", "Change season" }, { "ru", "Сменить сезон" } } },
     { "changeLanguage", { { "en", "Change language" }, { "ru", "Сменить язык" } } },
-    { "changeTheme", { { "en", "Change pallette" }, { "ru", "Сменить скин" } } }
+    { "changeTheme", { { "en", "Change pallette" }, { "ru", "Сменить скин" } } },
+    { "gold", { { "en", "gold" }, { "ru", "золото" } } },
+    { "silver", { { "en", "silver" }, { "ru", "серебро" } } },
+    { "bronze", { { "en", "bronze" }, { "ru", "бронза" } } }
 };
 
 void Language::set(QString str)
@@ -70,6 +73,9 @@ void Language::set(QString str)
     m_updateFail = dict["changeSeason"][m_lang];
     m_updateFail = dict["changeLanguage"][m_lang];
     m_updateFail = dict["changeTheme"][m_lang];
+    m_gold = dict["gold"][m_lang];
+    m_silver = dict["silver"][m_lang];
+    m_bronze = dict["bronze"][m_lang];
 
     emit languageChanged(m_lang);
 }

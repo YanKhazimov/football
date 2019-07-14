@@ -21,8 +21,10 @@ Q_DECLARE_METATYPE(PlayerbaseQuery*)
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    //rename("Razdevalka.exe","Razdevalka2.exe");
+
     QGuiApplication app(argc, argv);
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication::setWindowIcon(QIcon(":/img/ball3d.ico"));
 
     qmlRegisterUncreatableType<Player>("com.abc.abclib", 1, 0, "Player", "");
@@ -45,7 +47,6 @@ int main(int argc, char *argv[])
 
     Playerbase playerbase;
     GlobalStatsModel globalStatsModel(&playerbase);
-
     globalStatsModel.setSourceModel(&gm);
 
     PlayerSortFilterProxyModel sortingStatModel;
@@ -68,6 +69,25 @@ int main(int argc, char *argv[])
 
     SyncManager updater(gm, sortingStatModel, language, &playerbase);
 
+    // season models
+
+    GlobalStatsModel seasonModel(&playerbase);
+    seasonModel.setSourceModel(&gm);
+    seasonModel.setSeasonFilter(QString::number(QDate::currentDate().year()));
+
+    QObject::connect(&gm, &GlobalStatsModel::modelReset, [&seasonModel]() {
+        seasonModel.setSeasonFilter(QString::number(QDate::currentDate().year()));
+    });
+
+    PlayerSortFilterProxyModel progressAwardSortingModel, dedicationAwardSortingModel;
+    progressAwardSortingModel.setSourceModel(&seasonModel);
+    dedicationAwardSortingModel.setSourceModel(&seasonModel);
+
+    StatPresenterProxyModel progressAwardPresenterModel, dedicationAwardPresenterModel;
+    progressAwardPresenterModel.setSourceModel(&progressAwardSortingModel);
+    dedicationAwardPresenterModel.setSourceModel(&dedicationAwardSortingModel);
+
+
     QQmlApplicationEngine engine;
     QQmlContext* ctxt = engine.rootContext();
 
@@ -77,6 +97,9 @@ int main(int argc, char *argv[])
     ctxt->setContextProperty("globalStatsModel", &globalStatsModel);
     ctxt->setContextProperty("sortingStatModel", &sortingStatModel);
     ctxt->setContextProperty("statModel", &statModel);
+
+    ctxt->setContextProperty("progressModel", &progressAwardPresenterModel);
+    ctxt->setContextProperty("dedicationModel", &dedicationAwardPresenterModel);
 
     TeamSplitter teamSplitter(globalStatsModel);
     ctxt->setContextProperty("teamSplitter", &teamSplitter);

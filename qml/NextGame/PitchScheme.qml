@@ -7,6 +7,7 @@ import "qrc:/qml/visualStyles"
 Rectangle {
     id: pitchScheme
     anchors.fill: parent
+    anchors.margins: Sizes.borderWidth
 
     property var theme: null
     property point pitchCenterCoords: Qt.point(pitchCenterArea.x + pitchCenterArea.width/2,

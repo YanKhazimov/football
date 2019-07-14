@@ -5,6 +5,7 @@
 #include <QDate>
 #include "playerbase.h"
 #include "dataroles.h"
+#include "award.h"
 
 class GlobalStatsModel: public QAbstractTableModel
 {
@@ -30,6 +31,9 @@ public:
 
     Q_INVOKABLE bool setSeasonFilter(QString filter);
 
+    Q_INVOKABLE QVariant getAwards(const QStringList& categoryFilter, const QStringList& rankFilter,
+                                   const QList<int>& seasonFilter, const QStringList& playerFilter);
+
 private slots:
     void resetModel();
     void sourceRowsInserted(QModelIndex parent, int first, int last);
@@ -45,6 +49,8 @@ private:
     };
 
     void resetData();
+    void resetAwards();
+    void resetSeasonAwards(int season);
     std::pair<PlayerRef, QVector<PlayerGameStats>> getPlayerData(const QModelIndex& index) const;
 
     QModelIndex getIndexByRef(const PlayerRef& ref);
@@ -54,6 +60,7 @@ private:
 
     std::map<PlayerRef, QVector<PlayerGameStats>> m_playersData;
     QMap<PlayerRef, int> m_seasonStartingRating;
+    Awards m_awards;
     PlayerRef m_selectedPlayer;
     QDate m_minDate, m_maxDate;
 };
