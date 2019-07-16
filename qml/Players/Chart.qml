@@ -116,19 +116,7 @@ Rectangle {
         }
         width: maxMark.width
         height: maxMark.height
-        gradient: Gradient {
-            GradientStop { position: 1.0; color: root.theme.primaryColor }
-            GradientStop { position: 0.0; color: {
-                    var hex = root.theme.primaryColor
-                    return hex[0] + "80" + hex[1] + hex[2] + hex[3] + hex[4] + hex[5] + hex[6]
-                    } }
-        }
-        Rectangle{
-            anchors.bottom: parent.bottom
-            width: parent.width
-            height: 1
-            color: root.theme.secondaryColor
-        }
+        color: root.theme.primaryColor
 
         Text {
             id: maxMark
@@ -146,19 +134,7 @@ Rectangle {
         }
         width: minMark.width
         height: minMark.height
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: root.theme.primaryColor }
-            GradientStop { position: 1.0; color: {
-                    var hex = root.theme.primaryColor
-                    return hex[0] + "80" + hex[1] + hex[2] + hex[3] + hex[4] + hex[5] + hex[6]
-                    } }
-        }
-        Rectangle{
-            anchors.top: parent.top
-            width: parent.width
-            height: 1
-            color: root.theme.secondaryColor
-        }
+        color: root.theme.primaryColor
 
         Text {
             id: minMark

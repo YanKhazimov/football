@@ -38,7 +38,10 @@ Rectangle {
                gradient: Gradient {
                    orientation: Gradient.Horizontal
                    GradientStop { position: 0.0; color: root.theme.primaryColor }
-                   GradientStop { position: 1.0; color: "transparent" }
+                   GradientStop { position: 1.0; color: {
+                           var h = root.theme.primaryColor
+                           return "#50" + h[1] + h[2] + h[3] + h[4] + h[5] + h[6]
+                           }}
                }
 
                ColumnLayout {
