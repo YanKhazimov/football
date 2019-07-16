@@ -17,10 +17,11 @@ Rectangle {
     id: pic
     implicitWidth: Sizes.playerHandleWidth
     implicitHeight: Sizes.playerHandleWidth
-    radius: Sizes.playerHandleWidth/3
+    radius: width / 3
     color: backColor
     border.width: Sizes.borderWidth
-    border.color: hasPhoto() ? "transparent" : textColor
+    border.color: textColor
+    clip: true
 
     MouseArea {
         id: ma
@@ -30,11 +31,12 @@ Rectangle {
 
     Text {
         id: name
-        text: hasPhoto() ? "" : player.shortened
-        font.family: Themes.fontFamily
+        text: player.shortened
+        font.family: theme.fontFamily
         font.pixelSize: Sizes.fontPixelSize
         anchors.centerIn: parent
         color: textColor
+        visible: !hasPhoto()
     }
     Image {
         source: hasPhoto() ? player.photo : ""
@@ -42,6 +44,7 @@ Rectangle {
         height: width
         anchors.centerIn: parent
         visible: hasPhoto()
+
     }
 
     ToolTip.text: player.name

@@ -16,12 +16,11 @@ Column {
             id: control
             height: Sizes.elementButtonSize.height
             width: Sizes.elementButtonSize.width * 3
-            //icon.source: "qrc:/img/cancel.png"
             hoverEnabled: true
             text: modelData
             contentItem: Text {
                 text: control.text
-                font.family: Themes.fontFamily
+                font.family: theme.fontFamily
                 color: theme.secondaryColor
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -30,7 +29,7 @@ Column {
                 color: theme.primaryColor
                 border.color: control.hovered ? theme.secondaryColor : theme.highlightColor
                 border.width: Sizes.borderWidth
-                radius: width/2
+                radius: width / 2
             }
             onClicked: buttonClicked(index)
         }

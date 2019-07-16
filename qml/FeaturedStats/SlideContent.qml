@@ -37,7 +37,7 @@ Rectangle {
                     Layout.alignment: Qt.AlignHCenter
                     text: contentRoot.title
                     color: theme.secondaryColor
-                    font.family: Themes.fontFamily
+                    font.family: theme.fontFamily
                     font.pointSize: 16
                     font.bold: true
                 }
@@ -45,7 +45,7 @@ Rectangle {
                     id: statDescr
                     Layout.alignment: Qt.AlignHCenter
                     text: contentRoot.descr
-                    font.family: Themes.fontFamily
+                    font.family: theme.fontFamily
                     font.pointSize: 14
                     color: theme.secondaryColor
                 }

@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import "qrc:/qml/visualStyles"
 
@@ -12,8 +12,6 @@ Rectangle {
 
     height: 100
     color: theme.primaryColor
-    border.color: theme.highlightColor
-    border.width: Sizes.borderWidth
 
     function updatePoints(ratingValues) {
         var res = []
@@ -87,17 +85,6 @@ Rectangle {
           ctx.lineWidth = 2;
           ctx.beginPath();
 
-//          // frame
-//          ctx.strokeStyle = "red";
-//          ctx.moveTo(0, 0)
-//          ctx.lineTo(width, 0)
-//          ctx.lineTo(width, height)
-//          ctx.lineTo(0, height)
-//          ctx.lineTo(0, 0)
-//          ctx.stroke();
-//          ctx.closePath()
-//          ctx.restore()
-
           var maxY = root.max()
           var minY = root.min()
 
@@ -105,25 +92,18 @@ Rectangle {
           var startX = mapX(0, root.points.length)
           var startY = mapY(root.points[0].y, minY[__value], maxY[__value])
           ctx.moveTo(startX, startY)
-          //ctx.ellipse(startX - r, startY - r, 2 * r, 2 * r)
-          ctx.moveTo(startX, startY)
 
           for(var i = 1; i < root.points.length; i++)
           {
               var x = mapX(i, root.points.length)
               var y = mapY(root.points[i].y, minY[__value], maxY[__value])
               ctx.lineTo(x, y)
-              //ctx.ellipse(x - r, y - r, 2 * r, 2 * r)
-              ctx.moveTo(x, y)
           }
           ctx.stroke();
       }
     }
 
-    Text {
-        id: maxMark
-        text: max()[__value]
-        color: root.theme.secondaryColor
+    Rectangle {
         anchors {
             bottom: canvas.top
             bottomMargin: {
@@ -134,17 +114,58 @@ Rectangle {
             left: canvas.left
             leftMargin: canvas.mapX(max()[__idx], root.points.length) - width / 2
         }
+        width: maxMark.width
+        height: maxMark.height
+        gradient: Gradient {
+            GradientStop { position: 1.0; color: root.theme.primaryColor }
+            GradientStop { position: 0.0; color: {
+                    var hex = root.theme.primaryColor
+                    return hex[0] + "80" + hex[1] + hex[2] + hex[3] + hex[4] + hex[5] + hex[6]
+                    } }
+        }
+        Rectangle{
+            anchors.bottom: parent.bottom
+            width: parent.width
+            height: 1
+            color: root.theme.secondaryColor
+        }
+
+        Text {
+            id: maxMark
+            text: max()[__value]
+            color: root.theme.secondaryColor
+            anchors.centerIn: parent
+        }
     }
 
-    Text {
-        id: minMark
-        text: min()[__value]
-        color: root.theme.secondaryColor
+    Rectangle {
         anchors {
             top: canvas.bottom
             left: canvas.left
             leftMargin: canvas.mapX(min()[__idx], root.points.length) - width / 2
         }
-        visible: minMark.text !== maxMark.text
+        width: minMark.width
+        height: minMark.height
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: root.theme.primaryColor }
+            GradientStop { position: 1.0; color: {
+                    var hex = root.theme.primaryColor
+                    return hex[0] + "80" + hex[1] + hex[2] + hex[3] + hex[4] + hex[5] + hex[6]
+                    } }
+        }
+        Rectangle{
+            anchors.top: parent.top
+            width: parent.width
+            height: 1
+            color: root.theme.secondaryColor
+        }
+
+        Text {
+            id: minMark
+            text: min()[__value]
+            color: root.theme.secondaryColor
+            visible: minMark.text !== maxMark.text
+            anchors.centerIn: parent
+        }
     }
 }

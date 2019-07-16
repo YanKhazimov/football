@@ -65,7 +65,7 @@ Rectangle {
         text: root.name
         color: theme.secondaryColor
         font.pixelSize: Sizes.fontPixelSize
-        font.family: Themes.fontFamily
+        font.family: theme.fontFamily
         font.bold: root.selected
     }
 
@@ -79,6 +79,6 @@ Rectangle {
         }
         height: parent.height/2
         width: height
-        color: "white"
+        color: root.theme.secondaryColor
     }
 }

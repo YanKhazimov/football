@@ -15,6 +15,8 @@ Rectangle {
 
     PlayerAvatar {
         id: pic
+        width: Sizes.playerHandleWidth
+        height: Sizes.playerHandleWidth
         player: root.player
         theme: root.theme
         textColor: mouseArea.containsMouse ? theme.highlightColor : theme.primaryColor
@@ -31,7 +33,7 @@ Rectangle {
         color: "white"
         Text {
             text: sortingStatModel.getPlayerRating(player.name)
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
             font.bold: true
             anchors.centerIn: parent
             color: mouseArea.containsMouse ? theme.highlightColor : theme.primaryColor

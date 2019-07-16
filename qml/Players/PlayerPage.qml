@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.12 as QQC2
@@ -16,16 +16,14 @@ Rectangle {
 
     ColumnLayout {
         id: column
-        spacing: Sizes.featuredStats.smallMargin
+        spacing: 0
         anchors.fill: parent
 
         Rectangle {
             id: playerCard
-            border.color: theme.highlightColor
-            border.width: 2
             color: theme.primaryColor
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: parent.width / 2
+            Layout.fillWidth: true
             Layout.minimumHeight: parent.height / 3
             Layout.fillHeight: true
             Layout.leftMargin: Sizes.featuredStats.smallMargin
@@ -39,7 +37,7 @@ Rectangle {
                 Text {
                     id: name
                     text: player ? player.name : "No player selected"
-                    font.family: Themes.fontFamily
+                    font.family: theme.fontFamily
                     font.pixelSize: Sizes.fontPixelSize
                     color: root.theme.secondaryColor
                     Layout.alignment: Qt.AlignHCenter
@@ -53,7 +51,7 @@ Rectangle {
                         width: 128
                         height: 128
                         Layout.alignment: Qt.AlignVCenter
-                        color: player ? "transparent" : root.theme.secondaryColor
+                        color: ((player !== null) && (player.photo != "qrc:/img/defaultphoto.png")) ? "transparent" : root.theme.secondaryColor
                     }
 
                     Column {
@@ -73,7 +71,11 @@ Rectangle {
                                 QQC2.ToolTip.delay: 100
                                 QQC2.ToolTip.timeout: 3000
                                 QQC2.ToolTip.visible: imgMouseArea.containsMouse
-                                QQC2.ToolTip.text: modelData.getDescription()//lang.getText("updateData")
+                                QQC2.ToolTip.text: "%1 %2 - %3 (%4)".
+                                    arg(modelData.season).
+                                    arg(lang.getText(modelData.category.toLowerCase())).
+                                    arg(lang.getText(modelData.rank.toLowerCase()).toUpperCase()).
+                                    arg(modelData.score)
                             }
                         }
                     }
@@ -83,13 +85,11 @@ Rectangle {
 
         Rectangle {
             visible: player
-            border.color: theme.highlightColor
-            border.width: 2
             color: theme.primaryColor
             Layout.alignment: Qt.AlignHCenter
             Layout.leftMargin: Sizes.featuredStats.smallMargin
             Layout.rightMargin: Sizes.featuredStats.smallMargin
-            Layout.preferredWidth: parent.width * 3 / 4
+            Layout.fillWidth: true
             Layout.minimumHeight: Sizes.fontPixelSize * statsTable.presenter.length
             Layout.fillHeight: true
 
@@ -119,6 +119,11 @@ Rectangle {
             Layout.leftMargin: Sizes.featuredStats.smallMargin
             Layout.rightMargin: Sizes.featuredStats.smallMargin
             Layout.bottomMargin: Sizes.featuredStats.smallMargin
+
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: root.theme.primaryColor }
+                GradientStop { position: 1.0; color: "transparent" }
+            }
 
             theme: root.theme
             points: []

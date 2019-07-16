@@ -33,7 +33,7 @@ Rectangle {
             verticalCenterOffset: height/2
         }
         text: model[curIndex]
-        font.family: Themes.fontFamily
+        font.family: theme.fontFamily
         font.bold: true
         font.pixelSize: 10
     }

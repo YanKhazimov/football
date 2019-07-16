@@ -25,7 +25,7 @@ Rectangle {
         Text {
             text: new Date().getFullYear()
             Layout.alignment: Qt.AlignHCenter
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
             font.pointSize: 16
             font.bold: true
             color: root.theme.secondaryColor
@@ -47,7 +47,6 @@ Rectangle {
 
                     Component.onCompleted: {
                         replaceColumn(modelData[0])
-                        presenter.sortBy(modelData[1])
                         selection.deselect()
                     }
                 }

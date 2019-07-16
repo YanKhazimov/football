@@ -26,7 +26,7 @@ TableView {
         delegate: Text {
             text: model.index + 1
             horizontalAlignment: Text.AlignHCenter
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         title: "#"
@@ -38,7 +38,7 @@ TableView {
         delegate: Text {
             text: model.PlayerName
             horizontalAlignment: Text.AlignHCenter
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         //role: "Name"
@@ -51,7 +51,7 @@ TableView {
         delegate: Text {
             text: model.Rating
             horizontalAlignment: Text.AlignHCenter
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.ratingColumn
@@ -64,7 +64,7 @@ TableView {
         delegate: Text {
             text: model.WinsLosses
             horizontalAlignment: Text.AlignHCenter
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.wdlColumn
@@ -77,7 +77,7 @@ TableView {
         delegate: Text {
             text: model.Progress
             horizontalAlignment: Text.AlignHCenter
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.progressColumn
@@ -90,7 +90,7 @@ TableView {
         delegate: Text {
             text: model.Relevance
             horizontalAlignment: Text.AlignHCenter
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.relevanceColumn
@@ -103,7 +103,7 @@ TableView {
         delegate: Text {
             text: model.Dedication
             horizontalAlignment: Text.AlignHCenter
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.dedicationColumn
@@ -119,7 +119,7 @@ TableView {
             anchors.horizontalCenter: parent.horizontalCenter
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
             text: styleData.value.toString()
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
             font.pixelSize: 12
         }
     }
@@ -127,6 +127,7 @@ TableView {
     style: TableViewStyle {
         rowDelegate: Rectangle {
             color: styleData.selected ? root.theme.highlightColor : root.theme.secondaryColor
+            height: 20
             Rectangle {
                 height: 1
                 color: root.theme.primaryColor
@@ -146,7 +147,7 @@ TableView {
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 text: styleData.value
-                font.family: Themes.fontFamily
+                font.family: theme.fontFamily
                 font.pixelSize: 16
                 font.bold: true
                 color: root.theme.secondaryColor

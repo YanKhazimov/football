@@ -42,7 +42,7 @@ Rectangle {
 
             SpinBox {
                 id: homeScore
-                font.family: Themes.fontFamily
+                font.family: theme.fontFamily
                 font.pixelSize: Sizes.fontPixelSize
                 selectByMouse: true
                 minimumValue: 0
@@ -51,7 +51,7 @@ Rectangle {
 
             SpinBox {
                 id: awayScore
-                font.family: Themes.fontFamily
+                font.family: theme.fontFamily
                 font.pixelSize: Sizes.fontPixelSize
                 selectByMouse: true
                 minimumValue: 0
@@ -77,7 +77,7 @@ Rectangle {
                     textFormat: TextEdit.RichText
                     readOnly: true
                     text: okButton.active ? "" : lang.dateBusy
-                    font.family: Themes.fontFamily
+                    font.family: theme.fontFamily
                 }
             }
         }

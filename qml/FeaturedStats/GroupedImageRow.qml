@@ -55,7 +55,7 @@ Item {
                                 text: modelData.statValue
                                 anchors.horizontalCenter: playerImg.horizontalCenter
                                 color: theme.secondaryColor
-                                font.family: Themes.fontFamily
+                                font.family: theme.fontFamily
                             }
                         }
                     }
@@ -64,7 +64,7 @@ Item {
                     text: modelData.groupStatValue
                     anchors.horizontalCenter: statGroup.horizontalCenter
                     color: theme.secondaryColor
-                    font.family: Themes.fontFamily
+                    font.family: theme.fontFamily
                 }
             }
         }

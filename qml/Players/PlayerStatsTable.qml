@@ -26,7 +26,7 @@ TableView {
             fillMode: Image.PreserveAspectFit
             color: theme.highlightColor
         }
-        width: root.width / 8
+        width: root.width / 4
     }
 
     TableViewColumn {
@@ -36,7 +36,7 @@ TableView {
             color: styleData.selected ? theme.highlightColor : theme.secondaryColor
             font.bold: styleData.selected
             font.pixelSize: 14
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
         }
         width: (root.width - headColumn.width - tailColumn.width) / 2
     }
@@ -48,7 +48,7 @@ TableView {
             color: styleData.selected ? theme.highlightColor : theme.secondaryColor
             font.bold: styleData.selected
             font.pixelSize: 14
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
         }
         width: (root.width - headColumn.width - tailColumn.width) / 2
     }
@@ -60,9 +60,9 @@ TableView {
             color: styleData.selected ? theme.highlightColor : theme.secondaryColor
             font.bold: styleData.selected
             font.pixelSize: 14
-            font.family: Themes.fontFamily
+            font.family: theme.fontFamily
         }
-        width: root.width / 8
+        width: root.width / 6
     }
 
     style: TableViewStyle {

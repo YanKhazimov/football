@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.12 as QQC2
 import "qrc:/qml/visualStyles"
@@ -21,6 +21,7 @@ Rectangle {
            Layout.preferredWidth: wingWidth
            img: "qrc:/img/l.png"
            theme: root.theme
+           available: false
        }
 
        Repeater {
@@ -35,8 +36,8 @@ Rectangle {
                    return (root.width - 2 * root.wingWidth - (n + 1) * Sizes.featuredStats.smallMargin) / n
                }
                gradient: Gradient {
-                   GradientStop { position: 0.0; color: "transparent" }
-                   GradientStop { position: 0.5; color: root.theme.primaryColor }
+                   orientation: Gradient.Horizontal
+                   GradientStop { position: 0.0; color: root.theme.primaryColor }
                    GradientStop { position: 1.0; color: "transparent" }
                }
 
@@ -47,14 +48,14 @@ Rectangle {
                        id: seasonText
                        text: modelData
                        Layout.alignment: Qt.AlignHCenter
-                       font.family: Themes.fontFamily
+                       font.family: theme.fontFamily
                        font.pointSize: 16
                        font.bold: true
                        color: root.theme.secondaryColor
 
                        ColoredImage {
                            source: "qrc:/img/lock.png"
-                           height: seasonText.height
+                           height: seasonText.height / 2
                            width: height
                            anchors.left: seasonText.right
                            anchors.leftMargin: Sizes.featuredStats.smallMargin
@@ -99,7 +100,7 @@ Rectangle {
                                                                                            [seasonDelegate.season], []);
                                                    return awards.length === 0 ? "-" : awards[0].score
                                                }
-                                               font.family: Themes.fontFamily
+                                               font.family: theme.fontFamily
                                                font.pointSize: 12
                                                font.bold: true
                                                color: root.theme.secondaryColor
@@ -120,7 +121,7 @@ Rectangle {
                                                theme: root.theme
                                                Layout.preferredHeight: 64
                                                Layout.preferredWidth: 64
-                                               backColor: "transparent"
+                                               backColor: theme.primaryColor
                                                textColor: theme.secondaryColor
                                            }
                                        }
@@ -138,6 +139,7 @@ Rectangle {
            Layout.preferredWidth: wingWidth
            img: "qrc:/img/r.png"
            theme: root.theme
+           available: false
        }
     }
 }

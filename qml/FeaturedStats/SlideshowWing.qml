@@ -9,6 +9,7 @@ Item {
     width: Sizes.featuredStats.wingShare * parent.width
     property string img: ""
     property var theme: null
+    property bool available: true
 
     signal clicked()
 
@@ -19,13 +20,20 @@ Item {
         mouseArea.enabled = show
     }
 
-    ColoredImage {
-        id: image
+    Rectangle {
+        id: imageBackground
         anchors.centerIn: parent
         width: Sizes.elementButtonSize.width
         height: Sizes.elementButtonSize.height
+        radius: Sizes.elementButtonSize.height / 2
+        color: root.theme.primaryColor
+    }
+
+    ColoredImage {
+        id: image
+        anchors.fill: imageBackground
         source: root.img
-        color: mouseArea.containsMouse ? theme.highlightColor : theme.secondaryColor
+        color: (root.available && mouseArea.containsMouse) ? root.theme.highlightColor : root.theme.secondaryColor
     }
 
     MouseArea {

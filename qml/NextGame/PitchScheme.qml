@@ -65,7 +65,7 @@ Rectangle {
 
         function calculatePosition(idx, count) {
             var x = benchImg.x + benchImg.width + Sizes.featuredStats.smallMargin
-                    + Sizes.playerHandleWidth/2
+                    + Sizes.playerHandleWidth / 2
                     + idx * (benchSpacing + Sizes.playerHandleWidth)
             var y = height / 2
             return mapToItem(pitchScheme, x, y)
@@ -167,6 +167,8 @@ Rectangle {
             ColoredImage {
                 id: homeShirt
                 source: "qrc:/img/shirt.png"
+                width: parent.width / 6
+                height: width
                 color: "white"
                 anchors {
                     top: parent.top
@@ -178,7 +180,7 @@ Rectangle {
                 Text {
                     text: lang.home
                     color: "white"
-                    font.family: Themes.fontFamily
+                    font.family: theme.fontFamily
                     anchors.centerIn: parent
                 }
             }
@@ -191,7 +193,7 @@ Rectangle {
 
                 text: signed(homeDiff)
                 color: "white"
-                font.family: Themes.fontFamily
+                font.family: theme.fontFamily
                 font.bold: true
             }
         }
@@ -233,6 +235,8 @@ Rectangle {
             ColoredImage {
                 id: awayShirt
                 source: "qrc:/img/shirt.png"
+                width: parent.width / 6
+                height: width
                 color: "white"
                 anchors {
                     top: parent.top
@@ -244,7 +248,7 @@ Rectangle {
                 Text {
                     text: lang.away
                     color: "white"
-                    font.family: Themes.fontFamily
+                    font.family: theme.fontFamily
                     anchors.centerIn: parent
                 }
             }
@@ -257,7 +261,7 @@ Rectangle {
 
                 text: signed(awayDiff)
                 color: "white"
-                font.family: Themes.fontFamily
+                font.family: theme.fontFamily
                 font.bold: true
             }
         }
@@ -276,7 +280,7 @@ Rectangle {
                 var startAngle = Math.PI / 2
                 var angle = startAngle - idx * noTeamAngleDiff
                 var pitchCenter = Qt.point(width/2, height/2)
-                var r = pitchCenterRadius - ((Sizes.playerHandleWidth + Sizes.fontPixelSize) / 2 + Sizes.featuredStats.smallMargin)
+                var r = pitchCenterRadius - ((Sizes.playerHandleWidth + Sizes.playerHandleRatingHeight) / 2 + Sizes.featuredStats.smallMargin)
                 var x = pitchCenter.x + r * Math.cos(angle)
                 var y = pitchCenter.y - r * Math.sin(angle)
                 return mapToItem(pitchScheme, x, y)
