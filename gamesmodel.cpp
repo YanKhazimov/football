@@ -70,6 +70,55 @@ void GamesModel::saveGames()
     }
 }
 
+QVariantList GamesModel::getPulse()
+{
+    return m_pulse;
+}
+
+int GamesModel::getPulseRosterConsistency()
+{
+    int rosterConsistency = 0;
+
+    for(const QVariant& game: m_pulse)
+        rosterConsistency += game.value<QPoint>().y();
+
+    return static_cast<int>(1.f * rosterConsistency / m_pulse.size());
+}
+
+void GamesModel::resetPulse()
+{
+    for (int i = 0; i < rowCount(); ++i)
+    {
+        qint64 daysBack = m_games[i]->getDate().daysTo(QDate::currentDate());
+        if (daysBack > 31)
+            continue;
+
+        int x = static_cast<int>(100.f * static_cast<float>(31 - daysBack) / 31);
+        float y = 0;
+
+        QVector<QString> players = m_games[i]->getHometeam() + m_games[i]->getAwayteam();
+        for (const QString &playerRef: players)
+        {
+            int gamesCounted = 10;
+            int maxRelevancePoints = (1 + gamesCounted) * gamesCounted / 2; // 1 + 2 + ... + gamesCounted
+            int relevancePoints = 0;
+            int firstCountedGameIndex = qMax(0, i - gamesCounted);
+            for (int j = firstCountedGameIndex; j < i; ++j)
+            {
+                QVector<PlayerRef> jPlayers = m_games[j]->getHometeam() + m_games[j]->getAwayteam();
+                if (jPlayers.contains(playerRef))
+                    relevancePoints += j + 1 - firstCountedGameIndex;
+            }
+
+            float percentage = 100.f * relevancePoints / maxRelevancePoints;
+            y += percentage;
+        }
+        m_pulse.append(QVariant::fromValue(QPoint(x, static_cast<int>(y / players.size()))));
+    }
+
+    emit pulseChanged();
+}
+
 GamesModel::~GamesModel()
 {
     for (auto g: m_games)
@@ -99,6 +148,8 @@ bool GamesModel::init()
                             qHomeTokens, qAwayTokens, score);
     }
     input.close();
+
+    resetPulse();
 
     endResetModel();
 
@@ -164,5 +215,6 @@ void GamesModel::addGame(QDate date,
     beginInsertRows(QModelIndex(), row, row);
     m_games.insert(row, new Game(date, hometeam.toVector(), awayteam.toVector(), {homeScore, awayScore}));
     saveGames();
+    resetPulse();
     endInsertRows();
 }

@@ -9,7 +9,7 @@ Rectangle {
     property var theme: null
     property var model: null
     width: parent.width
-    height: 2 + headerText.height + separator.height + 10 + playPause.height + getContentHeight() + 10 + 2
+    height: 2 + 10 + playPause.height + getContentHeight() + 10 + 2
     color: theme.primaryColor
     border.width: Sizes.borderWidth
     border.color: theme.highlightColor
@@ -18,35 +18,9 @@ Rectangle {
         return Sizes.featuredStats.iconHeight + Sizes.fontPixelSize + Sizes.fontPixelSize
     }
 
-    Text {
-        id: headerText
-        anchors {
-            top: parent.top
-            horizontalCenter: parent.horizontalCenter
-        }
-        text: root.title
-        color: root.theme.secondaryColor
-        font.family: Themes.fontFamily
-        font.pixelSize: Sizes.fontPixelSize
-        font.bold: true
-    }
-
-    Rectangle {
-        id: separator
-        anchors {
-            top: headerText.bottom;
-            left: parent.left
-            leftMargin: Sizes.borderWidth + Sizes.featuredStats.margin
-            right: parent.right
-            rightMargin: Sizes.borderWidth + Sizes.featuredStats.margin
-        }
-        color: theme.highlightColor
-        height: Sizes.borderWidth
-    }
-
     Item {
         anchors {
-            top: separator.bottom
+            top: parent.top
             left: parent.left; leftMargin: Sizes.borderWidth
             right: parent.right; rightMargin: Sizes.borderWidth
             bottom: parent.bottom; bottomMargin: Sizes.borderWidth

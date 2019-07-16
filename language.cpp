@@ -7,7 +7,7 @@ const QMap<QString, QMap<QString, QString>> Language::dict = QMap<QString, QMap<
     { "closestRatedPlayers", { { "en", "Closest-rated players" }, { "ru", "Ближайшие по рейтингу" } } },
     { "strongestSynergy", { { "en", "STRONGEST SYNERGY" }, { "ru", "КРЕПКАЯ СВЯЗКА" } } },
     { "highestWLRatioTogether", { { "en", "Highest W/L ratio together" }, { "ru", "Лучший % побед вместе" } } },
-    { "onFire", { { "en", "ON FIRE" }, { "ru", "На ходу" } } },
+    { "onFire", { { "en", "ON FIRE" }, { "ru", "НА ХОДУ" } } },
     { "longestActiveWinStreaks", { { "en", "Longest active win streaks" }, { "ru", "Текущая серия побед" } } },
     { "ratingColumn", { { "en", "Rating" }, { "ru", "Рейтинг" } } },
     { "playerColumn", { { "en", "Player" }, { "ru", "Игрок" } } },
@@ -38,7 +38,8 @@ const QMap<QString, QMap<QString, QString>> Language::dict = QMap<QString, QMap<
     { "changeTheme", { { "en", "Change pallette" }, { "ru", "Сменить скин" } } },
     { "gold", { { "en", "gold" }, { "ru", "золото" } } },
     { "silver", { { "en", "silver" }, { "ru", "серебро" } } },
-    { "bronze", { { "en", "bronze" }, { "ru", "бронза" } } }
+    { "bronze", { { "en", "bronze" }, { "ru", "бронза" } } },
+    { "pulseStats", { { "en", "Last month: %1 games, %2% core roster" }, { "ru", "За месяц: %1 игры, %2% костяк" } } }
 };
 
 void Language::set(QString str)
@@ -68,14 +69,15 @@ void Language::set(QString str)
     m_updated = dict["updated"][m_lang];
     m_upToDate = dict["upToDate"][m_lang];
     m_updateFail = dict["updateFail"][m_lang];
-    m_updateFail = dict["updateData"][m_lang];
-    m_updateFail = dict["switchRelevance"][m_lang];
-    m_updateFail = dict["changeSeason"][m_lang];
-    m_updateFail = dict["changeLanguage"][m_lang];
-    m_updateFail = dict["changeTheme"][m_lang];
+    m_updateData = dict["updateData"][m_lang];
+    m_switchRelevance = dict["switchRelevance"][m_lang];
+    m_changeSeason = dict["changeSeason"][m_lang];
+    m_changeLanguage = dict["changeLanguage"][m_lang];
+    m_changeTheme = dict["changeTheme"][m_lang];
     m_gold = dict["gold"][m_lang];
     m_silver = dict["silver"][m_lang];
     m_bronze = dict["bronze"][m_lang];
+    m_pulseStats = dict["pulseStats"][m_lang];
 
     emit languageChanged(m_lang);
 }

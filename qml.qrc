@@ -66,5 +66,6 @@
         <file>img/medal_progress_bronze.png</file>
         <file>img/medal_progress_gold.png</file>
         <file>img/medal_progress_silver.png</file>
+        <file>qml/Pulse.qml</file>
     </qresource>
 </RCC>

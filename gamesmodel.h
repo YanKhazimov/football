@@ -3,6 +3,7 @@
 
 #include <QAbstractListModel>
 #include <QDate>
+#include <QPoint>
 #include "player.h"
 #include "dataroles.h"
 
@@ -24,9 +25,11 @@ public:
     QDate getDate() const;
 };
 
-class GamesModel : public QAbstractListModel //?
+class GamesModel : public QAbstractListModel
 {
     Q_OBJECT
+
+    Q_PROPERTY(int pulseRosterConsistency READ getPulseRosterConsistency NOTIFY pulseChanged)
 
 public:
     GamesModel() = default;
@@ -41,9 +44,19 @@ public:
     Q_INVOKABLE QStringList getSeasons() const;
     void saveGames();
 
+    Q_INVOKABLE QVariantList getPulse();
+    int getPulseRosterConsistency();
+
 private:
+    void resetPulse();
+
     QList<Game*> m_games;
     QString m_gamesFilename;
+
+    QVariantList m_pulse;
+
+signals:
+    void pulseChanged();
 };
 
 #endif // GAMESMODEL_H

@@ -41,6 +41,7 @@ class Language: public QObject
     Q_PROPERTY(QString gold MEMBER m_gold NOTIFY languageChanged)
     Q_PROPERTY(QString silver MEMBER m_silver NOTIFY languageChanged)
     Q_PROPERTY(QString bronze MEMBER m_bronze NOTIFY languageChanged)
+    Q_PROPERTY(QString pulseStats MEMBER m_pulseStats NOTIFY languageChanged)
 
     QString m_featuredStats;
     QString m_ratingColumn;
@@ -71,6 +72,7 @@ class Language: public QObject
     QString m_changeLanguage;
     QString m_changeTheme;
     QString m_gold, m_silver, m_bronze;
+    QString m_pulseStats;
 
     QString m_lang = "ru";
 

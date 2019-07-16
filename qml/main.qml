@@ -6,6 +6,7 @@ import QtQuick.Window 2.0
 import com.abc.abclib 1.0
 import QtQuick.Layouts 1.3
 import "qrc:/qml/visualStyles"
+import "./FeaturedStats"
 import "."
 
 //https://www.futhead.com/icons/?page=1
@@ -31,9 +32,16 @@ QQC2.ApplicationWindow {
 
     property var theme: null
 
+    Pulse {
+        id: pulse
+        height: 30
+        width: window.width
+        theme: window.theme
+    }
+
     Slideshow {
         id: featuredStats
-        anchors { top: window.top; horizontalCenter: parent.horizontalCenter }
+        anchors { top: pulse.bottom; horizontalCenter: parent.horizontalCenter }
         width: window.width
 
         title: lang.featuredStats
@@ -45,10 +53,25 @@ QQC2.ApplicationWindow {
     CustomTabView {
         id: contents
         anchors { top: featuredStats.bottom }
-        height: window.height - featuredStats.height
+        height: window.height - featuredStats.height - pulse.height
         width: window.width
 
         theme: window.theme
+    }
+
+    Rectangle {
+        width: 2 * (Sizes.elementButtonSize.width + 2 * Sizes.featuredStats.margin)
+        height: 5 * Sizes.elementButtonSize.height + (5 + 1) * Sizes.featuredStats.smallMargin
+        radius: Sizes.elementButtonSize.height / 2
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: Sizes.featuredStats.margin / 2
+            left: parent.left
+            leftMargin: -width / 2
+        }
+        color: window.theme.primaryColor
+        border.color: window.theme.highlightColor
+        border.width: Sizes.borderWidth
     }
 
     Column {
