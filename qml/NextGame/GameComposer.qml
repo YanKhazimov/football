@@ -19,6 +19,7 @@ Rectangle {
         teamSplitter.splitVariants = []
         splitIndex = 0
         controlPanel.splitText = lang.splitVerb
+        updateTotals()
     }
 
     function reloadModel() {
@@ -150,7 +151,7 @@ Rectangle {
                            zoneModels[PitchZones.center],
                            5)
 
-            splitVariant = teamSplitter.splitVariants[0]
+            splitVariant = teamSplitter.splitVariants.length === 0 ? [] : teamSplitter.splitVariants[0]
         }
         else
         {
@@ -160,7 +161,7 @@ Rectangle {
 
         splitVariantIndicators.selectedIndex = splitIndex
 
-        zoneModels[PitchZones.leftHalf] = splitVariant.splice(0, splitVariant.length/2)
+        zoneModels[PitchZones.leftHalf] = splitVariant.splice(0, splitVariant.length / 2)
         zoneModels[PitchZones.rightHalf] = splitVariant.splice(0, splitVariant.length) //???
         zoneModels[PitchZones.center] = []
 
