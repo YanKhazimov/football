@@ -1,6 +1,7 @@
 #include "globalstatsmodel.h"
 #include "language.h"
 #include <QDate>
+#include <QDebug>
 #include <math.h>
 
 GlobalStatsModel::GlobalStatsModel(const Playerbase* base)
@@ -397,7 +398,11 @@ void GlobalStatsModel::resetData()
     };
 
     auto deduceRating = [](const PlayerRef& player) -> int {
-        return player.mid(player.size() - 4, 4).toInt();
+        bool ok;
+        int rating = player.mid(player.size() - 4, 4).toInt(&ok);
+        if (!ok)
+            qWarning() << "Cannot deduce rating for" << player;
+        return rating;
     };
 
     for (int i = 0; i < m_sourceModel->rowCount(); ++i)

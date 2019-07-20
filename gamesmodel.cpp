@@ -87,6 +87,8 @@ int GamesModel::getPulseRosterConsistency()
 
 void GamesModel::resetPulse()
 {
+    m_pulse.clear();
+
     for (int i = 0; i < rowCount(); ++i)
     {
         qint64 daysBack = m_games[i]->getDate().daysTo(QDate::currentDate());

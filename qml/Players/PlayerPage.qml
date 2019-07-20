@@ -122,7 +122,8 @@ Rectangle {
 
             gradient: Gradient {
                 GradientStop { position: 0.0; color: root.theme.primaryColor }
-                GradientStop { position: 1.0; color: "transparent" }
+                GradientStop { position: 0.5; color: "transparent" }
+                GradientStop { position: 1.0; color: root.theme.primaryColor }
             }
 
             theme: root.theme
