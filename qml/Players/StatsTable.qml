@@ -27,6 +27,7 @@ TableView {
             text: model.index + 1
             horizontalAlignment: Text.AlignHCenter
             font.family: theme.fontFamily
+            font.pixelSize: 14
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         title: "#"
@@ -39,6 +40,7 @@ TableView {
             text: model.PlayerName
             horizontalAlignment: Text.AlignHCenter
             font.family: theme.fontFamily
+            font.pixelSize: 14
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         //role: "Name"
@@ -52,6 +54,7 @@ TableView {
             text: model.Rating
             horizontalAlignment: Text.AlignHCenter
             font.family: theme.fontFamily
+            font.pixelSize: 14
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.ratingColumn
@@ -65,6 +68,7 @@ TableView {
             text: model.WinsLosses
             horizontalAlignment: Text.AlignHCenter
             font.family: theme.fontFamily
+            font.pixelSize: 14
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.wdlColumn
@@ -78,6 +82,7 @@ TableView {
             text: model.Progress
             horizontalAlignment: Text.AlignHCenter
             font.family: theme.fontFamily
+            font.pixelSize: 14
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.progressColumn
@@ -91,6 +96,7 @@ TableView {
             text: model.Relevance
             horizontalAlignment: Text.AlignHCenter
             font.family: theme.fontFamily
+            font.pixelSize: 14
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.relevanceColumn
@@ -104,6 +110,7 @@ TableView {
             text: model.Dedication
             horizontalAlignment: Text.AlignHCenter
             font.family: theme.fontFamily
+            font.pixelSize: 14
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
         }
         role: lang.dedicationColumn
@@ -120,7 +127,6 @@ TableView {
             color: styleData.selected ? root.theme.secondaryColor : root.theme.primaryColor
             text: styleData.value.toString()
             font.family: theme.fontFamily
-            font.pixelSize: 12
         }
     }
 

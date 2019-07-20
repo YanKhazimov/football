@@ -67,5 +67,8 @@
         <file>img/medal_progress_gold.png</file>
         <file>img/medal_progress_silver.png</file>
         <file>qml/Pulse.qml</file>
+        <file>fonts/Nautilus.otf</file>
+        <file>fonts/stencil.ttf</file>
+        <file>fonts/Alice-Regular.ttf</file>
     </qresource>
 </RCC>
