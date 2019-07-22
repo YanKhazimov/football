@@ -19,6 +19,8 @@
 Q_DECLARE_METATYPE(GlobalStatsModel)
 Q_DECLARE_METATYPE(PlayerbaseQuery*)
 
+#define APP_VERSION 2.0
+
 int main(int argc, char *argv[])
 {
     //rename("Razdevalka.exe","Razdevalka2.exe");
