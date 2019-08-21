@@ -21,7 +21,9 @@ set (HEADERS
     config.h
     syncmanager.h
     award.h
-    featuredstats.h)
+    featuredstats.h
+    updater.h
+)
 
 set (SRC
     playerbase.cpp
@@ -37,10 +39,20 @@ set (SRC
     config.cpp
     syncmanager.cpp
     award.cpp
-    featuredstats.cpp)
+    featuredstats.cpp
+    updater.cpp
+)
+
+set (3RDPARTY
+    qt_zip/zconf.h
+    qt_zip/zlib.h
+    qt_zip/zipwriter.h
+    qt_zip/zipreader.h
+    qt_zip/zip.cpp)
 
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)
+find_library(ZLIB NAME zlibwapi.lib HINTS ${CMAKE_SOURCE_DIR}/qt_zip)
 
-add_executable(${PROJECT_NAME} WIN32 "main.cpp" "qml.qrc" ${SRC})
+add_executable(${PROJECT_NAME} WIN32 "main.cpp" "qml.qrc" ${SRC} ${3RDPARTY})
 
-target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Quick)
+target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Quick ${ZLIB})

@@ -19,7 +19,11 @@ QQC2.ApplicationWindow {
 
     width: 1280
     height: 720
+
+    property var theme: null
+
     Component.onCompleted: {
+        theme = Themes.themes[config.value("theme")] // this seems to initialize the singleton
         setX(Screen.width / 2 - width / 2);
         setY(Screen.height / 2 - height / 2);
     }
@@ -29,8 +33,6 @@ QQC2.ApplicationWindow {
 
     maximumHeight: height
     maximumWidth: width
-
-    property var theme: null
 
     Pulse {
         id: pulse
@@ -96,7 +98,7 @@ QQC2.ApplicationWindow {
                 onClicked: {
                     refresher.source = "qrc:/img/wait.png"
                     rotationAnimation.running = true
-                    updater.update()
+                    syncManager.update()
                 }
             }
             PropertyAnimation {
@@ -115,7 +117,7 @@ QQC2.ApplicationWindow {
             QQC2.ToolTip.text: lang.getText("updateData")
         }
         Connections {
-            target: updater
+            target: syncManager
             onUpdateFinished: {
                 updatePopupText.text = message
                 updatePopup.open()
@@ -243,44 +245,6 @@ QQC2.ApplicationWindow {
             id: updatePopupText
             text: ""
             anchors.centerIn: parent
-        }
-    }
-
-    Grid
-    {
-        id: debugGrid
-        visible: false//true
-        anchors.fill: parent
-        z: 1
-        readonly property int size: 20
-        columns: Math.ceil(width / debugGrid.size)
-        rows: Math.ceil(height / debugGrid.size)
-        Repeater
-        {
-            model: parent.visible ? parent.rows : 0
-            Repeater
-            {
-                id: columnRepeater
-                property bool evenRowIndex: index % 2 === 0
-                model: debugGrid.visible ? debugGrid.columns : 0
-                Rectangle
-                {
-                    color: "red"
-                    width: debugGrid.size
-                    height: debugGrid.size
-
-                    property bool evenColumnIndex: index % 2 === 0
-
-                    opacity:
-                    {
-                        if (columnRepeater.evenRowIndex)
-                        {
-                            return evenColumnIndex ? 0.4 : 0.2
-                        }
-                        return evenColumnIndex ? 0.2 : 0
-                    }
-                }
-            }
         }
     }
 }

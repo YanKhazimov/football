@@ -1,6 +1,6 @@
 set CURDIR=%cd%
 set QTBIN=D:\Qt\5.12.1\mingw73_64\bin
-set BIN=D:\GitRepos\football\build-football-Qt_5_12_1_MinGW_64_bit_197311-Release
+set BIN=D:\GitRepos\football\build-football-Qt_5_12_1_MinGW_64_bit_4a3f7e-Release
 set APPNAME=Razdevalka.exe
 set PROJ=D:\GitRepos\football\football
 set PKG=C:\Users\Yan\Desktop\Package

@@ -25,6 +25,7 @@ Rectangle {
        }
 
        Repeater {
+           id: seasonRepeater
            model: gamesModel.getSeasons().filter(function(value){ return value != new Date().getFullYear() })
            delegate: Rectangle {
                id: seasonDelegate
@@ -32,7 +33,7 @@ Rectangle {
                clip: true
                Layout.preferredHeight: root.height - 2 * Sizes.featuredStats.smallMargin
                Layout.preferredWidth: {
-                   var n = 2
+                   var n = seasonRepeater.model.length
                    return (root.width - 2 * root.wingWidth - (n + 1) * Sizes.featuredStats.smallMargin) / n
                }
                gradient: Gradient {
@@ -51,7 +52,7 @@ Rectangle {
                        id: seasonText
                        text: modelData
                        Layout.alignment: Qt.AlignHCenter
-                       font.family: theme.fontFamily
+                       font.family: root.theme.fontFamily
                        font.pointSize: 16
                        font.bold: true
                        color: root.theme.secondaryColor
@@ -103,7 +104,7 @@ Rectangle {
                                                                                            [seasonDelegate.season], []);
                                                    return awards.length === 0 ? "-" : awards[0].score
                                                }
-                                               font.family: theme.fontFamily
+                                               font.family: root.theme.fontFamily
                                                font.pointSize: 12
                                                font.bold: true
                                                color: root.theme.secondaryColor

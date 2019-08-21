@@ -109,7 +109,7 @@ Rectangle {
             anchors.centerIn: parent
             text: lang.pulseStats.arg(root.pulseModel.length).arg(gamesModel.pulseRosterConsistency)
             color: root.theme.secondaryColor
-            font.family: theme.fontFamily
+            font.family: root.theme.fontFamily
             font.pixelSize: Sizes.fontPixelSize
             font.bold: true
         }

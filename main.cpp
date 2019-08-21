@@ -15,19 +15,35 @@
 #include "language.h"
 #include "config.h"
 #include "syncmanager.h"
+#include "updater.h"
 
 Q_DECLARE_METATYPE(GlobalStatsModel)
 Q_DECLARE_METATYPE(PlayerbaseQuery*)
 
-#define APP_VERSION 2.0
-
 int main(int argc, char *argv[])
 {
-    //rename("Razdevalka.exe","Razdevalka2.exe");
-
-    QGuiApplication app(argc, argv);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication app(argc, argv);
     QGuiApplication::setWindowIcon(QIcon(":/img/ball3d.ico"));
+    QGuiApplication::setApplicationName(QString("Razdevalka v.") + RAZDEVALKA_VERSION);
+
+    Config config;
+    config.load("config");
+
+    if (argc == 1) // initial launch without parameters
+    {
+        Updater updater;
+        QObject::connect(&updater, &Updater::success, &updater, &Updater::runWithNoCheck);
+
+        QQmlApplicationEngine engine;
+        QQmlContext* ctxt = engine.rootContext();
+        ctxt->setContextProperty("updater", &updater);
+        engine.load(QUrl(QStringLiteral("qrc:/qml/UpdaterWindow.qml")));
+        QObject::connect(engine.rootObjects().first(), SIGNAL(closed()), &updater, SLOT(runWithNoCheck()));
+
+        updater.checkForUpdates();
+        return !engine.rootObjects().isEmpty() ? app.exec() : -1;
+    }
 
     qmlRegisterUncreatableType<Player>("com.abc.abclib", 1, 0, "Player", "");
     qmlRegisterUncreatableType<GlobalStatsModel>("com.abc.abclib", 1, 0, "GlobalStatsModel", "");
@@ -38,9 +54,6 @@ int main(int argc, char *argv[])
 
     QTextCodec *codec = QTextCodec::codecForName("UTF8");
     QTextCodec::setCodecForLocale(codec);
-
-    Config config;
-    config.load("config");
 
     GamesModel gm;
     gm.init();
@@ -69,7 +82,7 @@ int main(int argc, char *argv[])
 
     language.set(config.value("lang"));
 
-    SyncManager updater(gm, sortingStatModel, language, &playerbase);
+    SyncManager syncManager(gm, sortingStatModel, language, &playerbase);
 
     // season models
 
@@ -108,7 +121,7 @@ int main(int argc, char *argv[])
 
     ctxt->setContextProperty("lang", &language);
     ctxt->setContextProperty("config", &config);
-    ctxt->setContextProperty("updater", &updater);
+    ctxt->setContextProperty("syncManager", &syncManager);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())

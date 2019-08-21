@@ -70,5 +70,6 @@
         <file>fonts/Nautilus.otf</file>
         <file>fonts/stencil.ttf</file>
         <file>fonts/Alice-Regular.ttf</file>
+        <file>qml/UpdaterWindow.qml</file>
     </qresource>
 </RCC>
