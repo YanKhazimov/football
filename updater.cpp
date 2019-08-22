@@ -1,6 +1,7 @@
 #include "updater.h"
 #include <QCoreApplication>
 #include <QProcess>
+#include <QVersionNumber>
 
 Updater::Updater(QObject *parent) : QObject(parent)
 {
@@ -26,14 +27,17 @@ void Updater::versionManifestDownloaded(QNetworkReply* reply)
 {
     if (reply->error() || reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 200)
     {
-        showMessage(QString("Warning: Could not check for updates. Version %1 will start.").arg(RAZDEVALKA_VERSION));
+        showMessage(QString("Warning: Could not check for updates: error codes %2, %3. Version %1 will start.")
+                    .arg(RAZDEVALKA_VERSION)
+                    .arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
+                    .arg(static_cast<int>(reply->error())));
         emit error();
     }
     else
     {
         QStringList latestVersionInfo = QString(reply->readLine()).split('\t');
         m_targetVersion = latestVersionInfo.at(0);
-        if (m_targetVersion > RAZDEVALKA_VERSION)
+        if (QVersionNumber::fromString(m_targetVersion) > QVersionNumber::fromString(QString(RAZDEVALKA_VERSION))) // so that 2.10 > 2.9
         {
             showMessage(QString("Updating to version %1...").arg(m_targetVersion));
 
@@ -60,7 +64,10 @@ void Updater::updateDownloaded(QNetworkReply *reply)
 {
     if (reply->error() || reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 200)
     {
-        showMessage(QString("Warning: Could not download the update. Version %1 will start.").arg(RAZDEVALKA_VERSION));
+        showMessage(QString("Warning: Could not download the update: error codes %2, %3. Version %1 will start.")
+                    .arg(RAZDEVALKA_VERSION)
+                    .arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
+                    .arg(static_cast<int>(reply->error())));
         emit error();
     }
     else
