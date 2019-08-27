@@ -31,9 +31,9 @@ Rectangle {
             anchors {
                 left: parent.left
                 top: playPause.bottom
-                topMargin: Sizes.featuredStats.smallMargin
+                topMargin: Sizes.smallMargin
                 bottom: parent.bottom
-                bottomMargin: Sizes.featuredStats.smallMargin
+                bottomMargin: Sizes.smallMargin
             }
             img: "qrc:/img/l.png"
             theme: root.theme
@@ -44,9 +44,9 @@ Rectangle {
             anchors {
                 right: parent.right
                 top: playPause.bottom
-                topMargin: Sizes.featuredStats.smallMargin
+                topMargin: Sizes.smallMargin
                 bottom: parent.bottom
-                bottomMargin: Sizes.featuredStats.smallMargin
+                bottomMargin: Sizes.smallMargin
             }
             img: "qrc:/img/r.png"
             theme: root.theme
@@ -58,7 +58,7 @@ Rectangle {
             height: Sizes.elementButtonSize.height
             anchors {
                 top: parent.top
-                topMargin: Sizes.featuredStats.smallMargin
+                topMargin: Sizes.smallMargin
                 horizontalCenter: parent.horizontalCenter
             }
             source: slideFlickTimer.running ? "qrc:/img/pause.png" : "qrc:/img/play.png"

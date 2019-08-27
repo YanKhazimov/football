@@ -62,12 +62,12 @@ QQC2.ApplicationWindow {
     }
 
     Rectangle {
-        width: 2 * (Sizes.elementButtonSize.width + 2 * Sizes.featuredStats.margin)
-        height: 5 * Sizes.elementButtonSize.height + (5 + 1) * Sizes.featuredStats.smallMargin
+        width: 2 * (Sizes.elementButtonSize.width + 2 * Sizes.margin)
+        height: 5 * Sizes.elementButtonSize.height + (5 + 1) * Sizes.smallMargin
         radius: Sizes.elementButtonSize.height / 2
         anchors {
             bottom: parent.bottom
-            bottomMargin: Sizes.featuredStats.margin / 2
+            bottomMargin: Sizes.margin / 2
             left: parent.left
             leftMargin: -width / 2
         }
@@ -79,11 +79,11 @@ QQC2.ApplicationWindow {
     Column {
         anchors {
             bottom: parent.bottom
-            bottomMargin: Sizes.featuredStats.margin
+            bottomMargin: Sizes.margin
             left: parent.left
-            leftMargin: Sizes.featuredStats.margin
+            leftMargin: Sizes.margin
         }
-        spacing: Sizes.featuredStats.smallMargin
+        spacing: Sizes.smallMargin
 
         Image {
             id: refresher
@@ -219,8 +219,8 @@ QQC2.ApplicationWindow {
     QQC2.Popup {
         id: popup
         anchors.centerIn: parent
-        width: warningText.contentWidth + 2 * Sizes.featuredStats.margin
-        height: warningText.contentHeight + 2 * Sizes.featuredStats.margin
+        width: warningText.contentWidth + 2 * Sizes.margin
+        height: warningText.contentHeight + 2 * Sizes.margin
         modal: true
         focus: true
         closePolicy: QQC2.Popup.CloseOnEscape | QQC2.Popup.CloseOnReleaseOutside
@@ -235,8 +235,8 @@ QQC2.ApplicationWindow {
     QQC2.Popup {
         id: updatePopup
         anchors.centerIn: parent
-        width: warningText.contentWidth + 2 * Sizes.featuredStats.margin
-        height: warningText.contentHeight + 2 * Sizes.featuredStats.margin
+        width: warningText.contentWidth + 2 * Sizes.margin
+        height: warningText.contentHeight + 2 * Sizes.margin
         modal: true
         focus: true
         closePolicy: QQC2.Popup.CloseOnEscape | QQC2.Popup.CloseOnReleaseOutside

@@ -26,9 +26,9 @@ Rectangle {
             Layout.fillWidth: true
             Layout.minimumHeight: parent.height / 3
             Layout.fillHeight: true
-            Layout.leftMargin: Sizes.featuredStats.smallMargin
-            Layout.rightMargin: Sizes.featuredStats.smallMargin
-            Layout.topMargin: Sizes.featuredStats.smallMargin
+            Layout.leftMargin: Sizes.smallMargin
+            Layout.rightMargin: Sizes.smallMargin
+            Layout.topMargin: Sizes.smallMargin
 
             ColumnLayout {
                 id: playerCardLayout
@@ -87,8 +87,8 @@ Rectangle {
             visible: player
             color: theme.primaryColor
             Layout.alignment: Qt.AlignHCenter
-            Layout.leftMargin: Sizes.featuredStats.smallMargin
-            Layout.rightMargin: Sizes.featuredStats.smallMargin
+            Layout.leftMargin: Sizes.smallMargin
+            Layout.rightMargin: Sizes.smallMargin
             Layout.fillWidth: true
             Layout.minimumHeight: Sizes.fontPixelSize * statsTable.presenter.length
             Layout.fillHeight: true
@@ -116,9 +116,9 @@ Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: width / 3
             Layout.fillHeight: true
-            Layout.leftMargin: Sizes.featuredStats.smallMargin
-            Layout.rightMargin: Sizes.featuredStats.smallMargin
-            Layout.bottomMargin: Sizes.featuredStats.smallMargin
+            Layout.leftMargin: Sizes.smallMargin
+            Layout.rightMargin: Sizes.smallMargin
+            Layout.bottomMargin: Sizes.smallMargin
 
             gradient: Gradient {
                 GradientStop { position: 0.0; color: root.theme.primaryColor }

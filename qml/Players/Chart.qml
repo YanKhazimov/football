@@ -6,7 +6,7 @@ Rectangle {
     id: root
     property var theme: null
     property var points: null
-    readonly property int offset: Sizes.featuredStats.margin
+    readonly property int offset: Sizes.margin
     readonly property int __value: 0
     readonly property int __idx: 1
 

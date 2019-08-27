@@ -74,7 +74,7 @@ Rectangle {
         visible: !root.enabled
         anchors {
             right: parent.right
-            rightMargin: Sizes.featuredStats.smallMargin / 2
+            rightMargin: Sizes.smallMargin / 2
             verticalCenter: parent.verticalCenter
         }
         height: parent.height/2

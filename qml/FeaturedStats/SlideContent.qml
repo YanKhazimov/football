@@ -13,14 +13,14 @@ Rectangle {
 
     RowLayout {
         id: row
-        spacing: Sizes.featuredStats.margin
+        spacing: Sizes.margin
         anchors {
             left: parent.left
             right: parent.right
             top: parent.top
-            topMargin: Sizes.featuredStats.smallMargin
+            topMargin: Sizes.smallMargin
             bottom: parent.bottom
-            bottomMargin: Sizes.featuredStats.smallMargin
+            bottomMargin: Sizes.smallMargin
         }
         Item {
             id: titleRect

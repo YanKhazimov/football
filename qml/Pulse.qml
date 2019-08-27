@@ -100,7 +100,7 @@ Rectangle {
 
     Rectangle {
         anchors.centerIn: parent
-        width: headerText.width + 2 * Sizes.featuredStats.smallMargin
+        width: headerText.width + 2 * Sizes.smallMargin
         height: parent.height
         color: root.theme.primaryColor
 

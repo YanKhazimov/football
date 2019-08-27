@@ -3,7 +3,7 @@ import QtQuick.Controls 2.1
 import "qrc:/qml/visualStyles"
 
 Column {
-    spacing: Sizes.featuredStats.smallMargin
+    spacing: Sizes.smallMargin
 
     property var theme: null
     property string splitText

@@ -14,7 +14,7 @@ Rectangle {
     RowLayout {
        id: seasonsLayout
        anchors.centerIn: parent
-       spacing: Sizes.featuredStats.smallMargin
+       spacing: Sizes.smallMargin
 
        SlideshowWing {
            Layout.preferredHeight: root.height
@@ -31,10 +31,10 @@ Rectangle {
                id: seasonDelegate
                property int season: parseInt(modelData, 10)
                clip: true
-               Layout.preferredHeight: root.height - 2 * Sizes.featuredStats.smallMargin
+               Layout.preferredHeight: root.height - 2 * Sizes.smallMargin
                Layout.preferredWidth: {
                    var n = seasonRepeater.model.length
-                   return (root.width - 2 * root.wingWidth - (n + 1) * Sizes.featuredStats.smallMargin) / n
+                   return (root.width - 2 * root.wingWidth - (n + 1) * Sizes.smallMargin) / n
                }
                gradient: Gradient {
                    orientation: Gradient.Horizontal
@@ -46,7 +46,7 @@ Rectangle {
                }
 
                ColumnLayout {
-                   spacing: Sizes.featuredStats.margin
+                   spacing: Sizes.margin
 
                    Text {
                        id: seasonText
@@ -62,7 +62,7 @@ Rectangle {
                            height: seasonText.height / 2
                            width: height
                            anchors.left: seasonText.right
-                           anchors.leftMargin: Sizes.featuredStats.smallMargin
+                           anchors.leftMargin: Sizes.smallMargin
                            anchors.verticalCenter: seasonText.verticalCenter
                            color: root.theme.secondaryColor
                        }
@@ -74,7 +74,7 @@ Rectangle {
                        delegate: Item {
                            id: categoryDelegate
                            Layout.preferredWidth: seasonDelegate.width
-                           Layout.preferredHeight: (seasonDelegate.height - seasonText.height - Sizes.featuredStats.margin * (categoryRepeater.count + 1)) / categoryRepeater.count
+                           Layout.preferredHeight: (seasonDelegate.height - seasonText.height - Sizes.margin * (categoryRepeater.count + 1)) / categoryRepeater.count
                            property string category: modelData
                            ColumnLayout {
                                anchors.verticalCenter: parent.verticalCenter

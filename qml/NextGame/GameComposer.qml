@@ -269,7 +269,7 @@ Rectangle {
         anchors {
             bottom: scheme.bottom
             horizontalCenter: scheme.horizontalCenter
-            margins: Sizes.featuredStats.smallMargin
+            margins: Sizes.smallMargin
         }
         width: 2 * scheme.pitchCenterRadius
         height: scheme.height - scheme.benchHeight - 2 * anchors.margins
@@ -287,7 +287,7 @@ Rectangle {
             width: teamSplitter.splitVariants.length < 2 ? 0 : ((Sizes.elementButtonSize.width * 2  - 2 * (teamSplitter.splitVariants.length - 1)) / teamSplitter.splitVariants.length)
             color: model.index === splitVariantIndicators.selectedIndex ? theme.highlightColor : theme.secondaryColor
             x: controlPanel.x + Sizes.elementButtonSize.width / 2 + model.index * (width + 2)
-            y: controlPanel.y + Sizes.elementButtonSize.height + Sizes.featuredStats.smallMargin + Sizes.elementButtonSize.height - 7
+            y: controlPanel.y + Sizes.elementButtonSize.height + Sizes.smallMargin + Sizes.elementButtonSize.height - 7
         }
     }
 
@@ -316,7 +316,7 @@ Rectangle {
             target: controlPanel
             property: "anchors.rightMargin"
             from: -Sizes.elementButtonSize.width
-            to: Sizes.featuredStats.smallMargin
+            to: Sizes.smallMargin
         }
     }
 

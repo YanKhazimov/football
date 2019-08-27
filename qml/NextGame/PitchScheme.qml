@@ -17,7 +17,7 @@ Rectangle {
     property real noTeamAngleDiff: Math.PI * 2/10
     property real pitchCenterRadius: pitchCenterArea.width / 2
 
-    property int benchSpacing: Sizes.featuredStats.smallMargin / 2
+    property int benchSpacing: Sizes.smallMargin / 2
 
     property var zoneShapes: [bench, pitchLeftHalf, pitchRightHalf, pitchCenterArea]
     property int homeDiff: 0
@@ -61,11 +61,11 @@ Rectangle {
     Rectangle {
         id: bench
         width: parent.width
-        height: Sizes.playerHandleWidth + Sizes.playerHandleRatingHeight + 2 * Sizes.featuredStats.smallMargin
+        height: Sizes.playerHandleWidth + Sizes.playerHandleRatingHeight + 2 * Sizes.smallMargin
 
         function calculatePosition(idx, count) {
-            var x = benchImg.x + benchImg.width + Sizes.featuredStats.smallMargin
-                    + leftArrow.width + Sizes.featuredStats.smallMargin
+            var x = benchImg.x + benchImg.width + Sizes.smallMargin
+                    + leftArrow.width + Sizes.smallMargin
                     + Sizes.playerHandleWidth / 2
                     + idx * (benchSpacing + Sizes.playerHandleWidth)
             var y = height / 2
@@ -73,8 +73,8 @@ Rectangle {
         }
 
         function getCapacity() {
-            var playersSpace = width - (benchImg.x + benchImg.width + 2 * Sizes.featuredStats.smallMargin
-                                        + leftArrow.width + rightArrow.width + 2 * Sizes.featuredStats.smallMargin)
+            var playersSpace = width - (benchImg.x + benchImg.width + 2 * Sizes.smallMargin
+                                        + leftArrow.width + rightArrow.width + 2 * Sizes.smallMargin)
             var capacity = playersSpace / (benchSpacing + Sizes.playerHandleWidth)
             if (playersSpace % (benchSpacing + Sizes.playerHandleWidth) >= Sizes.playerHandleWidth)
                 ++capacity
@@ -113,7 +113,7 @@ Rectangle {
             width: height
             anchors {
                 left: parent.left
-                leftMargin: Sizes.featuredStats.smallMargin
+                leftMargin: Sizes.smallMargin
                 verticalCenter: parent.verticalCenter
             }
         }
@@ -124,7 +124,7 @@ Rectangle {
             height: Sizes.elementButtonSize.height
             anchors {
                 left: benchImg.right
-                leftMargin: Sizes.featuredStats.smallMargin
+                leftMargin: Sizes.smallMargin
                 verticalCenter: parent.verticalCenter
             }
             source: "qrc:/img/l.png"
@@ -144,7 +144,7 @@ Rectangle {
             height: Sizes.elementButtonSize.height
             anchors {
                 right: parent.right
-                rightMargin: Sizes.featuredStats.smallMargin
+                rightMargin: Sizes.smallMargin
                 verticalCenter: parent.verticalCenter
             }
             source: "qrc:/img/r.png"
@@ -214,9 +214,9 @@ Rectangle {
                 color: "white"
                 anchors {
                     top: parent.top
-                    topMargin: Sizes.featuredStats.smallMargin
+                    topMargin: Sizes.smallMargin
                     left: parent.left
-                    leftMargin: Sizes.featuredStats.smallMargin
+                    leftMargin: Sizes.smallMargin
                 }
 
                 Text {
@@ -282,9 +282,9 @@ Rectangle {
                 color: "white"
                 anchors {
                     top: parent.top
-                    topMargin: Sizes.featuredStats.smallMargin
+                    topMargin: Sizes.smallMargin
                     right: parent.right
-                    rightMargin: Sizes.featuredStats.smallMargin
+                    rightMargin: Sizes.smallMargin
                 }
 
                 Text {
@@ -310,7 +310,7 @@ Rectangle {
 
         Rectangle {
             id: pitchCenterArea
-            height: parent.height - 2 * Sizes.featuredStats.margin
+            height: parent.height - 2 * Sizes.margin
             width: height
             radius: height / 2
             anchors.centerIn: parent
@@ -322,7 +322,7 @@ Rectangle {
                 var startAngle = Math.PI / 2
                 var angle = startAngle - idx * noTeamAngleDiff
                 var pitchCenter = Qt.point(width/2, height/2)
-                var r = pitchCenterRadius - ((Sizes.playerHandleWidth + Sizes.playerHandleRatingHeight) / 2 + Sizes.featuredStats.smallMargin)
+                var r = pitchCenterRadius - ((Sizes.playerHandleWidth + Sizes.playerHandleRatingHeight) / 2 + Sizes.smallMargin)
                 var x = pitchCenter.x + r * Math.cos(angle)
                 var y = pitchCenter.y - r * Math.sin(angle)
                 return mapToItem(pitchScheme, x, y)

@@ -12,15 +12,15 @@ Rectangle {
 
     ColumnLayout {
         anchors.fill: parent
-        spacing: Sizes.featuredStats.smallMargin
+        spacing: Sizes.smallMargin
 
         Calendar {
             id: calendar
             Layout.fillHeight: true
             Layout.fillWidth: true
-            Layout.topMargin: Sizes.featuredStats.smallMargin
-            Layout.leftMargin: Sizes.featuredStats.smallMargin
-            Layout.rightMargin: Sizes.featuredStats.smallMargin
+            Layout.topMargin: Sizes.smallMargin
+            Layout.leftMargin: Sizes.smallMargin
+            Layout.rightMargin: Sizes.smallMargin
 
             maximumDate: new Date(Date.now())
             locale: Qt.locale("en_US")
@@ -28,9 +28,9 @@ Rectangle {
 
         Row
         {
-            spacing: Sizes.featuredStats.smallMargin
+            spacing: Sizes.smallMargin
             Layout.alignment: Qt.AlignHCenter
-            Layout.bottomMargin: Sizes.featuredStats.smallMargin
+            Layout.bottomMargin: Sizes.smallMargin
 
             Button {
                 id: cancelButton

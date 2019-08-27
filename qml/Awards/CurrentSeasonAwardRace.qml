@@ -11,7 +11,7 @@ Rectangle {
 
     Rectangle {
         anchors.fill: parent
-        anchors.margins: Sizes.featuredStats.smallMargin
+        anchors.margins: Sizes.smallMargin
 
         gradient: Gradient {
             GradientStop { position: 0.0; color: "transparent" }
@@ -36,7 +36,7 @@ Rectangle {
             delegate: Item {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Layout.margins: Sizes.featuredStats.margin
+                Layout.margins: Sizes.margin
                 Layout.alignment: Qt.AlignHCenter
 
                 StatsTable {

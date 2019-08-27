@@ -82,8 +82,8 @@ Rectangle {
             color: "transparent"
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.topMargin: Sizes.featuredStats.smallMargin
-            Layout.bottomMargin: Sizes.featuredStats.smallMargin
+            Layout.topMargin: Sizes.smallMargin
+            Layout.bottomMargin: Sizes.smallMargin
 
             RowLayout {
                 spacing: 0
@@ -148,8 +148,8 @@ Rectangle {
             visible: root.activeTab == lang.nextGameTab
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.topMargin: Sizes.featuredStats.smallMargin
-            Layout.bottomMargin: Sizes.featuredStats.smallMargin
+            Layout.topMargin: Sizes.smallMargin
+            Layout.bottomMargin: Sizes.smallMargin
 
             GameComposer {
                 border.width: Sizes.borderWidth
@@ -176,8 +176,8 @@ Rectangle {
             color: "transparent"
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.topMargin: Sizes.featuredStats.smallMargin
-            Layout.bottomMargin: Sizes.featuredStats.smallMargin
+            Layout.topMargin: Sizes.smallMargin
+            Layout.bottomMargin: Sizes.smallMargin
 
             RowLayout {
                 id: awardsScreenLayout
