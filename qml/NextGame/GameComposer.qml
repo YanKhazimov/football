@@ -212,6 +212,7 @@ Rectangle {
             player: allPlayersModel.getPlayer(index)
             x: scheme.calculatePosition(PitchZones.bench, index, model.count).x - width/2
             y: scheme.calculatePosition(PitchZones.bench, index, model.count).y - height/2
+            visible: index <= scheme.getBenchCapacity() - 1
             theme: root.theme
 
             onDragActiveChanged: {

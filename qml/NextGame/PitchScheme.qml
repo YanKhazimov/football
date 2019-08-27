@@ -65,6 +65,7 @@ Rectangle {
 
         function calculatePosition(idx, count) {
             var x = benchImg.x + benchImg.width + Sizes.featuredStats.smallMargin
+                    + leftArrow.width + Sizes.featuredStats.smallMargin
                     + Sizes.playerHandleWidth / 2
                     + idx * (benchSpacing + Sizes.playerHandleWidth)
             var y = height / 2
@@ -72,7 +73,8 @@ Rectangle {
         }
 
         function getCapacity() {
-            var playersSpace = width - (benchImg.x + benchImg.width + 2 * Sizes.featuredStats.smallMargin)
+            var playersSpace = width - (benchImg.x + benchImg.width + 2 * Sizes.featuredStats.smallMargin
+                                        + leftArrow.width + rightArrow.width + 2 * Sizes.featuredStats.smallMargin)
             var capacity = playersSpace / (benchSpacing + Sizes.playerHandleWidth)
             if (playersSpace % (benchSpacing + Sizes.playerHandleWidth) >= Sizes.playerHandleWidth)
                 ++capacity
@@ -113,6 +115,46 @@ Rectangle {
                 left: parent.left
                 leftMargin: Sizes.featuredStats.smallMargin
                 verticalCenter: parent.verticalCenter
+            }
+        }
+
+        ColoredImage {
+            id: leftArrow
+            width: Sizes.elementButtonSize.width
+            height: Sizes.elementButtonSize.height
+            anchors {
+                left: benchImg.right
+                leftMargin: Sizes.featuredStats.smallMargin
+                verticalCenter: parent.verticalCenter
+            }
+            source: "qrc:/img/l.png"
+            color: leftArrowArea.containsMouse ? pitchScheme.theme.highlightColor : pitchScheme.theme.secondaryColor
+
+            MouseArea {
+                id: leftArrowArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: benchScrolled(1)
+            }
+        }
+
+        ColoredImage {
+            id: rightArrow
+            width: Sizes.elementButtonSize.width
+            height: Sizes.elementButtonSize.height
+            anchors {
+                right: parent.right
+                rightMargin: Sizes.featuredStats.smallMargin
+                verticalCenter: parent.verticalCenter
+            }
+            source: "qrc:/img/r.png"
+            color: rightArrowArea.containsMouse ? pitchScheme.theme.highlightColor : pitchScheme.theme.secondaryColor
+
+            MouseArea {
+                id: rightArrowArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: benchScrolled(-1)
             }
         }
     }
