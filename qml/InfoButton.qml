@@ -36,8 +36,8 @@ Rectangle {
         onBroadcast: {
             if (receivers.indexOf(wave.objectName) !== -1 && firstTime)
             {
-                wave.run(3)
-                firstTime = false
+                wave.run(wave.times)
+                wave.firstTime = false
             }
         }
     }
