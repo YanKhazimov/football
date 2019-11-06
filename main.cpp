@@ -16,6 +16,7 @@
 #include "config.h"
 #include "syncmanager.h"
 #include "updater.h"
+#include "broadcaster.h"
 
 Q_DECLARE_METATYPE(GlobalStatsModel)
 Q_DECLARE_METATYPE(PlayerbaseQuery*)
@@ -49,6 +50,7 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<GlobalStatsModel>("com.abc.abclib", 1, 0, "GlobalStatsModel", "");
     qmlRegisterUncreatableType<PersonalStatsModel>("com.abc.abclib", 1, 0, "PersonalStatsModel", "");
     qmlRegisterUncreatableType<StatPresenterProxyModel>("com.abc.abclib", 1, 0, "GlobalStatPresenter", "");
+    qmlRegisterUncreatableType<Broadcaster>("com.abc.abclib", 1, 0, "Signaller", "");
 
     Language language;
 
@@ -122,6 +124,9 @@ int main(int argc, char *argv[])
     ctxt->setContextProperty("lang", &language);
     ctxt->setContextProperty("config", &config);
     ctxt->setContextProperty("syncManager", &syncManager);
+
+    Broadcaster broadcaster;
+    ctxt->setContextProperty("broadcaster", &broadcaster);
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())

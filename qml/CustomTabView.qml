@@ -16,6 +16,14 @@ Rectangle {
     color: root.theme.primaryColor
     property string activeTab: lang.playersTab
 
+    onActiveTabChanged: {
+        switch (activeTab)
+        {
+        case lang.playersTab: broadcaster.inform(["statsInfo"]); break
+        case lang.nextGameTab: broadcaster.inform(["pitchInfo"]); break
+        }
+    }
+
     ColoredImage {
         id: bg
         anchors.fill: parent
@@ -152,9 +160,9 @@ Rectangle {
             Layout.bottomMargin: Sizes.smallMargin
 
             GameComposer {
+                id: composer
                 border.width: Sizes.borderWidth
                 border.color: theme.highlightColor
-                id: composer
                 anchors.fill: parent
                 allPlayersModel: sortingStatModel
                 theme: root.theme
@@ -167,6 +175,15 @@ Rectangle {
                     }
                 }
             }
+        }
+
+        Rectangle {
+            visible: root.activeTab == lang.calendarTab
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.topMargin: Sizes.smallMargin
+            Layout.bottomMargin: Sizes.smallMargin
+            color: "cyan"
         }
 
         Rectangle {

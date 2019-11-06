@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick.Controls 2.5 as QQC2
 import QtGraphicalEffects 1.0
 import "."
 import ".."
@@ -138,6 +139,35 @@ Rectangle {
             {
                 benchScrollOffset += offset
                 adjustFormation(PitchZones.bench)
+            }
+        }
+
+        InfoButton {
+            objectName: "pitchInfo"
+            theme: root.theme
+            anchors.horizontalCenter: parent.left
+            anchors.horizontalCenterOffset: length / 2 + Sizes.smallMargin
+            anchors.verticalCenter: parent.bottom
+            anchors.verticalCenterOffset: -length / 2 - Sizes.smallMargin
+            onClicked: pitchPopup.open()
+        }
+
+        QQC2.Popup {
+            id: pitchPopup
+            anchors.centerIn: parent
+            width: parent.width - 2 * Sizes.margin
+            height: popupText.contentHeight + 2 * Sizes.margin
+            modal: true
+            focus: true
+            closePolicy: QQC2.Popup.CloseOnEscape | QQC2.Popup.CloseOnReleaseOutside
+
+            Text {
+                id: popupText
+                text: lang.pitchInfo
+                anchors.centerIn: parent
+                font.pointSize: 14
+                wrapMode: Text.Wrap
+                width: parent.width - 2 * Sizes.margin
             }
         }
     }

@@ -39,7 +39,36 @@ const QMap<QString, QMap<QString, QString>> Language::dict = QMap<QString, QMap<
     { "gold", { { "en", "gold" }, { "ru", "золото" } } },
     { "silver", { { "en", "silver" }, { "ru", "серебро" } } },
     { "bronze", { { "en", "bronze" }, { "ru", "бронза" } } },
-    { "pulseStats", { { "en", "Last month: %1 games, %2% core roster" }, { "ru", "За месяц: %1 игры, %2% костяк" } } }
+    { "pulseStats", { { "en", "Last month: %1 games, %2% core roster" }, { "ru", "За месяц: %1 игры, %2% костяк" } } },
+    { "statsInfo", {
+            { "en",
+                "<li>- <b>Rating</b>: at the end of currently selected season(s)</li>" \
+                "<li>- <b>W-D-L</b>: amount of wins-draws-losses during currently selected season(s)</li>" \
+                "<li>- <b>Progress</b>: rating difference between the end and the start of currently selected season(s)</li>" \
+                "<li>- <b>Relevance</b>: how much all the other stats reflect player's current state judging by the last 10 games (more recent games matter more)</li>" \
+                "<li>- <b>Dedication</b>: % of the games attended during the period since the beginning of currently selected season(s) (or player's first ever appearance) and until the end of currently selected season(s)</li>"
+            },
+            { "ru",
+                "<li>- <b>Рейтинг</b>: на конец выбранного периода</li>" \
+                "<li>- <b>В-Н-П</b>: количество побед-ничьих-поражений за выбранный период</li>" \
+                "<li>- <b>Прогресс</b>: разница в рейтинге, показанная игроком за выбранный период</li>" \
+                "<li>- <b>Актуальность</b>: насколько остальные показатели отражают текущую форму игрока (расчет по последним 10 играм, более поздние игры влияют больше)</li>" \
+                "<li>- <b>Надежность</b>: % сыгранных игроком игр с начала выбранного периода (или самой первой его игры) до конца выбранного периода</li>"
+            }
+        } },
+    { "pitchInfo", {
+            { "en",
+                "<li>- Drag players from the bench area to the central area to prepare them for team assignment</li>" \
+                "<li>- Once everyone is in the cenral area, keep clicking the <b>Split</b> button on the left until you find the best split</li>" \
+                "<li>- To ensure particular players are assigned the same team, drag them to either team zone before splitting the rest</li>"
+            },
+            {
+                "ru",
+                "<li>- Перетащите игроков из зоны запасных в центр, чтобы подготовить их к автораспределению по командам</li>" \
+                "<li>- Для автораспределения нажимайте <b>Поделить</b>, пока не увидите подходящий вариант составов</li>" \
+                "<li>- Чтобы определить кого-то в одну команду, перетащите их на половину поля команды перед автораспределением остальных</li>"
+            }
+        } }
 };
 
 void Language::set(QString str)
@@ -78,6 +107,8 @@ void Language::set(QString str)
     m_silver = dict["silver"][m_lang];
     m_bronze = dict["bronze"][m_lang];
     m_pulseStats = dict["pulseStats"][m_lang];
+    m_statsInfo = dict["statsInfo"][m_lang];
+    m_pitchInfo = dict["pitchInfo"][m_lang];
 
     emit languageChanged(m_lang);
 }

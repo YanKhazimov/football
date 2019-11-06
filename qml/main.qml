@@ -228,6 +228,7 @@ QQC2.ApplicationWindow {
         Text {
             id: warningText
             text: lang.languageChangeWarning
+            font.pointSize: 14
             anchors.centerIn: parent
         }
     }
@@ -235,8 +236,8 @@ QQC2.ApplicationWindow {
     QQC2.Popup {
         id: updatePopup
         anchors.centerIn: parent
-        width: warningText.contentWidth + 2 * Sizes.margin
-        height: warningText.contentHeight + 2 * Sizes.margin
+        width: updatePopupText.contentWidth + 2 * Sizes.margin
+        height: updatePopupText.contentHeight + 2 * Sizes.margin
         modal: true
         focus: true
         closePolicy: QQC2.Popup.CloseOnEscape | QQC2.Popup.CloseOnReleaseOutside
@@ -244,6 +245,7 @@ QQC2.ApplicationWindow {
         Text {
             id: updatePopupText
             text: ""
+            font.pointSize: 14
             anchors.centerIn: parent
         }
     }

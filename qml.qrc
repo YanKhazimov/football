@@ -71,5 +71,7 @@
         <file>fonts/stencil.ttf</file>
         <file>fonts/Alice-Regular.ttf</file>
         <file>qml/UpdaterWindow.qml</file>
+        <file>qml/InfoButton.qml</file>
+        <file>img/info.png</file>
     </qresource>
 </RCC>

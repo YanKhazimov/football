@@ -23,6 +23,7 @@ set (HEADERS
     award.h
     featuredstats.h
     updater.h
+    broadcaster.h
 )
 
 set (SRC
@@ -41,6 +42,7 @@ set (SRC
     award.cpp
     featuredstats.cpp
     updater.cpp
+    broadcaster.cpp
 )
 
 set (3RDPARTY

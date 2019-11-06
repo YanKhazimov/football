@@ -107,6 +107,34 @@ Rectangle {
                         root.selectedStatChanged(category)
                     }
                 }
+
+                InfoButton {
+                    objectName: "statsInfo"
+                    theme: root.theme
+                    anchors.horizontalCenter: parent.left
+                    anchors.horizontalCenterOffset: length / 2 + Sizes.smallMargin
+                    anchors.verticalCenter: parent.verticalCenter
+                    onClicked: statsPopup.open()
+                }
+
+                QQC2.Popup {
+                    id: statsPopup
+                    anchors.centerIn: parent
+                    width: parent.width - 2 * Sizes.margin
+                    height: popupText.contentHeight + 2 * Sizes.margin
+                    modal: true
+                    focus: true
+                    closePolicy: QQC2.Popup.CloseOnEscape | QQC2.Popup.CloseOnReleaseOutside
+
+                    Text {
+                        id: popupText
+                        text: lang.statsInfo
+                        anchors.centerIn: parent
+                        font.pointSize: 14
+                        wrapMode: Text.Wrap
+                        width: parent.width - 2 * Sizes.margin
+                    }
+                }
             }
         }
 

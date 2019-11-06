@@ -82,7 +82,7 @@ int GamesModel::getPulseRosterConsistency()
     for(const QVariant& game: m_pulse)
         rosterConsistency += game.value<QPoint>().y();
 
-    return static_cast<int>(1.f * rosterConsistency / m_pulse.size());
+    return m_pulse.empty() ? 0 : static_cast<int>(1.f * rosterConsistency / m_pulse.size());
 }
 
 void GamesModel::resetPulse()

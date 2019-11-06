@@ -59,7 +59,7 @@ Rectangle {
                     var y = midY
                     ctxt.moveTo(x, y)
 
-                    while(x < width)
+                    while(x < width && model.length !== 0)
                     {
                         for(var i = 0; i < model.length && x < width; i++)
                         {

@@ -128,7 +128,7 @@ Rectangle {
                 verticalCenter: parent.verticalCenter
             }
             source: "qrc:/img/l.png"
-            color: leftArrowArea.containsMouse ? pitchScheme.theme.highlightColor : pitchScheme.theme.secondaryColor
+            color: leftArrowArea.containsMouse ? pitchScheme.theme.highlightColor : "white"
 
             MouseArea {
                 id: leftArrowArea
@@ -148,7 +148,7 @@ Rectangle {
                 verticalCenter: parent.verticalCenter
             }
             source: "qrc:/img/r.png"
-            color: rightArrowArea.containsMouse ? pitchScheme.theme.highlightColor : pitchScheme.theme.secondaryColor
+            color: rightArrowArea.containsMouse ? pitchScheme.theme.highlightColor : "white"
 
             MouseArea {
                 id: rightArrowArea
